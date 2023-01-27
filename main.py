@@ -1,12 +1,10 @@
-import time
-import random
-
 import logging
-import string
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+
+from endpoints.api_v1 import energy_system
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -21,6 +19,8 @@ app = FastAPI(
         "email": "glazynovand@gmail.com",
     },
 )
+
+app.include_router(energy_system.router)
 
 app.add_middleware(
     CORSMiddleware,
