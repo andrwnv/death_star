@@ -10,18 +10,17 @@ logger = logging.getLogger(__name__)
 
 
 class EventExecutor:
-    def __init__(self, interval: float, thread_pool: multiprocessing.pool.ThreadPool, debug_mode: bool = False):
+    def __init__(self, interval: float, debug_mode: bool = False):
         self.__debug_mode = debug_mode
         self.__interval = interval
-        self.__thread_pool = thread_pool
 
         self.__is_running = False
         self.__active_events = {}
         self.__ready_to_execute_events = []
 
-    def start(self) -> None:
+    def start(self, async_executor) -> None:
         self.__is_running = True
-        self.__thread_pool.apply_async(self.__job)
+        async_executor.apply_async(self.__job)
 
     def stop(self) -> None:
         self.__is_running = False
@@ -74,8 +73,6 @@ class EventExecutor:
     __debug_mode: bool
 
     __is_running: bool
-
-    __thread_pool: multiprocessing.pool.ThreadPool
     __interval: float
 
     __active_events: Dict[uuid.UUID, AbstractEvent]

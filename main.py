@@ -1,8 +1,8 @@
 import logging
 
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
 
 from endpoints.api_v1 import energy_system
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     thread_pool = multiprocessing.pool.ThreadPool(processes=4)
 
-    executor = EventExecutor(interval=0.1, thread_pool=thread_pool)
-    executor.start()
+    executor = EventExecutor(interval=0.1)
+    executor.start(async_executor=thread_pool)
 
     uvicorn.run(app, host="0.0.0.0", port=2023)
