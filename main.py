@@ -38,9 +38,13 @@ async def root():
 
 
 if __name__ == "__main__":
+    import multiprocessing.pool
+
     from core.event_executor import EventExecutor
 
-    executor = EventExecutor(interval=0.1, debug_mode=True)
+    thread_pool = multiprocessing.pool.ThreadPool(processes=4)
+
+    executor = EventExecutor(interval=0.1, thread_pool=thread_pool)
     executor.start()
 
     uvicorn.run(app, host="0.0.0.0", port=2023)

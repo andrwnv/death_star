@@ -1,6 +1,6 @@
 import uuid
 import logging
-import threading
+import multiprocessing
 
 from typing import Dict, List
 
@@ -10,9 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 class EventExecutor:
-    def __init__(self, interval: float, debug_mode: bool):
+    def __init__(self, interval: float, thread_pool: multiprocessing.pool.ThreadPool, debug_mode: bool = False):
         self.__debug_mode = debug_mode
         self.__interval = interval
+        self.__thread_pool = thread_pool
 
         self.__is_running = False
         self.__active_events = {}
@@ -20,11 +21,10 @@ class EventExecutor:
 
     def start(self) -> None:
         self.__is_running = True
-        self.__thread = threading.Thread(target=self.__job)
+        self.__thread_pool.apply_async(self.__job)
 
     def stop(self) -> None:
         self.__is_running = False
-        self.__thread.join()
 
     def is_running(self) -> bool:
         return self.__is_running
@@ -75,7 +75,7 @@ class EventExecutor:
 
     __is_running: bool
 
-    __thread: threading.Thread
+    __thread_pool: multiprocessing.pool.ThreadPool
     __interval: float
 
     __active_events: Dict[uuid.UUID, AbstractEvent]
