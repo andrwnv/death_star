@@ -38,4 +38,9 @@ async def root():
 
 
 if __name__ == "__main__":
+    from core.event_executor import EventExecutor
+
+    executor = EventExecutor(interval=0.1, debug_mode=True)
+    executor.start()
+
     uvicorn.run(app, host="0.0.0.0", port=2023)
