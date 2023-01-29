@@ -4,7 +4,7 @@ import multiprocessing
 
 from typing import Dict, List
 
-from core.abstract_event import AbstractEvent
+from utils.abstract_event import AbstractEvent
 
 logger = logging.getLogger(__name__)
 
@@ -41,12 +41,14 @@ class EventExecutor:
         try:
             while self.__is_running:
                 self.__prepare_ready_events()
-
                 if len(self.__ready_to_execute_events) > 0:
-                    self.__execute_event(self.__ready_to_execute_events.pop())
+                    try:
+                        self.__execute_event(self.__ready_to_execute_events.pop())
+                    except Exception as ex:
+                        logger.warning(f"Error while executing event. Exception: {ex}")
                 sleep(self.__interval)
         except Exception as ex:
-            logger.warning(f"{ex}")  # TODO(andrwnv): detail log!
+            logger.error(f"Internal error. Exception: {ex}")
 
     def __execute_event(self, event: AbstractEvent) -> bool:
         if not event:
