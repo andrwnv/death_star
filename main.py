@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from endpoints.api_v1 import energy_system
+from usecases.game_loop import GameLoop
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -40,11 +41,13 @@ async def root():
 if __name__ == "__main__":
     import multiprocessing.pool
 
-    from core.event_executor import EventExecutor
+    from utils.event_executor import EventExecutor
 
     thread_pool = multiprocessing.pool.ThreadPool(processes=4)
 
     executor = EventExecutor(interval=0.1)
-    executor.start(async_executor=thread_pool)
+    game_loop = GameLoop(interval=0.2, event_executor=executor)
+
+    game_loop.start(async_executor=thread_pool)
 
     uvicorn.run(app, host="0.0.0.0", port=2023)
