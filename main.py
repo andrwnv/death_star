@@ -1,10 +1,12 @@
 import logging
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
-from endpoints.api_v1 import energy_system
+from endpoints.api_v1 import EnergySystemController
+
+from usecases.api import EnergySystemApiManager
 from usecases.game_loop import GameLoop
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
@@ -20,8 +22,6 @@ app = FastAPI(
         "email": "glazynovand@gmail.com",
     },
 )
-
-app.include_router(energy_system.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -49,5 +49,13 @@ if __name__ == "__main__":
     game_loop = GameLoop(interval=0.2, event_executor=executor)
 
     game_loop.start(async_executor=thread_pool)
+
+    root_router = APIRouter(prefix='/api/v1')
+
+    energy_system_manager = EnergySystemApiManager
+    energy_system_controller = EnergySystemController(manager=energy_system_manager, prefix="/energy")
+
+    root_router.include_router(energy_system_controller)
+    app.include_router(root_router)
 
     uvicorn.run(app, host="0.0.0.0", port=2023)

@@ -8,4 +8,4 @@ class GameLoop(AbstractGameLoop):
 
     def tick_handler(self):
         # TODO(andrwnv): add tick logic
-        print("MODELS TICK")
+        pass

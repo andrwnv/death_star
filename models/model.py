@@ -1,7 +1,7 @@
-from typing import List
+from typing import Dict
 
-from models.energy_system.PowerCell import PowerCell
+from models.energy_system.power_cell import PowerCell
 
 
 class Model:
-    power_cells: List[PowerCell]
+    power_cells: Dict[str, PowerCell]

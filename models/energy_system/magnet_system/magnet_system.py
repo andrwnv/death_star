@@ -1,6 +1,6 @@
 from typing import List
 
-import inductor
+from models.energy_system.magnet_system.inductor import Inductor
 
 
 class MagnetSystem:
@@ -15,5 +15,5 @@ class MagnetSystem:
     output_current: float
     voltage: float
 
-    toroidal_inductors: List[inductor.Inductor]
-    poloidal_inductors: List[inductor.Inductor]
+    toroidal_inductors: List[Inductor]
+    poloidal_inductors: List[Inductor]
