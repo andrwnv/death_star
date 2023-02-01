@@ -7,6 +7,8 @@ class MagnetSystem:
     is_on: bool
     alarm: bool
 
+    durability: float
+
     induction: float
     temperature: float
 

@@ -1,10 +1,7 @@
-"""
-    https://en.wikipedia.org/wiki/Inductor
-"""
-
-
 class Inductor:
     is_on: bool
+
+    durability: float
 
     storable_energy: float
     electromotive_force: float
