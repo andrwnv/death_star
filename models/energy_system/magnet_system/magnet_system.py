@@ -4,6 +4,25 @@ from models.energy_system.magnet_system.inductor import Inductor
 
 
 class MagnetSystem:
+    def __init__(self, name: str = 'magnet_system'):
+        self.name = name
+
+        self.is_on = False
+        self.alarm = False
+        self.durability = 100.0
+        self.induction = 0.0
+        self.temperature = 0.0
+        self.output_current = 0.0
+        self.voltage = 0.0
+
+        self.toroidal_inductors = []
+        for i in range(5):
+            self.toroidal_inductors.append(Inductor())
+
+        self.poloidal_inductors = []
+        for i in range(7):
+            self.poloidal_inductors.append(Inductor())
+
     is_on: bool
     alarm: bool
 

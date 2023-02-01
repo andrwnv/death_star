@@ -5,6 +5,18 @@ from models.liquid_storage import LiquidStorage
 
 
 class LiquidCooler:
+    def __init__(self, name: str = 'liquid_cooler'):
+        self.name = name
+
+        self.is_on = False
+        self.alarm = False
+        self.durability = 100.0
+
+        self.liquid_storage = LiquidStorage()
+        self.turbines = []
+        for i in range(6):
+            self.turbines.append(Turbine())
+
     is_on: bool
     alarm: bool
 

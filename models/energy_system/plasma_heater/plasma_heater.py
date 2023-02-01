@@ -1,4 +1,17 @@
 class PlasmaHeater:
+    def __init__(self, name: str = 'plasma_heater'):
+        self.name = name
+
+        self.is_on = False
+        self.alarm = False
+        self.durability = 100.0
+
+        self.temperature = 0.0
+        self.output_power_watt = 0.0
+        self.input_current = 0.0
+        self.input_voltage = 0.0
+        self.input_power = 0.0
+
     is_on: bool
     alarm: bool
 

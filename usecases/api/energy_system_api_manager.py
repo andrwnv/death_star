@@ -1,5 +1,5 @@
 from copy import copy
-from typing import Dict
+from typing import Dict, Optional
 
 from models.energy_system.power_cell import PowerCell
 from models.energy_system.cooling.cooling_system import CoolingSystem
@@ -16,19 +16,29 @@ class EnergySystemApiManager:
     def get_state(self, name: str) -> PowerCell:
         return copy(self.__power_cells[name])
 
-    def get_colling_system_state(self, name: str) -> CoolingSystem:
+    def get_colling_system_state(self, name: str) -> Optional[CoolingSystem]:
+        if name not in self.__power_cells:
+            return None
         return copy(self.__power_cells[name].cooling_system)
 
-    def get_magnet_system_state(self, name: str) -> MagnetSystem:
+    def get_magnet_system_state(self, name: str) -> Optional[MagnetSystem]:
+        if name not in self.__power_cells:
+            return None
         return copy(self.__power_cells[name].magnet_system)
 
-    def get_plasma_heater_state(self, name: str) -> PlasmaHeater:
+    def get_plasma_heater_state(self, name: str) -> Optional[PlasmaHeater]:
+        if name not in self.__power_cells:
+            return None
         return copy(self.__power_cells[name].plasma_heater)
 
-    def get_vacuum_vessel_state(self, name: str) -> VacuumVessel:
+    def get_vacuum_vessel_state(self, name: str) -> Optional[VacuumVessel]:
+        if name not in self.__power_cells:
+            return None
         return copy(self.__power_cells[name].vacuum_vessel)
 
-    def get_fuel_storage_state(self, name: str) -> LiquidStorage:
+    def get_fuel_storage_state(self, name: str) -> Optional[LiquidStorage]:
+        if name not in self.__power_cells:
+            return None
         return copy(self.__power_cells[name].fuel_storage)
 
     def repair_colling_system(self, name: str, team_name: str) -> None:

@@ -5,6 +5,7 @@ from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 from endpoints.api_v1 import EnergySystemController
+from models import Model
 
 from usecases.api import EnergySystemApiManager
 from usecases.game_loop import GameLoop
@@ -52,7 +53,9 @@ if __name__ == "__main__":
 
     root_router = APIRouter(prefix='/api/v1')
 
-    energy_system_manager = EnergySystemApiManager
+    model = Model()
+
+    energy_system_manager = EnergySystemApiManager(power_cells=model.power_cells)
     energy_system_controller = EnergySystemController(manager=energy_system_manager, prefix="/energy")
 
     root_router.include_router(energy_system_controller)

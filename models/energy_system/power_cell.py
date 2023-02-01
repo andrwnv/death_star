@@ -3,6 +3,19 @@ from models import LiquidStorage
 
 
 class PowerCell:
+    def __init__(self, name: str = 'power_cell'):
+        self.name = name
+
+        self.is_on = False
+        self.alarm = False
+        self.durability = 100.0
+
+        self.cooling_system = CoolingSystem()
+        self.magnet_system = MagnetSystem()
+        self.plasma_heater = PlasmaHeater()
+        self.vacuum_vessel = VacuumVessel()
+        self.fuel_storage = LiquidStorage()
+
     is_on: bool
     alarm: bool
 
