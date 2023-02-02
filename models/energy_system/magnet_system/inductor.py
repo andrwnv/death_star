@@ -1,4 +1,7 @@
-class Inductor:
+from utils.json_serializable import IJsonSerializable
+
+
+class Inductor(IJsonSerializable):
     def __init__(self, name: str = 'inductor'):
         self.name = name
 

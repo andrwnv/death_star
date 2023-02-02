@@ -1,4 +1,7 @@
-class VacuumVessel:
+from utils.json_serializable import IJsonSerializable
+
+
+class VacuumVessel(IJsonSerializable):
     def __init__(self, name: str = 'vacuum_vessel'):
         self.name = name
 

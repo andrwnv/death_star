@@ -3,8 +3,10 @@ from typing import List
 from models.energy_system.cooling.turbine import Turbine
 from models.liquid_storage import LiquidStorage
 
+from utils.json_serializable import IJsonSerializable
 
-class LiquidCooler:
+
+class LiquidCooler(IJsonSerializable):
     def __init__(self, name: str = 'liquid_cooler'):
         self.name = name
 

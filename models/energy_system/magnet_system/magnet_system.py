@@ -2,8 +2,10 @@ from typing import List
 
 from models.energy_system.magnet_system.inductor import Inductor
 
+from utils.json_serializable import IJsonSerializable
 
-class MagnetSystem:
+
+class MagnetSystem(IJsonSerializable):
     def __init__(self, name: str = 'magnet_system'):
         self.name = name
 

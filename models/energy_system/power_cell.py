@@ -1,8 +1,10 @@
 from models.energy_system import CoolingSystem, VacuumVessel, MagnetSystem, PlasmaHeater
 from models import LiquidStorage
 
+from utils.json_serializable import IJsonSerializable
 
-class PowerCell:
+
+class PowerCell(IJsonSerializable):
     def __init__(self, name: str = 'power_cell'):
         self.name = name
 
@@ -15,6 +17,8 @@ class PowerCell:
         self.plasma_heater = PlasmaHeater()
         self.vacuum_vessel = VacuumVessel()
         self.fuel_storage = LiquidStorage()
+
+    name: str
 
     is_on: bool
     alarm: bool
