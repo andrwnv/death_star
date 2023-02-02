@@ -31,16 +31,17 @@ class EnergySystemController(APIRouter):
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST_BAD_REQUEST)
 
             status_fields = ['is_on', 'alarm', 'durability']
-            devices = [device for device in fields if device not in ['name'] + status_fields]
+            default_devices = [device for device in fields if device not in ['name'] + status_fields]
+            only_durability_devices = ['fuel_storage']
 
             return {
                 result.name: {
                     'state': result.to_json(fields=status_fields),
                     'devices_state': {
                         device_name: getattr(result, device_name).to_json(fields=['is_on', 'alarm', 'durability'])
-                        if device_name != 'fuel_storage'
+                        if device_name not in only_durability_devices
                         else getattr(result, device_name).to_json(fields=['durability'])
-                        for device_name in devices
+                        for device_name in default_devices
                     }
                 }
             }
