@@ -4,12 +4,6 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
-from endpoints.api_v1 import EnergySystemController
-from models import Model
-
-from usecases.api import EnergySystemApiManager
-from usecases.game_loop import GameLoop
-
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
@@ -44,6 +38,14 @@ if __name__ == "__main__":
 
     from utils.event_executor import EventExecutor
 
+    from endpoints.api_v1 import EnergySystemApiRouter
+    from endpoints.api_v1 import RepairTeamApiRouter
+    from models import Model
+
+    from usecases.api import EnergySystemApiManager
+    from usecases.api import RepairTeamApiManager
+    from usecases.game_loop import GameLoop
+
     thread_pool = multiprocessing.pool.ThreadPool(processes=4)
 
     executor = EventExecutor(interval=0.1)
@@ -55,10 +57,22 @@ if __name__ == "__main__":
 
     model = Model()
 
-    energy_system_manager = EnergySystemApiManager(power_cells=model.power_cells)
-    energy_system_controller = EnergySystemController(manager=energy_system_manager, prefix="/energy")
 
-    root_router.include_router(energy_system_controller)
+    from models.repair_team.team import RepairTeam
+    test = RepairTeam()
+    print(test.to_json())
+
+    energy_system_manager = EnergySystemApiManager(
+        power_cells=model.power_cells)
+    energy_system_router = EnergySystemApiRouter(
+        manager=energy_system_manager, prefix="/energy")
+
+    repair_team_manager = RepairTeamApiManager(teams=model.repair_teams)
+    repair_team_router = RepairTeamApiRouter(manager=repair_team_manager, prefix="/repair")
+
+    root_router.include_router(energy_system_router)
+    root_router.include_router(repair_team_router)
+
     app.include_router(root_router)
 
     uvicorn.run(app, host="0.0.0.0", port=2023)

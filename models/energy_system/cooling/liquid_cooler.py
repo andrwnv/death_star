@@ -7,7 +7,7 @@ from utils.json_serializable import IJsonSerializable
 
 
 class LiquidCooler(IJsonSerializable):
-    def __init__(self, name: str = 'liquid_cooler'):
+    def __init__(self, name: str = 'liquid_cooler') -> None:
         self.name = name
 
         self.is_on = False

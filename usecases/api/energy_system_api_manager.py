@@ -10,7 +10,7 @@ from models.liquid_storage import LiquidStorage
 
 
 class EnergySystemApiManager:
-    def __init__(self, power_cells: Dict[str, PowerCell]):
+    def __init__(self, power_cells: Dict[str, PowerCell]) -> None:
         self.__power_cells = power_cells
 
     def get_state(self, name: str) -> PowerCell:

@@ -2,7 +2,7 @@ from utils.json_serializable import IJsonSerializable
 
 
 class Inductor(IJsonSerializable):
-    def __init__(self, name: str = 'inductor'):
+    def __init__(self, name: str = 'inductor') -> None:
         self.name = name
 
         self.is_on = False

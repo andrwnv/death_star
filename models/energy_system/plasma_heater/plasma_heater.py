@@ -2,7 +2,7 @@ from utils.json_serializable import IJsonSerializable
 
 
 class PlasmaHeater(IJsonSerializable):
-    def __init__(self, name: str = 'plasma_heater'):
+    def __init__(self, name: str = 'plasma_heater') -> None:
         self.name = name
 
         self.is_on = False

@@ -5,7 +5,7 @@ from utils.json_serializable import IJsonSerializable
 
 
 class PowerCell(IJsonSerializable):
-    def __init__(self, name: str = 'power_cell'):
+    def __init__(self, name: str = 'power_cell') -> None:
         self.name = name
 
         self.is_on = False

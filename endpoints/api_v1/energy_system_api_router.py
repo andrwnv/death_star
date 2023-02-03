@@ -3,8 +3,8 @@ from fastapi import APIRouter, HTTPException, status
 from usecases.api.energy_system_api_manager import EnergySystemApiManager
 
 
-class EnergySystemController(APIRouter):
-    def __init__(self, manager: EnergySystemApiManager, *args, **kwargs):
+class EnergySystemApiRouter(APIRouter):
+    def __init__(self, manager: EnergySystemApiManager, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.__manager = manager
