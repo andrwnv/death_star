@@ -3,6 +3,7 @@ from fastapi import APIRouter, Body, HTTPException, status
 from usecases.api.repair_team_api_manager import RepairTeamApiManager
 from endpoints.dto.repair_team_dto import SendTeamDto
 
+
 class RepairTeamApiRouter(APIRouter):
     def __init__(self, manager: RepairTeamApiManager, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -10,13 +11,13 @@ class RepairTeamApiRouter(APIRouter):
         self.__manager = manager
 
         self.add_api_route(path='/teams',
-                           methods=['GET'], endpoint=self.get_all)
+                           methods=['GET'], endpoint=self.get_all, tags=['Ремонтные бригады'], name='Получение списка ремонтных бригад')
         self.add_api_route(path='/team/{team_name}',
-                           methods=['GET'], endpoint=self.get_team_info)
+                           methods=['GET'], endpoint=self.get_team_info, tags=['Ремонтные бригады'], name='Получение информации о ремонтной бригаде')
         self.add_api_route(path='/start',
-                           methods=['POST'], endpoint=self.send_team)
+                           methods=['POST'], endpoint=self.send_team, tags=['Ремонтные бригады'], name='Отправка ремонтной бригаде на объект')
         self.add_api_route(path='/stop',
-                           methods=['POST'], endpoint=self.send_team, response_model=None)
+                           methods=['POST'], endpoint=self.send_team, response_model=None, tags=['Ремонтные бригады'], name='Отзыв ремонтной бригаде с объекта')
 
     async def get_all(self):
         try:
