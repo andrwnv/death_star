@@ -1,14 +1,7 @@
 from fastapi import APIRouter, Body, HTTPException, status
-from pydantic import BaseModel
 
 from usecases.api.repair_team_api_manager import RepairTeamApiManager
-
-
-# TODO(andrwnv): move it
-class SendTeamDto(BaseModel):
-    team_name: str
-    location: str
-
+from endpoints.dto.repair_team_dto import SendTeamDto
 
 class RepairTeamApiRouter(APIRouter):
     def __init__(self, manager: RepairTeamApiManager, *args, **kwargs) -> None:
