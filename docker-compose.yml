@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    command: bash -c "python main.py"
+    volumes:
+      - .:/code
+    ports:
+      - "2023:2023"
