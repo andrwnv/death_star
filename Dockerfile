@@ -5,10 +5,21 @@ FROM python:3.10
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /code/
-COPY . /code/
+WORKDIR /app
+COPY . .
 
-# Install dependencies
-RUN pip install -r requirements.txt
+RUN apk add --no-cache python3 py3-pip tini; \
+    pip install --upgrade pip setuptools-scm; \
+    python3 setup.py install; \
+    python3 martor_demo/manage.py makemigrations; \
+    python3 martor_demo/manage.py migrate; \
+    addgroup -g 1000 appuser; \
+    adduser -u 1000 -G appuser -D -h /app appuser; \
+    chown -R appuser:appuser /app
 
-EXPOSE 2023
+USER appuser
+
+EXPOSE 2023/tcp
+
+ENTRYPOINT [ "tini", "--" ]
+CMD [ "python3", "main.pu" ]
