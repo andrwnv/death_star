@@ -5,6 +5,6 @@ services:
     build: .
     command: bash -c "python main.py"
     volumes:
-      - .:/code
+      - .:/app
     ports:
       - "2023:2023"
