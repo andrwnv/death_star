@@ -11,4 +11,4 @@ RUN apk add --no-cache python3 py3-pip; \
     pip install fastapi uvicorn; \
 
 EXPOSE 2023/tcp
-CMD [ "python3", "main.py" ]
+CMD python3 main.py
