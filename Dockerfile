@@ -5,7 +5,8 @@ RUN set -xe;
 WORKDIR /app
 COPY . .
 
-RUN apk add --no-cache python3 py3-pip uvicorn fastapi; \
+RUN apk add --no-cache python3 py3-pip; \
+    pip3 install uvicorn fastapi \
     addgroup -g 1000 appuser; \
     adduser -u 1000 -G appuser -D -h /app appuser; \
     chown -R appuser:appuser /app
