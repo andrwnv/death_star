@@ -19,6 +19,11 @@ class LiquidCooler(IJsonSerializable):
         for i in range(6):
             self.turbines.append(Turbine())
 
+    def start(self) -> None:
+        self.is_on = True
+        for turbine in self.turbines:
+            turbine.start()
+
     is_on: bool
     alarm: bool
 

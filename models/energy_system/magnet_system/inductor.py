@@ -15,6 +15,9 @@ class Inductor(IJsonSerializable):
         self.current_loss = 0.0
         self.q_factor = 0.0
 
+    def start(self) -> None:
+        self.is_on = True
+    
     is_on: bool
 
     durability: float

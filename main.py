@@ -1,8 +1,11 @@
 import logging
+import os
 
 import uvicorn
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+
+from usecases.generators import cooling_generator
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -29,8 +32,14 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    logger.info("logging from the root logger")
-    return {"message": "Hello World"}
+    from datetime import datetime
+
+    debugKeyExists = 'DEBUG' in os.environ
+
+    return {
+        'debug_mode': True if debugKeyExists and os.environ['DEBUG'] else False,
+        'time': datetime.now().strftime("%d.%m.%YT%H:%M:%S")
+    }
 
 
 if __name__ == "__main__":
@@ -56,11 +65,11 @@ if __name__ == "__main__":
     root_router = APIRouter(prefix='/api/v1')
 
     model = Model()
+    model.start()
 
-
-    from models.repair_team.team import RepairTeam
-    test = RepairTeam()
-    print(test.to_json())
+    test_gen_strategy = cooling_generator.DefaultGenerationStrategy(model=model.power_cells['alpha_cell'].cooling_system)
+    test_generator = cooling_generator.CoolingGenerator()
+    test_generator.start(interval=1.0, start_strategy=test_gen_strategy)
 
     energy_system_manager = EnergySystemApiManager(
         power_cells=model.power_cells)
@@ -68,7 +77,8 @@ if __name__ == "__main__":
         manager=energy_system_manager, prefix="/energy")
 
     repair_team_manager = RepairTeamApiManager(teams=model.repair_teams)
-    repair_team_router = RepairTeamApiRouter(manager=repair_team_manager, prefix="/repair")
+    repair_team_router = RepairTeamApiRouter(
+        manager=repair_team_manager, prefix="/repair")
 
     root_router.include_router(energy_system_router)
     root_router.include_router(repair_team_router)

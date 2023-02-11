@@ -16,5 +16,9 @@ class Model:
             'gamma_team': RepairTeam()
         }
 
+    def start(self) -> None:
+        for cell in self.power_cells.values():
+            cell.start()
+
     power_cells: Dict[str, PowerCell]
     repair_teams: Dict[str, RepairTeam]
