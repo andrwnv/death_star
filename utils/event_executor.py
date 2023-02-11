@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class EventExecutor:
-    def __init__(self, interval: float, async_executor: Callable, debug_mode: bool = False):
+    def __init__(self, interval: float, async_executor: Callable, debug_mode: bool = False) -> None:
         self.__debug_mode = debug_mode
         self.__interval = interval
 
@@ -39,7 +39,7 @@ class EventExecutor:
 
         self.__active_events.append(event)
 
-    def __job(self):
+    def __job(self) -> None:
         from time import sleep
 
         try:
@@ -70,7 +70,7 @@ class EventExecutor:
                 f"Error while execute {event.name()} event effects. Exception: {ex}")
             return False
 
-    def __prepare_ready_events(self):
+    def __prepare_ready_events(self) -> None:
         for key, event in self.__active_events:
             if self.__debug_mode:
                 logger.debug(

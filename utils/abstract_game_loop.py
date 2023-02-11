@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class AbstractGameLoop:
-    def __init__(self, interval: float, event_executor: EventExecutor, debug_mode: bool = False):
+    def __init__(self, interval: float, event_executor: EventExecutor, debug_mode: bool = False) -> None:
         self.__interval = interval
         self.__event_executor = event_executor
         self._debug_mode = debug_mode
@@ -26,7 +26,7 @@ class AbstractGameLoop:
     def is_running(self) -> bool:
         return self.__is_running
 
-    def __job(self):
+    def __job(self) -> None:
         from time import sleep
 
         try:

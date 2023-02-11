@@ -28,13 +28,13 @@ class RepeatableTimer:
         self.__auto_start = auto_start
         self.__is_first_call = True
 
-    def run(self):
+    def run(self) -> None:
         self.__async_executor(self.__run)
 
-    def stop(self):
+    def stop(self) -> None:
         self.__stop_event.set()
 
-    def __run(self):
+    def __run(self) -> None:
         self.__start_time = perf_counter()
 
         while True:
@@ -72,7 +72,7 @@ class NonBlockableTimer(object):
 
         self.__timer = None
 
-    def start(self):
+    def start(self) -> None:
         try:
             self.__timer.stop()
         except AttributeError:
@@ -83,18 +83,18 @@ class NonBlockableTimer(object):
                                       auto_start=self.__auto_start)
         self.__timer.run()
 
-    def stop(self):
+    def stop(self) -> None:
         try:
             self.__timer.stop()
         except AttributeError:
             pass
 
     @property
-    def interval(self):
+    def interval(self) -> float:
         return self.__interval
 
     @interval.setter
-    def interval(self, value):
+    def interval(self, value) -> None:
         self.__interval = value
         try:
             self.__timer.__interval = value
@@ -102,7 +102,7 @@ class NonBlockableTimer(object):
             pass
 
     @property
-    def count(self):
+    def count(self) -> int:
         return self.__repeat_count
 
     @property
