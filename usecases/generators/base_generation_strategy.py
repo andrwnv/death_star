@@ -8,3 +8,7 @@ class IGenerationStrategy(ABC):
     @abstractmethod
     def generate_properties(self) -> None:
         pass
+
+    @abstractmethod
+    def name(self) -> str:
+        pass

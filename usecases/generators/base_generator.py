@@ -8,7 +8,7 @@ class IGenerator(ABC):
         pass
 
     @abstractmethod
-    def start(self, interval: float, start_strategy: IGenerationStrategy = None) -> None:
+    def start(self, interval: float) -> None:
         pass
 
     @abstractmethod
@@ -20,5 +20,9 @@ class IGenerator(ABC):
         pass
 
     @abstractmethod
-    def set_generation_strategy(self, strategy: IGenerationStrategy) -> None:
+    def push_strategy(self, strategy: IGenerationStrategy) -> None:
+        pass
+
+    @abstractmethod
+    def delete_strategy(self, model_name: str) -> None:
         pass

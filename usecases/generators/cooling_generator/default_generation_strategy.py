@@ -1,5 +1,6 @@
 from typing import List
 import random
+import uuid
 
 from models.energy_system.cooling.cooling_system import CoolingSystem
 from models.energy_system.cooling.turbine import Turbine
@@ -8,10 +9,11 @@ from usecases.generators.cooling_generator.constants import CoolingDefaultParams
 
 
 class DefaultGenerationStrategy(IGenerationStrategy):
-    def __init__(self, model: CoolingSystem) -> None:
+    def __init__(self, model: CoolingSystem, name: str = f'CoolingSystemDefaultGenerator-{uuid.uuid4()}') -> None:
         super().__init__()
 
         self.__model = model
+        self.__name = name
 
     def generate_properties(self) -> None:
         def __turbine_params_generator(turbines: List[Turbine]):
@@ -40,4 +42,8 @@ class DefaultGenerationStrategy(IGenerationStrategy):
             self.__model.liquid_cooler.liquid_storage.liquid_level = random.gauss(
                 CoolingDefaultParams.LIQUID_LEVEL, 1.0)
 
+    def name(self) -> str:
+        return self.__name
+
     __model: CoolingSystem = None
+    __name: str = ""

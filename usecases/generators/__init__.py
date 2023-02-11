@@ -1,3 +1,4 @@
-from .cooling_generator import CoolingGenerator, DefaultGenerationStrategy
+from .cooling_generator import DefaultGenerationStrategy
+from .vacuum_vessel_generator import DefaultGenerationStrategy
 from .base_generation_strategy import IGenerationStrategy
 from .base_generator import IGenerator

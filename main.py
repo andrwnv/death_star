@@ -5,7 +5,8 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
-from usecases.generators import cooling_generator
+from usecases.generators import cooling_generator, vacuum_vessel_generator
+from usecases.generators.generator import ModelPropertiesGenerator
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -68,11 +69,14 @@ if __name__ == "__main__":
     model = Model()
     model.start()
 
-    test_gen_strategy = cooling_generator.DefaultGenerationStrategy(
-        model=model.power_cells['alpha_cell'].cooling_system)
-    test_generator = cooling_generator.CoolingGenerator()
-    test_generator.start(
-        interval=1.0, executor=thread_pool.apply_async, start_strategy=test_gen_strategy)
+    model_generator = ModelPropertiesGenerator()
+
+    model_generator.push_strategy(cooling_generator.DefaultGenerationStrategy(
+        model=model.power_cells['alpha_cell'].cooling_system))
+    model_generator.push_strategy(vacuum_vessel_generator.DefaultGenerationStrategy(
+        model=model.power_cells['alpha_cell'].vacuum_vessel))
+    
+    model_generator.start(interval=1.0, executor=thread_pool.apply_async)
 
     energy_system_manager = EnergySystemApiManager(
         power_cells=model.power_cells)
