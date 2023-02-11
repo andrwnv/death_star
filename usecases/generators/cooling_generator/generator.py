@@ -1,23 +1,24 @@
 import logging
-from threading import Timer
+import multiprocessing
 
 from usecases.generators.base_generator import IGenerator
 from usecases.generators.base_generation_strategy import IGenerationStrategy
-from usecases.generators.cooling_generator.default_generation_strategy import DefaultGenerationStrategy
+
+from utils.timer import NonBlockableTimer
 
 logger = logging.getLogger(__name__)
 
 
 class CoolingGenerator(IGenerator):
-    def start(self, interval: float, start_strategy: IGenerationStrategy = None) -> None:
+    def start(self, interval: float, executor, start_strategy: IGenerationStrategy = None) -> None:
         self.__generation_strategy = start_strategy
+        self.__executor = executor
 
-        self.__timer = Timer(interval=interval, function=self.__timer_task)
-
-        self.__timer_task()  # force first start
+        self.__timer = NonBlockableTimer(
+            interval=interval, async_executor=self.__executor, callback=self.__timer_task)
+        
         self.__timer.start()
-
-        self.__is_started = False
+        self.__is_started = True
 
     def stop(self) -> None:
         self.__timer.cancel()
@@ -32,15 +33,22 @@ class CoolingGenerator(IGenerator):
         self.__timer.start()
 
     def __timer_task(self) -> None:
+        if not self.is_started:
+            pass
+
         print('im here')
         if not self.__generation_strategy:
-            logger.error(
+            logger.warning(
                 f"Current strategy is NONE. This startaegy won't be executed. Generation stoped!")
             self.stop()
         else:
-            self.__generation_strategy.generate_properties()
-            # self.__timer.start()
+            try:
+                self.__generation_strategy.generate_properties()
+                # self.__timer_task()
+            except Exception as ex:
+                logger.error(
+                    f"Got exception while executing strategy. Generation stoped! Exception: {ex}")
 
     __generation_strategy: IGenerationStrategy = None
     __is_started = False
-    __timer: Timer = None
+    __timer: NonBlockableTimer = None

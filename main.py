@@ -55,7 +55,7 @@ if __name__ == "__main__":
     from usecases.api import RepairTeamApiManager
     from usecases.game_loop import GameLoop
 
-    thread_pool = multiprocessing.pool.ThreadPool(processes=4)
+    thread_pool = multiprocessing.pool.ThreadPool(processes=6)
 
     executor = EventExecutor(interval=0.1)
     game_loop = GameLoop(interval=0.2, event_executor=executor)
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     test_gen_strategy = cooling_generator.DefaultGenerationStrategy(model=model.power_cells['alpha_cell'].cooling_system)
     test_generator = cooling_generator.CoolingGenerator()
-    test_generator.start(interval=1.0, start_strategy=test_gen_strategy)
+    test_generator.start(interval=1.0, executor=thread_pool.apply_async, start_strategy=test_gen_strategy)
 
     energy_system_manager = EnergySystemApiManager(
         power_cells=model.power_cells)
