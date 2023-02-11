@@ -1,6 +1,7 @@
 import abc
 import datetime
 import logging
+from typing import Callable
 
 from utils.event_executor import EventExecutor
 
@@ -13,11 +14,11 @@ class AbstractGameLoop:
         self.__event_executor = event_executor
         self._debug_mode = debug_mode
 
-    def start(self, async_executor) -> None:
+    def start(self, async_executor: Callable) -> None:
         self.__is_running = True
 
-        self.__event_executor.start(async_executor)
-        async_executor.apply_async(self.__job)
+        self.__event_executor.start()
+        async_executor(self.__job)
 
     def stop(self) -> None:
         self.__is_running = False
@@ -33,7 +34,8 @@ class AbstractGameLoop:
                 try:
                     self.tick_handler()
                 except Exception as ex:
-                    logger.error(f"Error while executing tick_handler. Exception: {ex}")
+                    logger.error(
+                        f"Error while executing tick_handler. Exception: {ex}")
                 sleep(self.__interval)
         except Exception as ex:
             logger.error(f"Internal error. Exception: {ex}")

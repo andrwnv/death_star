@@ -57,19 +57,22 @@ if __name__ == "__main__":
 
     thread_pool = multiprocessing.pool.ThreadPool(processes=6)
 
-    executor = EventExecutor(interval=0.1)
-    game_loop = GameLoop(interval=0.2, event_executor=executor)
+    event_executor = EventExecutor(
+        interval=0.1, async_executor=thread_pool.apply_async)
+    game_loop = GameLoop(interval=0.2, event_executor=event_executor)
 
-    game_loop.start(async_executor=thread_pool)
+    game_loop.start(async_executor=thread_pool.apply_async)
 
     root_router = APIRouter(prefix='/api/v1')
 
     model = Model()
     model.start()
 
-    test_gen_strategy = cooling_generator.DefaultGenerationStrategy(model=model.power_cells['alpha_cell'].cooling_system)
+    test_gen_strategy = cooling_generator.DefaultGenerationStrategy(
+        model=model.power_cells['alpha_cell'].cooling_system)
     test_generator = cooling_generator.CoolingGenerator()
-    test_generator.start(interval=1.0, executor=thread_pool.apply_async, start_strategy=test_gen_strategy)
+    test_generator.start(
+        interval=1.0, executor=thread_pool.apply_async, start_strategy=test_gen_strategy)
 
     energy_system_manager = EnergySystemApiManager(
         power_cells=model.power_cells)
