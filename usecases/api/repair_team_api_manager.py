@@ -8,8 +8,8 @@ class RepairTeamApiManager:
     def __init__(self, teams: Dict[str, RepairTeam]) -> None:
         self.__repair_teams = teams
 
-    def team_list(self) -> List[RepairTeam]:
-        return self.__repair_teams.values()
+    def team_list(self) -> Dict[str, RepairTeam]:
+        return copy(self.__repair_teams)
 
     def team_info(self, team_name: str) -> Optional[RepairTeam]:
         if team_name not in self.__repair_teams:

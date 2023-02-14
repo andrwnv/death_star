@@ -21,8 +21,11 @@ class RepairTeamApiRouter(APIRouter):
 
     async def get_all(self):
         try:
+            result = self.__manager.team_list()
             return {
-                'teams': [team.to_json() for team in self.__manager.team_list()]
+                device_name: result[device_name].to_json(
+                    exclude=['name'])
+                for device_name, value in result.items()
             }
         except HTTPException as ex:
             raise HTTPException(status_code=ex.status_code)

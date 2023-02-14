@@ -9,6 +9,8 @@ class EnergySystemApiRouter(APIRouter):
 
         self.__manager = manager
 
+        self.add_api_route(path='/names',
+                           methods=['GET'], endpoint=self.get_cell_list, tags=['Энергетический модуль'], name='Получение списка энергетических модулей')
         self.add_api_route(path='/state/{power_cell_name}',
                            methods=['GET'], endpoint=self.get_cell_state, tags=['Энергетический модуль'], name='Получение общей информации о энергетический модуле')
         self.add_api_route(path='/state/{power_cell_name}/colling_system',
@@ -21,6 +23,17 @@ class EnergySystemApiRouter(APIRouter):
                            methods=['GET'], endpoint=self.get_vacuum_vessel_state, tags=['Энергетический модуль'], name='Получение информации о вакуумной системе')
         self.add_api_route(path='/state/{power_cell_name}/fuel_storage',
                            methods=['GET'], endpoint=self.get_fuel_storage_state, tags=['Энергетический модуль'], name='Получение информации о топливном хранилище')
+
+    async def get_cell_list(self):
+        try:
+            return {
+                'power_cell_names': self.__manager.get_list()
+            }
+        except HTTPException as ex:
+            raise HTTPException(status_code=ex.status_code)
+        except Exception as ex:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=ex)
 
     async def get_cell_state(self, power_cell_name: str):
         try:

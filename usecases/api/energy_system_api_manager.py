@@ -1,5 +1,5 @@
 from copy import copy
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from models.energy_system.power_cell import PowerCell
 from models.energy_system.cooling.cooling_system import CoolingSystem
@@ -12,6 +12,9 @@ from models.liquid_storage import LiquidStorage
 class EnergySystemApiManager:
     def __init__(self, power_cells: Dict[str, PowerCell]) -> None:
         self.__power_cells = power_cells
+
+    def get_list(self) -> List[str]:
+        return list(self.__power_cells.keys())
 
     def get_state(self, name: str) -> PowerCell:
         return copy(self.__power_cells[name])
