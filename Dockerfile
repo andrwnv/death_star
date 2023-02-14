@@ -8,7 +8,7 @@ COPY . .
 
 RUN apk add --no-cache python3 py3-pip; \
     pip install --upgrade pip; \ 
-    pip install fastapi uvicorn
+    pip install fastapi uvicorn names
 
 EXPOSE 2023/tcp
 CMD python3 main.py
