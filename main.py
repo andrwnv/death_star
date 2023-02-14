@@ -72,7 +72,6 @@ if __name__ == "__main__":
     model_generator = ModelPropertiesGenerator()
 
     for name, cell in model.power_cells.items():
-        print(name)
         model_generator.push_strategy(cooling_generator.DefaultGenerationStrategy(
             model=cell.cooling_system, name=f'cooling_generator-{name}'))
         model_generator.push_strategy(vacuum_vessel_generator.DefaultGenerationStrategy(
