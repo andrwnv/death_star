@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
-from usecases.generators import cooling_generator, vacuum_vessel_generator
+from usecases.generators import cooling_generator, magnet_generator, vacuum_vessel_generator
 from usecases.generators.generator import ModelPropertiesGenerator
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
@@ -75,6 +75,8 @@ if __name__ == "__main__":
         model=model.power_cells['alpha_cell'].cooling_system))
     model_generator.push_strategy(vacuum_vessel_generator.DefaultGenerationStrategy(
         model=model.power_cells['alpha_cell'].vacuum_vessel))
+    model_generator.push_strategy(magnet_generator.DefaultGenerationStrategy(
+        model=model.power_cells['alpha_cell'].magnet_system))
     
     model_generator.start(interval=1.0, executor=thread_pool.apply_async)
 
