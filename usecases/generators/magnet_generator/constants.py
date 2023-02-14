@@ -6,4 +6,4 @@ class MagnetDefaultParams:
     # MagnetSystem
     TEMPERATURE = 120.5
 
-    SIGMA = 1.0
+    SIGMA = 14.0

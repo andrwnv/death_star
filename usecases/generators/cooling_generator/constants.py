@@ -5,4 +5,4 @@ class CoolingDefaultParams:
     RPM = 5000.0
     LIQUID_LEVEL = 2000.0
 
-    SIGMA = 1.0
+    SIGMA = 14.0

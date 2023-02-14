@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
-from usecases.generators import cooling_generator, magnet_generator, vacuum_vessel_generator
+from usecases.generators import cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
 from usecases.generators.generator import ModelPropertiesGenerator
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
@@ -71,12 +71,16 @@ if __name__ == "__main__":
 
     model_generator = ModelPropertiesGenerator()
 
-    model_generator.push_strategy(cooling_generator.DefaultGenerationStrategy(
-        model=model.power_cells['alpha_cell'].cooling_system))
-    model_generator.push_strategy(vacuum_vessel_generator.DefaultGenerationStrategy(
-        model=model.power_cells['alpha_cell'].vacuum_vessel))
-    model_generator.push_strategy(magnet_generator.DefaultGenerationStrategy(
-        model=model.power_cells['alpha_cell'].magnet_system))
+    for name, cell in model.power_cells.items():
+        print(name)
+        model_generator.push_strategy(cooling_generator.DefaultGenerationStrategy(
+            model=cell.cooling_system, name=f'cooling_generator-{name}'))
+        model_generator.push_strategy(vacuum_vessel_generator.DefaultGenerationStrategy(
+            model=cell.vacuum_vessel,name=f'vacuum_vessel_generator-{name}'))
+        model_generator.push_strategy(magnet_generator.DefaultGenerationStrategy(
+            model=cell.magnet_system, name=f'magnet_generator-{name}'))
+        model_generator.push_strategy(plasma_heater_generator.DefaultGenerationStrategy(
+            model=cell.plasma_heater, name=f'plasma_heater_generator-{name}'))
     
     model_generator.start(interval=1.0, executor=thread_pool.apply_async)
 

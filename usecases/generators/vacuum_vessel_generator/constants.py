@@ -4,4 +4,4 @@ class VacuumVesselDefaultParams:
     INPUT_VOLTAGE = 275.0
     PRESSURE = 101325.0
 
-    SIGMA = 1.0
+    SIGMA = 14.0
