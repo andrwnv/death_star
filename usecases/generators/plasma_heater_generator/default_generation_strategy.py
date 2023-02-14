@@ -1,0 +1,36 @@
+import random
+import uuid
+
+from models.energy_system.plasma_heater.plasma_heater import PlasmaHeater
+from usecases.generators.base_generation_strategy import IGenerationStrategy
+from usecases.generators.plasma_heater_generator.constants import PlasmaHeaterDefaultParams
+
+class DefaultGenerationStrategy(IGenerationStrategy):
+    def __init__(self, model: PlasmaHeater, name: str = f'PlasmaHeaterDefaultGenerator-{uuid.uuid4()}') -> None:
+        super().__init__()
+
+        self.__model = model
+        self.__name = name
+
+    def generate_properties(self) -> None:
+        if not self.__model.is_on:
+            pass
+
+        self.__model.alarm = False
+        
+        self.__model.temperature = random.gauss(
+            PlasmaHeaterDefaultParams.TEMPERATURE, PlasmaHeaterDefaultParams.SIGMA)
+        self.__model.output_power_watt = random.gauss(
+            PlasmaHeaterDefaultParams.OUTPUT_POWER, PlasmaHeaterDefaultParams.SIGMA)
+        self.__model.input_current = random.gauss(
+            PlasmaHeaterDefaultParams.INPUT_CURRENT, PlasmaHeaterDefaultParams.SIGMA)
+        self.__model.input_voltage = random.gauss(
+            PlasmaHeaterDefaultParams.INPUT_VOLTAGE, PlasmaHeaterDefaultParams.SIGMA)
+        self.__model.input_power = random.gauss(
+            PlasmaHeaterDefaultParams.INPUT_POWER, PlasmaHeaterDefaultParams.SIGMA)
+
+    def name(self) -> str:
+        return self.__name
+
+    __model: PlasmaHeater = None
+    __name: str = ""

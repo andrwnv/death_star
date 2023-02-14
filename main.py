@@ -1,8 +1,12 @@
 import logging
+import os
 
 import uvicorn
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
+
+from usecases.generators import cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
+from usecases.generators.generator import ModelPropertiesGenerator
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -29,8 +33,14 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    logger.info("logging from the root logger")
-    return {"message": "Hello World"}
+    from datetime import datetime
+
+    debugKeyExists = 'DEBUG' in os.environ
+
+    return {
+        'debug_mode': True if debugKeyExists and os.environ['DEBUG'] else False,
+        'time': datetime.now().strftime("%d.%m.%YT%H:%M:%S")
+    }
 
 
 if __name__ == "__main__":
@@ -46,21 +56,32 @@ if __name__ == "__main__":
     from usecases.api import RepairTeamApiManager
     from usecases.game_loop import GameLoop
 
-    thread_pool = multiprocessing.pool.ThreadPool(processes=4)
+    thread_pool = multiprocessing.pool.ThreadPool(processes=6)
 
-    executor = EventExecutor(interval=0.1)
-    game_loop = GameLoop(interval=0.2, event_executor=executor)
+    event_executor = EventExecutor(
+        interval=0.1, async_executor=thread_pool.apply_async)
+    game_loop = GameLoop(interval=0.2, event_executor=event_executor)
 
-    game_loop.start(async_executor=thread_pool)
+    game_loop.start(async_executor=thread_pool.apply_async)
 
     root_router = APIRouter(prefix='/api/v1')
 
     model = Model()
+    model.start()
 
+    model_generator = ModelPropertiesGenerator()
 
-    from models.repair_team.team import RepairTeam
-    test = RepairTeam()
-    print(test.to_json())
+    for name, cell in model.power_cells.items():
+        model_generator.push_strategy(cooling_generator.DefaultGenerationStrategy(
+            model=cell.cooling_system, name=f'cooling_generator-{name}'))
+        model_generator.push_strategy(vacuum_vessel_generator.DefaultGenerationStrategy(
+            model=cell.vacuum_vessel,name=f'vacuum_vessel_generator-{name}'))
+        model_generator.push_strategy(magnet_generator.DefaultGenerationStrategy(
+            model=cell.magnet_system, name=f'magnet_generator-{name}'))
+        model_generator.push_strategy(plasma_heater_generator.DefaultGenerationStrategy(
+            model=cell.plasma_heater, name=f'plasma_heater_generator-{name}'))
+    
+    model_generator.start(interval=1.0, executor=thread_pool.apply_async)
 
     energy_system_manager = EnergySystemApiManager(
         power_cells=model.power_cells)
@@ -68,7 +89,8 @@ if __name__ == "__main__":
         manager=energy_system_manager, prefix="/energy")
 
     repair_team_manager = RepairTeamApiManager(teams=model.repair_teams)
-    repair_team_router = RepairTeamApiRouter(manager=repair_team_manager, prefix="/repair")
+    repair_team_router = RepairTeamApiRouter(
+        manager=repair_team_manager, prefix="/repair")
 
     root_router.include_router(energy_system_router)
     root_router.include_router(repair_team_router)

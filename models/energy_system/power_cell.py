@@ -18,6 +18,14 @@ class PowerCell(IJsonSerializable):
         self.vacuum_vessel = VacuumVessel()
         self.fuel_storage = LiquidStorage()
 
+    def start(self) -> None:
+        self.is_on = True
+
+        self.cooling_system.start()
+        self.magnet_system.start()
+        self.plasma_heater.start()
+        self.vacuum_vessel.start()
+
     name: str
 
     is_on: bool

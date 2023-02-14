@@ -25,6 +25,15 @@ class MagnetSystem(IJsonSerializable):
         for i in range(7):
             self.poloidal_inductors.append(Inductor())
 
+    def start(self) -> None:
+        self.is_on = True
+
+        for inductor in self.toroidal_inductors:
+            inductor.start()
+
+        for inductor in self.poloidal_inductors:
+            inductor.start()
+
     is_on: bool
     alarm: bool
 

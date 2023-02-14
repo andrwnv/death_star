@@ -2,15 +2,16 @@ import uuid
 import logging
 import multiprocessing
 
-from typing import Dict, List
+from typing import Callable, Dict, List
 
 from utils.abstract_event import AbstractEvent
+from utils.timer import NonBlockableTimer
 
 logger = logging.getLogger(__name__)
 
 
 class EventExecutor:
-    def __init__(self, interval: float, debug_mode: bool = False):
+    def __init__(self, interval: float, async_executor: Callable, debug_mode: bool = False) -> None:
         self.__debug_mode = debug_mode
         self.__interval = interval
 
@@ -18,11 +19,14 @@ class EventExecutor:
         self.__active_events = {}
         self.__ready_to_execute_events = []
 
-    def start(self, async_executor) -> None:
+        self.__timer = NonBlockableTimer(self.__interval, async_executor=async_executor, callback=self.__job)
+
+    def start(self) -> None:
+        self.__timer.start()
         self.__is_running = True
-        async_executor.apply_async(self.__job)
 
     def stop(self) -> None:
+        self.__timer.stop()
         self.__is_running = False
 
     def is_running(self) -> bool:
@@ -35,24 +39,25 @@ class EventExecutor:
 
         self.__active_events.append(event)
 
-    def __job(self):
+    def __job(self) -> None:
         from time import sleep
 
         try:
-            while self.__is_running:
-                self.__prepare_ready_events()
-                if len(self.__ready_to_execute_events) > 0:
-                    try:
-                        self.__execute_event(self.__ready_to_execute_events.pop())
-                    except Exception as ex:
-                        logger.warning(f"Error while executing event. Exception: {ex}")
-                sleep(self.__interval)
+            self.__prepare_ready_events()
+            if len(self.__ready_to_execute_events) > 0:
+                try:
+                    self.__execute_event(
+                        self.__ready_to_execute_events.pop())
+                except Exception as ex:
+                    logger.warning(
+                        f"Error while executing event. Exception: {ex}")
         except Exception as ex:
             logger.error(f"Internal error. Exception: {ex}")
 
     def __execute_event(self, event: AbstractEvent) -> bool:
         if not event:
-            logger.warning(f"Unsuccessful execution of NULL {event.name()} event!")
+            logger.warning(
+                f"Unsuccessful execution of NULL {event.name()} event!")
             return False
 
         try:
@@ -61,16 +66,19 @@ class EventExecutor:
             event.positive_effect()
             return True
         except Exception as ex:
-            logger.error(f"Error while execute {event.name()} event effects. Exception: {ex}")
+            logger.error(
+                f"Error while execute {event.name()} event effects. Exception: {ex}")
             return False
 
-    def __prepare_ready_events(self):
+    def __prepare_ready_events(self) -> None:
         for key, event in self.__active_events:
             if self.__debug_mode:
-                logger.debug(f"{key}: Event {event.name()} time to execution = {event.is_soon()}")
+                logger.debug(
+                    f"{key}: Event {event.name()} time to execution = {event.is_soon()}")
 
             if event.is_ready():
-                self.__ready_to_execute_events.append(self.__active_events.pop(key))
+                self.__ready_to_execute_events.append(
+                    self.__active_events.pop(key))
 
     __debug_mode: bool
 
@@ -79,3 +87,5 @@ class EventExecutor:
 
     __active_events: Dict[uuid.UUID, AbstractEvent]
     __ready_to_execute_events: List[AbstractEvent]
+
+    __timer: NonBlockableTimer = None

@@ -14,6 +14,9 @@ class VacuumVessel(IJsonSerializable):
         self.input_voltage = 0.0
         self.input_power = 0.0
 
+    def start(self) -> None:
+        self.is_on = True
+
     is_on: bool
     alarm: bool
 

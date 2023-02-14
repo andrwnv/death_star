@@ -20,6 +20,13 @@ class CoolingSystem(IJsonSerializable):
 
         self.liquid_cooler = LiquidCooler()
 
+    def start(self) -> None:
+        self.is_on = True
+
+        for turbine in self.turbines:
+            turbine.start()
+        self.liquid_cooler.start()
+
     is_on: bool
     alarm: bool
 
