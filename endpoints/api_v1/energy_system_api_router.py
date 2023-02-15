@@ -12,7 +12,7 @@ class EnergySystemApiRouter(APIRouter):
         self.add_api_route(path='/names',
                            methods=['GET'], endpoint=self.get_cell_list, tags=['Энергетический модуль'], name='Получение списка энергетических модулей')
         self.add_api_route(path='/state/{power_cell_name}',
-                           methods=['GET'], endpoint=self.get_cell_state, tags=['Энергетический модуль'], name='Получение общей информации о энергетический модуле')
+                           methods=['GET'], endpoint=self.get_cell_state, tags=['Энергетический модуль'], name='Получение общей информации об энергетический модуле')
         self.add_api_route(path='/state/{power_cell_name}/colling_system',
                            methods=['GET'], endpoint=self.get_colling_system_state, tags=['Энергетический модуль'], name='Получение информации о системы охлаждения')
         self.add_api_route(path='/state/{power_cell_name}/magnet_system',
@@ -23,6 +23,8 @@ class EnergySystemApiRouter(APIRouter):
                            methods=['GET'], endpoint=self.get_vacuum_vessel_state, tags=['Энергетический модуль'], name='Получение информации о вакуумной системе')
         self.add_api_route(path='/state/{power_cell_name}/fuel_storage',
                            methods=['GET'], endpoint=self.get_fuel_storage_state, tags=['Энергетический модуль'], name='Получение информации о топливном хранилище')
+        self.add_api_route(path='/state/{power_cell_name}/battery',
+                           methods=['GET'], endpoint=self.get_battery_state, tags=['Энергетический модуль'], name='Получение информации об аккумуляторном блоке')
 
     async def get_cell_list(self):
         try:
@@ -144,6 +146,25 @@ class EnergySystemApiRouter(APIRouter):
         try:
             result = self.__manager.get_fuel_storage_state(
                 name=power_cell_name)
+            if result is None:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+
+            return {
+                power_cell_name: {
+                    result.name: result.to_json()
+                }
+            }
+        except HTTPException as ex:
+            raise HTTPException(status_code=ex.status_code)
+        except Exception as ex:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=ex)
+
+    async def get_battery_state(self, power_cell_name: str):
+        try:
+            result = self.__manager.get_battery_state(
+                name=power_cell_name)
+            print(type(result))
             if result is None:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
