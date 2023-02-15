@@ -1,5 +1,6 @@
 from copy import copy
 from typing import Dict, Optional, List
+from models.energy_system.battery.battery import Battery
 
 from models.energy_system.power_cell import PowerCell
 from models.energy_system.cooling.cooling_system import CoolingSystem
@@ -43,6 +44,11 @@ class EnergySystemApiManager:
         if name not in self.__power_cells:
             return None
         return copy(self.__power_cells[name].fuel_storage)
+
+    def get_battery_state(self, name: str) -> Optional[Battery]:
+        if name not in self.__power_cells:
+            return None
+        return copy(self.__power_cells[name].battery)
 
     def repair_colling_system(self, name: str, team_name: str) -> None:
         pass

@@ -1,5 +1,6 @@
 from models.energy_system import CoolingSystem, VacuumVessel, MagnetSystem, PlasmaHeater
 from models import LiquidStorage
+from models.energy_system.battery.battery import Battery
 
 from utils.json_serializable import IJsonSerializable
 
@@ -17,6 +18,7 @@ class PowerCell(IJsonSerializable):
         self.plasma_heater = PlasmaHeater()
         self.vacuum_vessel = VacuumVessel()
         self.fuel_storage = LiquidStorage()
+        self.battery = Battery()
 
     def start(self) -> None:
         self.is_on = True
@@ -25,7 +27,8 @@ class PowerCell(IJsonSerializable):
         self.magnet_system.start()
         self.plasma_heater.start()
         self.vacuum_vessel.start()
-
+        self.battery.start()
+    
     name: str
 
     is_on: bool
@@ -38,3 +41,4 @@ class PowerCell(IJsonSerializable):
     plasma_heater: PlasmaHeater
     vacuum_vessel: VacuumVessel
     fuel_storage: LiquidStorage
+    battery: Battery
