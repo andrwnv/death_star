@@ -18,11 +18,11 @@ class MagnetSystem(IJsonSerializable):
         self.voltage = 0.0
 
         self.toroidal_inductors = []
-        for i in range(5):
+        for i in range(18):
             self.toroidal_inductors.append(Inductor())
 
         self.poloidal_inductors = []
-        for i in range(7):
+        for i in range(6):
             self.poloidal_inductors.append(Inductor())
 
     def start(self) -> None:
