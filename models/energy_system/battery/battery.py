@@ -15,7 +15,7 @@ class Battery(IJsonSerializable):
         self.charge_level = 100.0
 
         self.capacitors = []
-        for i in range(32):
+        for i in range(65):
             self.capacitors.append(Capacitor())
 
     def start(self) -> None:
