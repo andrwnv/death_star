@@ -20,6 +20,8 @@ class PowerCell(IJsonSerializable):
         self.fuel_storage = LiquidStorage()
         self.battery = Battery()
 
+        self.power = 0.0
+
     def start(self) -> None:
         self.is_on = True
 
@@ -42,3 +44,6 @@ class PowerCell(IJsonSerializable):
     vacuum_vessel: VacuumVessel
     fuel_storage: LiquidStorage
     battery: Battery
+
+    power: float
+

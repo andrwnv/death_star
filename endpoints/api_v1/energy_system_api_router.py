@@ -41,6 +41,7 @@ class EnergySystemApiRouter(APIRouter):
         try:
             result = self.__manager.get_state(name=power_cell_name)
             fields = list(result.__dict__.keys())
+            fields.remove('power')
 
             if result is None:
                 raise HTTPException(
@@ -60,7 +61,8 @@ class EnergySystemApiRouter(APIRouter):
                         if device_name not in only_durability_devices
                         else getattr(result, device_name).to_json(fields=['durability'])
                         for device_name in default_devices
-                    }
+                    },
+                    'power': result.power
                 }
             }
         except HTTPException as ex:
