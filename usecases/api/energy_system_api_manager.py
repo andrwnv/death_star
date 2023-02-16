@@ -18,7 +18,10 @@ class EnergySystemApiManager:
         return list(self.__power_cells.keys())
 
     def get_state(self, name: str) -> PowerCell:
-        return copy(self.__power_cells[name])
+        cell = self.__power_cells[name]
+        cell.power = 104.0 - \
+            4.0 ** ((11.0 * float(10 ** 6) - float(cell.plasma_heater.temperature)) / 10.0 ** 6)
+        return copy(cell)
 
     def get_colling_system_state(self, name: str) -> Optional[CoolingSystem]:
         if name not in self.__power_cells:

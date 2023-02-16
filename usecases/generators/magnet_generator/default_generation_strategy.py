@@ -27,7 +27,7 @@ class DefaultGenerationStrategy(IGenerationStrategy):
 
                     inductor.electromotive_force = inductor.output_current / inductor.current_loss
                     inductor.q_factor = inductor.output_current / inductor.starter_current
-    
+
         if not self.__model.is_on:
             pass
 
@@ -37,12 +37,20 @@ class DefaultGenerationStrategy(IGenerationStrategy):
         __inductor_params_generator(self.__model.poloidal_inductors)
 
         self.__model.temperature = random.gauss(
-                        MagnetDefaultParams.TEMPERATURE, MagnetDefaultParams.SIGMA)
+            MagnetDefaultParams.TEMPERATURE, MagnetDefaultParams.SIGMA)
 
-        self.__model.output_current += sum(inductor.output_current - inductor.current_loss for inductor in self.__model.toroidal_inductors)
-        self.__model.output_current += sum(inductor.output_current - inductor.current_loss for inductor in self.__model.poloidal_inductors)
-        self.__model.induction = 4 * math.pi * 2000 * math.cos(math.radians(5.756)) / self.__model.output_current
+        self.__model.output_current += sum(inductor.output_current -
+                                           inductor.current_loss for inductor in self.__model.toroidal_inductors)
+        self.__model.output_current += sum(inductor.output_current -
+                                           inductor.current_loss for inductor in self.__model.poloidal_inductors)
+
+        self.__model.induction = random.gauss(
+            MagnetDefaultParams.INDUCTION, MagnetDefaultParams.INDUCTION_SIGMA)
+
         self.__model.voltage = self.__model.output_current / 526.0
+
+        if self.__model.durability <= 70:
+            self.__model.alarm = True
 
     def name(self) -> str:
         return self.__name
