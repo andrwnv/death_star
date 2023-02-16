@@ -25,7 +25,7 @@ class DefaultGenerationStrategy(IGenerationStrategy):
         self.__model.input_voltage = random.gauss(
             VacuumVesselDefaultParams.INPUT_VOLTAGE, VacuumVesselDefaultParams.SIGMA)
         self.__model.pressure = random.gauss(
-            VacuumVesselDefaultParams.PRESSURE, VacuumVesselDefaultParams.SIGMA)
+            VacuumVesselDefaultParams.PRESSURE, VacuumVesselDefaultParams.PRESSURE_SIGMA)
 
     def name(self) -> str:
         return self.__name
