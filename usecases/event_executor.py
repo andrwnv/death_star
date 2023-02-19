@@ -4,7 +4,7 @@ import multiprocessing
 
 from typing import Callable, Dict, List
 
-from utils.abstract_event import AbstractEvent
+from abstract_event import AbstractEvent
 from utils.timer import NonBlockableTimer
 
 logger = logging.getLogger(__name__)
