@@ -16,8 +16,12 @@ class AbstractAction:
         raise NotImplementedError
 
     @abstractmethod
-    def is_extra_action() -> bool:
+    def is_extra_action(self) -> bool:
         raise NotImplementedError
+
+    @abstractmethod
+    def period(self) -> float:
+        return self._period
 
     def name(self) -> str:
         return self._name
@@ -34,11 +38,11 @@ class AbstractScenario:
         raise NotImplementedError
 
     @abstractmethod
-    def is_win(self) -> bool:
+    def is_win(self) -> bool | None:
         raise NotImplementedError
 
     @abstractmethod
-    def next_action_persiod(self) -> float:
+    def next_action_period(self) -> float:
         raise NotImplementedError
 
     def push_action(self, action: AbstractAction) -> None:
