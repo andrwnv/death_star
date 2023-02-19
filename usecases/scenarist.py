@@ -5,20 +5,23 @@ from typing import Callable
 
 from event_executor import EventExecutor
 from abstract_scenario import AbstractScenario
+from usecases.abstract_scenario import AbstractAction
 
 logger = logging.getLogger(__name__)
 
 
 class Scenarist:
-    def __init__(self, interval: float, event_executor: EventExecutor,
+    def __init__(self, event_executor: EventExecutor,
                  scenario: AbstractScenario = None, debug_mode: bool = False) -> None:
 
-        self.__interval = interval
         self.__event_executor = event_executor
         self._debug_mode = debug_mode
 
         if scenario:
             self.__active_scenario = scenario
+
+    def set_scenario(self, scenario: AbstractScenario) -> None:
+        self.__active_scenario = scenario
 
     def start(self, async_executor: Callable) -> None:
         self.__is_running = True
@@ -28,6 +31,8 @@ class Scenarist:
             raise RuntimeError
 
         self.__event_executor.start()
+        self.__action_executor = async_executor
+
         async_executor(self.__job)
 
     def stop(self) -> None:
@@ -40,22 +45,33 @@ class Scenarist:
         from time import sleep
 
         try:
-            while self.__is_running:
+            while self.__is_running or not self.__active_scenario.is_end():
+                action = self.__active_scenario.next_action()
+
+                while action.is_extra_action():
+                    self.__action_executor(self.__execute_action(action))
+                    action = self.__active_scenario.next_action()
+
                 try:
-                    self.tick_handler()
+                    self.__execute_action(action)
                 except Exception as ex:
                     logger.error(
                         f"Error while executing scenario action. Exception: {ex}")
-                sleep(self.__interval)
         except Exception as ex:
             logger.error(f"Internal error. Exception: {ex}")
+
+    def __execute_action(self, action: AbstractAction) -> None:
+        from time import sleep
+        if action:
+            while not action.is_end():
+                sleep(self.__active_scenario.next_action_persiod())
 
     __is_running: bool = False
 
     __active_scenario: AbstractScenario = None
+    __action_executor: Callable = None
 
     __event_executor: EventExecutor = None
-    __interval: float = 0.1
 
     _begin_timestamp: datetime.time = None
     _debug_mode: bool = False

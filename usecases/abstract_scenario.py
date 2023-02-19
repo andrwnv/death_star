@@ -15,6 +15,10 @@ class AbstractAction:
     def is_end(self) -> bool:
         raise NotImplementedError
 
+    @abstractmethod
+    def is_extra_action() -> bool:
+        raise NotImplementedError
+
     def name(self) -> str:
         return self._name
 
@@ -26,11 +30,15 @@ class AbstractScenario:
         self._action_queue = Queue()
 
     @abstractmethod
-    def is_end() -> bool:
+    def is_end(self) -> bool:
         raise NotImplementedError
 
     @abstractmethod
-    def is_win() -> bool:
+    def is_win(self) -> bool:
+        raise NotImplementedError
+
+    @abstractmethod
+    def next_action_persiod(self) -> float:
         raise NotImplementedError
 
     def push_action(self, action: AbstractAction) -> None:
