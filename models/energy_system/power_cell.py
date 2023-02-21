@@ -1,3 +1,4 @@
+import uuid
 from models.energy_system import CoolingSystem, VacuumVessel, MagnetSystem, PlasmaHeater
 from models import LiquidStorage
 from models.energy_system.battery.battery import Battery
@@ -13,12 +14,12 @@ class PowerCell(IJsonSerializable):
         self.alarm = False
         self.durability = 100.0
 
-        self.cooling_system = CoolingSystem()
-        self.magnet_system = MagnetSystem()
-        self.plasma_heater = PlasmaHeater()
-        self.vacuum_vessel = VacuumVessel()
-        self.fuel_storage = LiquidStorage()
-        self.battery = Battery()
+        self.cooling_system = CoolingSystem(name=f'CoolingSystem-{uuid.uuid4()}')
+        self.magnet_system = MagnetSystem(name=f'MagnetSystem-{uuid.uuid4()}')
+        self.plasma_heater = PlasmaHeater(name=f'PlasmaHeater-{uuid.uuid4()}')
+        self.vacuum_vessel = VacuumVessel(name=f'VacuumVessel-{uuid.uuid4()}')
+        self.fuel_storage = LiquidStorage(name=f'LiquidStorage-{uuid.uuid4()}')
+        self.battery = Battery(name=f'Battery-{uuid.uuid4()}')
 
         self.power = 0.0
 

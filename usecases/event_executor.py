@@ -4,7 +4,7 @@ import multiprocessing
 
 from typing import Callable, Dict, List
 
-from utils.abstract_event import AbstractEvent
+from usecases.abstract_event import AbstractEvent
 from utils.timer import NonBlockableTimer
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ class EventExecutor:
 
     def push_event(self, event: AbstractEvent) -> None:
         if not event:
-            logger.warning(f"Unsuccessful push NULL {event.name()} event!")
+            logger.warning(f"Unsuccessful push none {event.name()} event!")
             return
 
         self.__active_events.append(event)

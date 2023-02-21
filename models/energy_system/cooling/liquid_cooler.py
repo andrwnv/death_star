@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 
 from models.energy_system.cooling.turbine import Turbine
 from models.liquid_storage import LiquidStorage
@@ -14,10 +15,10 @@ class LiquidCooler(IJsonSerializable):
         self.alarm = False
         self.durability = 100.0
 
-        self.liquid_storage = LiquidStorage()
+        self.liquid_storage = LiquidStorage(name=f'LiquidStorage-{uuid.uuid4()}')
         self.turbines = []
         for i in range(6):
-            self.turbines.append(Turbine())
+            self.turbines.append(Turbine(name=f'Turbine-{uuid.uuid4()}'))
 
     def start(self) -> None:
         self.is_on = True

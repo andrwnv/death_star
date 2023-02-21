@@ -11,9 +11,11 @@ class Model:
         }
 
         self.repair_teams = {
-            'alpha_team': RepairTeam(),
-            'beta_team': RepairTeam(),
-            'gamma_team': RepairTeam()
+            'alpha_team': RepairTeam(name='alpha_team'),
+            'beta_team': RepairTeam(name='beta_team'),
+            'gamma_team': RepairTeam(name='gamma_team'),
+            'delta_team': RepairTeam(name='delta_team'),
+            'epsilon_team': RepairTeam(name='epsilon_team'),
         }
 
     def start(self) -> None:

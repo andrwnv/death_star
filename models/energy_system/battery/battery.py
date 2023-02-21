@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 
 from models.energy_system.battery.capacitor import Capacitor
 
@@ -16,7 +17,7 @@ class Battery(IJsonSerializable):
 
         self.capacitors = []
         for i in range(65):
-            self.capacitors.append(Capacitor())
+            self.capacitors.append(Capacitor(name=f'Capacitor-{uuid.uuid4()}'))
 
     def start(self) -> None:
         self.is_on = True
