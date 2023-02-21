@@ -13,8 +13,8 @@ class EnergySystemApiRouter(APIRouter):
                            methods=['GET'], endpoint=self.get_cell_list, tags=['Энергетический модуль'], name='Получение списка энергетических модулей')
         self.add_api_route(path='/state/{power_cell_name}',
                            methods=['GET'], endpoint=self.get_cell_state, tags=['Энергетический модуль'], name='Получение общей информации об энергетический модуле')
-        self.add_api_route(path='/state/{power_cell_name}/colling_system',
-                           methods=['GET'], endpoint=self.get_colling_system_state, tags=['Энергетический модуль'], name='Получение информации о системы охлаждения')
+        self.add_api_route(path='/state/{power_cell_name}/cooling_system',
+                           methods=['GET'], endpoint=self.get_cooling_system_state, tags=['Энергетический модуль'], name='Получение информации о системы охлаждения')
         self.add_api_route(path='/state/{power_cell_name}/magnet_system',
                            methods=['GET'], endpoint=self.get_magnet_system_state, tags=['Энергетический модуль'], name='Получение информации о магнитной системы')
         self.add_api_route(path='/state/{power_cell_name}/plasma_heater',
@@ -71,7 +71,7 @@ class EnergySystemApiRouter(APIRouter):
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=ex)
 
-    async def get_colling_system_state(self, power_cell_name: str):
+    async def get_cooling_system_state(self, power_cell_name: str):
         try:
             result = self.__manager.get_colling_system_state(
                 name=power_cell_name)
@@ -81,7 +81,7 @@ class EnergySystemApiRouter(APIRouter):
 
             return {
                 power_cell_name: {
-                    result.name: result.to_json()
+                    "cooling_system": result.to_json()
                 }
             }
         except HTTPException as ex:
@@ -99,7 +99,7 @@ class EnergySystemApiRouter(APIRouter):
 
             return {
                 power_cell_name: {
-                    result.name: result.to_json()
+                    "magnet_system": result.to_json()
                 }
             }
         except HTTPException as ex:
@@ -117,7 +117,7 @@ class EnergySystemApiRouter(APIRouter):
 
             return {
                 power_cell_name: {
-                    result.name: result.to_json()
+                    "plasma_heater": result.to_json()
                 }
             }
         except HTTPException as ex:
@@ -135,7 +135,7 @@ class EnergySystemApiRouter(APIRouter):
 
             return {
                 power_cell_name: {
-                    result.name: result.to_json()
+                    "vacuum_vessel": result.to_json()
                 }
             }
         except HTTPException as ex:
@@ -153,7 +153,7 @@ class EnergySystemApiRouter(APIRouter):
 
             return {
                 power_cell_name: {
-                    result.name: result.to_json()
+                    "fuel_storage": result.to_json()
                 }
             }
         except HTTPException as ex:
@@ -172,7 +172,7 @@ class EnergySystemApiRouter(APIRouter):
 
             return {
                 power_cell_name: {
-                    result.name: result.to_json()
+                    "battery": result.to_json()
                 }
             }
         except HTTPException as ex:

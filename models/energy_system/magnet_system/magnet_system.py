@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 
 from models.energy_system.magnet_system.inductor import Inductor
 
@@ -19,11 +20,11 @@ class MagnetSystem(IJsonSerializable):
 
         self.toroidal_inductors = []
         for i in range(18):
-            self.toroidal_inductors.append(Inductor())
+            self.toroidal_inductors.append(Inductor(name=f'ToroidalInductor-{uuid.uuid4()}'))
 
         self.poloidal_inductors = []
         for i in range(6):
-            self.poloidal_inductors.append(Inductor())
+            self.poloidal_inductors.append(Inductor(name=f'PoloidalInductor-{uuid.uuid4()}'))
 
     def start(self) -> None:
         self.is_on = True
