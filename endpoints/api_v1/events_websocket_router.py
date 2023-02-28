@@ -55,7 +55,7 @@ class EventWebSocketRouter(APIRouter):
         except WebSocketDisconnect as ex:
             logger.info(f'User {_uuid} disconnected')
             self.__websocket = None
-            logger.error(ex.reason)
+            logger.error(ex)
         
         if self.__websocket:
             await self.__websocket.close(1000, f'User {_uuid} close call')
