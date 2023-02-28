@@ -139,7 +139,7 @@ if __name__ == "__main__":
         interval=0.1, async_executor=thread_pool.apply_async)
 
     event_ws_router = EventWebSocketRouter(
-        manager=event_executor_usecase, prefix='/events')
+        manager=event_executor_usecase)
 
     scenarist = Scenarist(event_executor=event_executor_usecase)
     scenario = TestScenario(period=6, model=model)
@@ -170,8 +170,9 @@ if __name__ == "__main__":
 
     root_router.include_router(energy_system_router)
     root_router.include_router(repair_team_router)
-    root_router.include_router(event_ws_router)
+    # root_router.include_router(event_ws_router)
 
     app.include_router(root_router)
+    app.include_router(event_ws_router)
 
     uvicorn.run(app, host="0.0.0.0", port=2023)
