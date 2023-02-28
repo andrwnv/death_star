@@ -8,7 +8,7 @@ COPY . .
 
 RUN apk add --no-cache python3 py3-pip
 RUN pip install --upgrade pip
-RUN pip install fastapi uvicorn names websockets
+RUN pip install fastapi names websockets 'uvicorn[standard]'
 
 EXPOSE 2023/tcp
 
