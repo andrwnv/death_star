@@ -1,5 +1,6 @@
 from datetime import timedelta, datetime
 import time
+from models.energy_system.battery.battery import Battery
 from usecases.abstract_event import AbstractEvent
 from usecases.abstract_scenario import AbstractScenario, AbstractAction
 import logging
@@ -11,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from usecases.generators import battery_generator, cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
 from usecases.generators.generator import ModelPropertiesGenerator
+from usecases.test_action import DebugBreakAction
 from usecases.test_event import TestEvent
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
@@ -57,11 +59,11 @@ class TestAction(AbstractAction):
         self.__event_executor.push_event(TestEvent())
 
     def __call__(self) -> bool:
-        print(f"Name = {self._name}. Extra = {self.__is_extra}")
+        logger.info(f"Execute {self._name}. Extra = {self.__is_extra}")
         return True
 
     def is_end(self) -> bool:
-        print(f'{self.name()} #{self.__counter} tick')
+        logger.debug(f'{self.name()} #{self.__counter} tick')
         self.__counter += 1
         return self.__counter > 3
 
@@ -73,11 +75,15 @@ class TestAction(AbstractAction):
 
 
 class TestScenario(AbstractScenario):
-    def __init__(self, period: float) -> None:
+    def __init__(self, model, period: float) -> None:
         super().__init__()
         self.__period = period
+        self.__model = model
 
     def is_end(self) -> bool:
+        if self._action_queue.qsize() == 0:
+            for cell in self.__model.power_cells.values():
+                self.push_action(DebugBreakAction(name=f'DebugBreakAction', battery=cell.battery))
         return self._action_queue.qsize() == 0
 
     def is_win(self) -> bool | None:
@@ -139,7 +145,7 @@ if __name__ == "__main__":
         manager=event_executor_usecase, prefix='/events')
 
     scenarist = Scenarist(event_executor=event_executor_usecase)
-    scenario = TestScenario(period=6)
+    scenario = TestScenario(period=6, model=model)
 
     # scenario.push_action(TestAction(
     #     name="test1", event_executor=event_executor_usecase, period=5))
