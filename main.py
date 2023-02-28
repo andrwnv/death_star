@@ -3,7 +3,7 @@ import logging
 import os
 
 import uvicorn
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
 from usecases.generators import battery_generator, cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
@@ -45,6 +45,12 @@ async def root():
         'time': datetime.now().strftime("%d.%m.%YT%H:%M:%S")
     }
 
+@app.websocket("/ws2")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        await websocket.send_text(f"Message text was: {data}")
 
 class TestAction(AbstractAction):
     def __init__(self, name: str, event_executor, is_extra: bool = False, period: float = 1.0) -> None:
