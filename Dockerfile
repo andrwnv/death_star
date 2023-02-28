@@ -6,9 +6,10 @@ RUN set -xe;
 
 COPY . .
 
-RUN apk add --no-cache python3 py3-pip; \
-    pip install --upgrade pip; \ 
-    pip install fastapi uvicorn names websocket
+RUN apk add --no-cache python3 py3-pip
+RUN pip install --upgrade pip
+RUN pip install fastapi uvicorn names websockets
 
 EXPOSE 2023/tcp
+
 CMD python3 main.py

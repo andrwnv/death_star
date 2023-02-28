@@ -1,7 +1,3 @@
-from datetime import timedelta, datetime
-import time
-from models.energy_system.battery.battery import Battery
-from usecases.abstract_event import AbstractEvent
 from usecases.abstract_scenario import AbstractScenario, AbstractAction
 import logging
 import os
@@ -83,7 +79,8 @@ class TestScenario(AbstractScenario):
     def is_end(self) -> bool:
         if self._action_queue.qsize() == 0:
             for cell in self.__model.power_cells.values():
-                self.push_action(DebugBreakAction(name=f'DebugBreakAction', battery=cell.battery))
+                self.push_action(DebugBreakAction(
+                    name=f'DebugBreakAction', battery=cell.battery))
         return self._action_queue.qsize() == 0
 
     def is_win(self) -> bool | None:
@@ -140,7 +137,7 @@ if __name__ == "__main__":
 
     event_executor_usecase = EventExecutor(
         interval=0.1, async_executor=thread_pool.apply_async)
-    
+
     event_ws_router = EventWebSocketRouter(
         manager=event_executor_usecase, prefix='/events')
 
