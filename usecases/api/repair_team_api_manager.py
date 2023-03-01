@@ -1,10 +1,13 @@
 from copy import copy
+import logging
 
 from typing import Any, Dict, Optional, List, Tuple
 from models.energy_system.power_cell import PowerCell
 from models.location import Location
 
 from models.repair_team.team import RepairTeam
+
+logger = logging.getLogger(__name__)
 
 
 class RepairTeamApiManager:
@@ -31,7 +34,11 @@ class RepairTeamApiManager:
         if not location_item:
             return False, f"Location not found in {cell_name}!"
 
-        # self.__async_executor(self.__repair, team_name, location_item)
+        self.__repair_teams[team_name].is_busy = True
+        self.__repair_teams[team_name].current_location = location
+
+        self.__async_executor(self.__repair, args=(
+            self.__repair_teams[team_name], location_item))
 
         return True, None
 
@@ -44,8 +51,27 @@ class RepairTeamApiManager:
 
         return True
 
-    def __repair(team_name: str, location: Any) -> None:
-        pass
+    def __repair(self, team: RepairTeam, location: Any) -> None:
+        from time import sleep
+
+        if team.is_busy == False and team.current_location != Location.HOME:
+            return None
+
+        while location.durability != 100.0 or team.is_busy:
+            logger.info(f'Team {team.name} repair {location.name}')
+
+            if location.durability + 1.25 >= 100.0:
+                location.durability = 100.0
+                break
+            else:
+                location.durability += 3.25
+
+            sleep(1.0)
+
+        team.is_busy = False
+        team.current_location = Location.HOME
+
+        logger.info(f'Team {team.name} repaired {location.name}')
 
     def __get_location(self, cell_name: str, location: str) -> Any | None:
         # todo(andrwnv): make it recirsive..... like IJsonSerializable
@@ -80,7 +106,7 @@ class RepairTeamApiManager:
         # PlasmaHeater
         if cell.plasma_heater.name == location:
             return cell.plasma_heater
-        
+
         # VacuumVessel
         if cell.vacuum_vessel.name == location:
             return cell.vacuum_vessel
@@ -88,7 +114,7 @@ class RepairTeamApiManager:
         # LiquidStorage(fuel_storage)
         if cell.fuel_storage.name == location:
             return cell.fuel_storage
-        
+
         # Battery
         battery = cell.battery
         # Battery - Capacitor

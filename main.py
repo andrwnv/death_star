@@ -179,7 +179,6 @@ if __name__ == "__main__":
 
     root_router.include_router(energy_system_router)
     root_router.include_router(repair_team_router)
-    # root_router.include_router(event_ws_router)
 
     app.include_router(root_router)
     app.include_router(event_ws_router)
