@@ -183,5 +183,4 @@ if __name__ == "__main__":
     app.include_router(root_router)
     app.include_router(event_ws_router)
 
-    # uvicorn.run(app, host="0.0.0.0", port=2023, ws='websockets')
     uvicorn.run(app, host="0.0.0.0", port=2023, ws='websockets')
