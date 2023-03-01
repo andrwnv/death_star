@@ -45,12 +45,14 @@ async def root():
         'time': datetime.now().strftime("%d.%m.%YT%H:%M:%S")
     }
 
+
 @app.websocket("/ws2")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
         data = await websocket.receive_text()
         await websocket.send_text(f"Message text was: {data}")
+
 
 class TestAction(AbstractAction):
     def __init__(self, name: str, event_executor, is_extra: bool = False, period: float = 1.0) -> None:
@@ -137,7 +139,8 @@ if __name__ == "__main__":
     energy_system_router = EnergySystemApiRouter(
         manager=energy_system_manager, prefix="/energy")
 
-    repair_team_manager = RepairTeamApiManager(teams=model.repair_teams)
+    repair_team_manager = RepairTeamApiManager(
+        teams=model.repair_teams, power_cells=model.power_cells, async_executor=thread_pool.apply_async)
     repair_team_router = RepairTeamApiRouter(
         manager=repair_team_manager, prefix="/repair")
 
@@ -181,4 +184,5 @@ if __name__ == "__main__":
     app.include_router(root_router)
     app.include_router(event_ws_router)
 
-    uvicorn.run(app, host="0.0.0.0", port=2023, ws='websockets')
+    # uvicorn.run(app, host="0.0.0.0", port=2023, ws='websockets')
+    uvicorn.run(app, host="0.0.0.0", port=2024, ws='websockets')
