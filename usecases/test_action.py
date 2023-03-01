@@ -5,17 +5,19 @@ from random import randrange
 
 
 class DebugBreakAction(AbstractAction):
-    def __init__(self, name: str, battery: Battery, is_extra: bool = False, period: float = 1.0) -> None:
+    def __init__(self, name: str, battery: Battery, is_extra: bool = False, period: float = 2.0) -> None:
         super().__init__(name)
         self.__is_extra = is_extra
         self._period = period
         self.__battery = battery
 
     def __call__(self) -> bool:
-        capacitor_ix = randrange(len(self.__battery.capacitors))
+        for _ in range(5):
+            capacitor_ix = randrange(len(self.__battery.capacitors))
 
-        if self.__battery.capacitors[capacitor_ix].durability >= 50:
-            self.__battery.capacitors[capacitor_ix].durability -= 5.256
+            if self.__battery.capacitors[capacitor_ix].durability >= 50:
+                self.__battery.capacitors[capacitor_ix].durability -= 4.256
+        
         return True
 
     def is_end(self) -> bool:
