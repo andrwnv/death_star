@@ -5,6 +5,7 @@ import os
 import uvicorn
 from fastapi import FastAPI, APIRouter, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from usecases.battery_scenario.battery_scenario import BattertScenario, FirstActAction
 
 from usecases.generators import battery_generator, cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
 from usecases.generators.generator import ModelPropertiesGenerator
@@ -54,52 +55,6 @@ async def websocket_endpoint(websocket: WebSocket):
         await websocket.send_text(f"Message text was: {data}")
 
 
-class TestAction(AbstractAction):
-    def __init__(self, name: str, event_executor, is_extra: bool = False, period: float = 1.0) -> None:
-        super().__init__(name)
-        self.__is_extra = is_extra
-        self._period = period
-        self.__event_executor = event_executor
-        self.__event_executor.push_event(TestEvent())
-
-    def __call__(self) -> bool:
-        logger.info(f"Execute {self._name}. Extra = {self.__is_extra}")
-        return True
-
-    def is_end(self) -> bool:
-        logger.debug(f'{self.name()} #{self.__counter} tick')
-        self.__counter += 1
-        return self.__counter > 3
-
-    def is_extra_action(self) -> bool:
-        return self.__is_extra
-
-    __is_extra: bool
-    __counter = 0
-
-
-class TestScenario(AbstractScenario):
-    def __init__(self, model, period: float) -> None:
-        super().__init__()
-        self.__period = period
-        self.__model = model
-
-    def is_end(self) -> bool:
-        if self._action_queue.qsize() == 0:
-            for cell in self.__model.power_cells.values():
-                self.push_action(DebugBreakAction(
-                    name=f'DebugBreakAction', battery=cell.battery))
-        return self._action_queue.qsize() == 0
-
-    def is_win(self) -> bool | None:
-        return None
-
-    def next_action_period(self) -> float:
-        return self.__period
-
-    __period: float = 1
-
-
 if __name__ == "__main__":
     import multiprocessing.pool
 
@@ -111,7 +66,7 @@ if __name__ == "__main__":
     from usecases.scenarist import Scenarist
     from usecases.event_executor import EventExecutor
 
-    thread_pool = multiprocessing.pool.ThreadPool(processes=6)
+    thread_pool = multiprocessing.pool.ThreadPool(processes=16)
 
     root_router = APIRouter(prefix='/api/v1')
 
@@ -151,8 +106,16 @@ if __name__ == "__main__":
         manager=event_executor_usecase)
 
     scenarist = Scenarist(event_executor=event_executor_usecase)
-    # scenarist.set_scenario(scenario)
+
+    scenario = BattertScenario(model=model)
+
+    first_act = FirstActAction(
+        name="First Act Action", event_executor=event_executor_usecase, model=model)
     
+    scenario.push_action(first_act)
+
+    scenarist.set_scenario(scenario)
+
     event_executor_usecase.start(event_ws_router.notify_about_event_start)
     scenarist.start(async_executor=thread_pool.apply_async)
 

@@ -1,11 +1,14 @@
 from datetime import datetime, timedelta
 from queue import Queue
+import logging
 
 from models.energy_system.battery.battery import Battery
 from models.energy_system.plasma_heater.plasma_heater import PlasmaHeater
 from models.model import Model
 
 from usecases.abstract_scenario import AbstractAction, AbstractScenario
+
+logger = logging.getLogger(__name__)
 
 
 class FirstActAction(AbstractAction):
@@ -21,18 +24,25 @@ class FirstActAction(AbstractAction):
         if not self.__start_time:
             self.__start_time = datetime.now()
 
+        logger.info(f'{self.name()} make tick!')
+
         for power_cell in self.__model.power_cells.values():
             plasma_heater = power_cell.plasma_heater
             battery = power_cell.battery
 
             if plasma_heater.durability >= 90.0:
                 for capicator in battery.capacitors:
-                    if capicator.durability >= 30:
+                    if capicator.durability >= 60:
+                        if capicator.charge_level + 25 >= 100:
+                            capicator.charge_level = 100.0
+                            continue
                         capicator.charge_level += 25.0
                         break
 
     def is_end(self) -> bool:
-        return datetime.now() >= self.__start_time + timedelta(min=3)
+        if not self.__start_time:
+            self.__start_time = datetime.now()
+        return (self.__start_time + timedelta(minutes=3)) <= datetime.now()
 
     def is_extra_action(self) -> bool:
         return False
@@ -46,7 +56,13 @@ class FirstActAction(AbstractAction):
 class BattertScenario(AbstractScenario):
     def __init__(self, model) -> None:
         super().__init__()
+
         self.__model = model
+        
+        self.__period_list = Queue()
+        self.__period_list.put_nowait(1)
+        self.__period_list.put_nowait(180)
+        self.__period_list.put_nowait(240)
 
     def is_end(self) -> bool:
         return self._action_queue.qsize() == 0
@@ -71,4 +87,4 @@ class BattertScenario(AbstractScenario):
 
         return self.__period_list.get_nowait()
 
-    __period_list: Queue[float] = [1, 180, 240]
+    __period_list: Queue[float]
