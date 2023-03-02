@@ -68,7 +68,8 @@ class SecondActAction(AbstractAction):
 
             for power_cell in self.__model.power_cells.values():
                 power_cell.plasma_heater.durability = 29.0
-        
+                power_cell.plasma_heater.alarm = True
+
         logger.info(f'{self.name()} make tick!')
 
         delta_time = (datetime.now() - self.__start_time).seconds
@@ -103,6 +104,7 @@ class SecondActAction(AbstractAction):
                     capicator.charge_level -= 15.0
                     break
             else:
+                power_cell.plasma_heater.alarm = False
                 if plasma_heater.temperature + 250000 <= 0:
                     plasma_heater.temperature = 11000000
                 else:
@@ -121,6 +123,7 @@ class SecondActAction(AbstractAction):
 
             for power_cell in self.__model.power_cells.values():
                 power_cell.plasma_heater.durability = 29.0
+                power_cell.plasma_heater.alarm = True
 
         return (self.__start_time + timedelta(minutes=4)) <= datetime.now()
 
@@ -148,6 +151,7 @@ class ThirdActAction(AbstractAction):
 
             for power_cell in self.__model.power_cells.values():
                 power_cell.plasma_heater.durability = 0
+                power_cell.plasma_heater.alarm = True
         
         logger.info(f'{self.name()} make tick!')
 
@@ -183,6 +187,7 @@ class ThirdActAction(AbstractAction):
                     capicator.charge_level -= 15.0
                     break
             else:
+                power_cell.plasma_heater.alarm = False
                 if plasma_heater.temperature + 250000 <= 0:
                     plasma_heater.temperature = 11000000
                 else:
@@ -201,6 +206,7 @@ class ThirdActAction(AbstractAction):
 
             for power_cell in self.__model.power_cells.values():
                 power_cell.plasma_heater.durability = 0
+                power_cell.plasma_heater.alarm = True
 
         return (self.__start_time + timedelta(minutes=3)) <= datetime.now()
 
