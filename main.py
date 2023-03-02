@@ -129,8 +129,8 @@ if __name__ == "__main__":
             model=cell.magnet_system, name=f'magnet_generator-{name}'))
         model_generator.push_strategy(plasma_heater_generator.DefaultGenerationStrategy(
             model=cell.plasma_heater, name=f'plasma_heater_generator-{name}'))
-        model_generator.push_strategy(battery_generator.DefaultGenerationStrategy(
-            model=cell.battery, name=f'battery_generator-{name}'))
+        # model_generator.push_strategy(battery_generator.DefaultGenerationStrategy(
+        #     model=cell.battery, name=f'battery_generator-{name}'))
 
     model_generator.start(interval=1.0, executor=thread_pool.apply_async)
 
@@ -151,30 +151,9 @@ if __name__ == "__main__":
         manager=event_executor_usecase)
 
     scenarist = Scenarist(event_executor=event_executor_usecase)
-    scenario = TestScenario(period=6, model=model)
-
-    # scenario.push_action(TestAction(
-    #     name="test1", event_executor=event_executor_usecase, period=5))
-    # scenario.push_action(TestAction(
-    #     name="test2", event_executor=event_executor_usecase, period=5))
-    # scenario.push_action(TestAction(
-    #     name="test3", event_executor=event_executor_usecase, is_extra=True))
-    # scenario.push_action(TestAction(
-    #     name="test4", event_executor=event_executor_usecase, is_extra=True))
-    # scenario.push_action(TestAction(
-    #     name="test5", event_executor=event_executor_usecase, period=5))
-    # scenario.push_action(TestAction(
-    #     name="test6", event_executor=event_executor_usecase, period=5))
-    # scenario.push_action(TestAction(
-    #     name="test7", event_executor=event_executor_usecase, is_extra=True))
-    # scenario.push_action(TestAction(
-    #     name="test8", event_executor=event_executor_usecase, is_extra=True))
-    # scenario.push_action(TestAction(
-    #     name="test9", event_executor=event_executor_usecase, period=5))
-
+    # scenarist.set_scenario(scenario)
+    
     event_executor_usecase.start(event_ws_router.notify_about_event_start)
-
-    scenarist.set_scenario(scenario)
     scenarist.start(async_executor=thread_pool.apply_async)
 
     root_router.include_router(energy_system_router)
