@@ -220,8 +220,7 @@ class BattertScenario(AbstractScenario):
         self.__model = model
 
         self.__period_list = Queue()
-        # self.__period_list.put_nowait(180)
-        # self.__period_list.put_nowait(240)
+
         self.__period_list.put_nowait(200)
         self.__period_list.put_nowait(260)
         self.__period_list.put_nowait(30)

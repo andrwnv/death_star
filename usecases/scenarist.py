@@ -34,7 +34,7 @@ class Scenarist:
             raise RuntimeError
 
         if not self.__event_executor.is_running(): 
-            self.__event_executor.start()
+            return
         self.__action_executor = async_executor
 
         async_executor(self.__job)

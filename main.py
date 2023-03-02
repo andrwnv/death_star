@@ -1,3 +1,4 @@
+from endpoints.api_v1.dev_api_router import DevToolsApiRouter
 from usecases.abstract_scenario import AbstractScenario, AbstractAction
 import logging
 import os
@@ -112,22 +113,32 @@ if __name__ == "__main__":
     first_act = FirstActAction(
         name="First Act Action", event_executor=event_executor_usecase, model=model)
     scenario.push_action(first_act)
-    
+
     second_act = SecondActAction(
         name="Second Act Action", event_executor=event_executor_usecase, model=model)
     scenario.push_action(second_act)
-    
+
     third_act = ThirdActAction(
         name="Third Act Action", event_executor=event_executor_usecase, model=model)
     scenario.push_action(third_act)
 
     scenarist.set_scenario(scenario)
 
-    event_executor_usecase.start(event_ws_router.notify_about_event_start)
-    scenarist.start(async_executor=thread_pool.apply_async)
+    def events_run():
+        event_executor_usecase.start(event_ws_router.notify_about_event_start)
+
+    def scenarist_run():
+        scenarist.start(async_executor=thread_pool.apply_async)
+
+    dev_tools_router = DevToolsApiRouter(
+        scenario_start_method=scenarist_run, 
+        events_start_method=events_run,
+        model=model,
+        prefix="/devtools")
 
     root_router.include_router(energy_system_router)
     root_router.include_router(repair_team_router)
+    root_router.include_router(dev_tools_router)
 
     app.include_router(root_router)
     app.include_router(event_ws_router)
