@@ -5,7 +5,7 @@ import os
 import uvicorn
 from fastapi import FastAPI, APIRouter, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
-from usecases.battery_scenario.battery_scenario import BattertScenario, FirstActAction
+from usecases.battery_scenario.battery_scenario import BattertScenario, FirstActAction, SecondActAction
 
 from usecases.generators import battery_generator, cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
 from usecases.generators.generator import ModelPropertiesGenerator
@@ -109,10 +109,14 @@ if __name__ == "__main__":
 
     scenario = BattertScenario(model=model)
 
-    first_act = FirstActAction(
-        name="First Act Action", event_executor=event_executor_usecase, model=model)
+    # first_act = FirstActAction(
+    #     name="First Act Action", event_executor=event_executor_usecase, model=model)
     
-    scenario.push_action(first_act)
+    second_act = SecondActAction(
+        name="Second Act Action", event_executor=event_executor_usecase, model=model)
+    
+    # scenario.push_action(first_act)
+    scenario.push_action(second_act)
 
     scenarist.set_scenario(scenario)
 
