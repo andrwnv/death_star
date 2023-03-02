@@ -246,7 +246,7 @@ class BattertScenario(AbstractScenario):
             if fine_capicator_dur_count < 20:
                 is_win &= False
 
-        return is_win
+        return is_win and self.is_end()
 
     def next_action_period(self) -> float:
         if self.__period_list.qsize() == 0:

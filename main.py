@@ -35,19 +35,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/")
-async def root():
-    from datetime import datetime
-
-    debugKeyExists = 'DEBUG' in os.environ
-
-    return {
-        'debug_mode': True if debugKeyExists and os.environ['DEBUG'] else False,
-        'time': datetime.now().strftime("%d.%m.%YT%H:%M:%S")
-    }
-
-
 @app.websocket("/ws2")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -142,5 +129,18 @@ if __name__ == "__main__":
 
     app.include_router(root_router)
     app.include_router(event_ws_router)
+
+    @app.get("/")
+    async def root():
+        from datetime import datetime
+
+        debugKeyExists = 'DEBUG' in os.environ
+
+        return {
+            'debug_mode': True if debugKeyExists and os.environ['DEBUG'] else False,
+            'time': datetime.now().strftime("%d.%m.%YT%H:%M:%S"),
+            'is_win': scenario.is_win(),
+            'is_end': scenario.is_end()
+        }
 
     uvicorn.run(app, host="0.0.0.0", port=2023, ws='websockets')
