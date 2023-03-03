@@ -98,6 +98,9 @@ class SecondActAction(AbstractAction):
                     plasma_heater.temperature -= 100000
 
                 for capicator in battery.capacitors:
+                    if capicator.durability < 60:
+                        capicator.charge_level = 0
+                        continue
                     if capicator.charge_level - 15.0 <= 0:
                         capicator.charge_level = 0
                         continue
@@ -181,6 +184,9 @@ class ThirdActAction(AbstractAction):
                     plasma_heater.temperature -= 100000
 
                 for capicator in battery.capacitors:
+                    if capicator.durability < 60:
+                        capicator.charge_level = 0
+                        continue
                     if capicator.charge_level - 15.0 <= 0:
                         capicator.charge_level = 0
                         continue
@@ -241,9 +247,9 @@ class BattertScenario(AbstractScenario):
 
             fine_capicator_dur_count = 0
             for capicator in battery.capacitors:
-                if capicator.durability >= 70:
+                if capicator.durability >= 70 and capicator.charge_level > 0:
                     fine_capicator_dur_count += 1
-            if fine_capicator_dur_count < 20:
+            if fine_capicator_dur_count < 40:
                 is_win &= False
 
         return is_win and self.is_end()
