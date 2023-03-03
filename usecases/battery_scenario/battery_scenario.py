@@ -241,7 +241,8 @@ class BattertScenario(AbstractScenario):
         return self._action_queue.qsize() == 0
 
     def is_win(self) -> bool | None:
-        is_win = True
+        is_win = False
+
         for power_cell in self.__model.power_cells.values():
             battery = power_cell.battery
 
@@ -249,8 +250,8 @@ class BattertScenario(AbstractScenario):
             for capicator in battery.capacitors:
                 if capicator.durability >= 70 and capicator.charge_level > 0:
                     fine_capicator_dur_count += 1
-            if fine_capicator_dur_count < 40:
-                is_win &= False
+            if fine_capicator_dur_count >= 40:
+                is_win |= True
 
         return is_win and self.is_end()
 
