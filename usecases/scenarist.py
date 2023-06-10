@@ -33,7 +33,8 @@ class Scenarist:
             logger.error("Can't run scenarist! No active scenario for run!")
             raise RuntimeError
 
-        if not self.__event_executor.is_running(): 
+        if not self.__event_executor.is_running():
+            self.__event_executor.start()
             return
         self.__action_executor = async_executor
 
@@ -77,6 +78,7 @@ class Scenarist:
             
             while not action.is_end():
                 action_result = action()
+                logger.debug(f'Action {action.name()} was executed with status = {action_result}')
                 sleep(action.period())
             
             logger.info(f'Action {action.name()} end.')
