@@ -20,6 +20,16 @@ class FirstActAction(AbstractAction):
         self.__start_time = None
         self.__model = model
 
+    def __pre_start(self) -> None:
+        import random
+        
+        # randomly charge first N capacitors
+        for power_cell in self.__model.power_cells.values():
+            capicators_count = len(power_cell.battery.capacitors)
+            for ix in random.sample(range(capicators_count), 
+                                    self.__charged_capacitors_count):
+                power_cell.battery.capacitors[ix] = 100.0
+
     def __call__(self) -> bool:
         if not self.__start_time:
             self.__start_time = datetime.now()
@@ -51,6 +61,7 @@ class FirstActAction(AbstractAction):
         return 1.0
 
     __start_time = None
+    __charged_capacitors_count = 20
 
 
 class SecondActAction(AbstractAction):
@@ -82,9 +93,10 @@ class SecondActAction(AbstractAction):
                         break
 
                     if capicator.durability > 0:
-                        logger.info(f'1 min. end! Break capicators for {power_cell.name}!')
+                        logger.info(
+                            f'1 min. end! Break capicators for {power_cell.name}!')
                         capicator.durability = 0
-                        
+
                         counter += 1
 
         for power_cell in self.__model.power_cells.values():
@@ -130,7 +142,6 @@ class SecondActAction(AbstractAction):
 
         return (self.__start_time + timedelta(minutes=4)) <= datetime.now()
 
-
     def is_extra_action(self) -> bool:
         return False
 
@@ -138,6 +149,7 @@ class SecondActAction(AbstractAction):
         return 2
 
     __start_time = None
+
 
 class ThirdActAction(AbstractAction):
     def __init__(self, name: str, event_executor, model: Model, period: float = 1.0) -> None:
@@ -155,7 +167,7 @@ class ThirdActAction(AbstractAction):
             for power_cell in self.__model.power_cells.values():
                 power_cell.plasma_heater.durability = 0
                 power_cell.plasma_heater.alarm = True
-        
+
         logger.info(f'{self.name()} make tick!')
 
         delta_time = (datetime.now() - self.__start_time).seconds
@@ -168,9 +180,10 @@ class ThirdActAction(AbstractAction):
                         break
 
                     if capicator.durability > 0:
-                        logger.info(f'1 min. end! Break capicators for {power_cell.name}!')
+                        logger.info(
+                            f'1 min. end! Break capicators for {power_cell.name}!')
                         capicator.durability = 0
-                        
+
                         counter += 1
 
         for power_cell in self.__model.power_cells.values():
