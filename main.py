@@ -1,13 +1,17 @@
+from endpoints.api_v1.dev_api_router import DevToolsApiRouter
 from usecases.abstract_scenario import AbstractScenario, AbstractAction
 import logging
 import os
 
 import uvicorn
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from usecases.battery_scenario.battery_scenario import BattertScenario, FirstActAction, SecondActAction, ThirdActAction
 
 from usecases.generators import battery_generator, cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
 from usecases.generators.generator import ModelPropertiesGenerator
+from usecases.test_action import DebugBreakAction
+from usecases.test_event import TestEvent
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -31,91 +35,26 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/")
-async def root():
-    from datetime import datetime
-
-    debugKeyExists = 'DEBUG' in os.environ
-
-    return {
-        'debug_mode': True if debugKeyExists and os.environ['DEBUG'] else False,
-        'time': datetime.now().strftime("%d.%m.%YT%H:%M:%S")
-    }
-
-
-class TestAction(AbstractAction):
-    def __init__(self, name: str, is_extra: bool = False, period: float = 1.0) -> None:
-        super().__init__(name)
-        self.__is_extra = is_extra
-        self._period = period
-
-    def __call__(self) -> bool:
-        print(f"Name = {self._name}. Extra = {self.__is_extra}")
-        return True
-
-    def is_end(self) -> bool:
-        print(f'{self.name()} #{self.__counter} tick')
-        self.__counter += 1
-        return self.__counter > 3
-
-    def is_extra_action(self) -> bool:
-        return self.__is_extra
-
-    __is_extra: bool
-    __counter = 0
-
-
-class TestScenario(AbstractScenario):
-    def __init__(self, period: float) -> None:
-        super().__init__()
-        self.__period = period
-
-    def is_end(self) -> bool:
-        return self._action_queue.qsize() == 0
-
-    def is_win(self) -> bool | None:
-        return None
-
-    def next_action_period(self) -> float:
-        return self.__period
-
-    __period: float = 1
+@app.websocket("/ws2")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        await websocket.send_text(f"Message text was: {data}")
 
 
 if __name__ == "__main__":
     import multiprocessing.pool
 
-    from usecases.event_executor import EventExecutor
-
-    from endpoints.api_v1 import EnergySystemApiRouter
-    from endpoints.api_v1 import RepairTeamApiRouter
+    from endpoints.api_v1 import EnergySystemApiRouter, RepairTeamApiRouter, EventWebSocketRouter
     from models import Model
 
     from usecases.api import EnergySystemApiManager
     from usecases.api import RepairTeamApiManager
     from usecases.scenarist import Scenarist
+    from usecases.event_executor import EventExecutor
 
-    thread_pool = multiprocessing.pool.ThreadPool(processes=6)
-
-    event_executor = EventExecutor(
-        interval=0.1, async_executor=thread_pool.apply_async)
-    scenarist = Scenarist(event_executor=event_executor)
-
-    scenatio = TestScenario(period=6)
-
-    scenatio.push_action(TestAction(name="test1", period=5))
-    scenatio.push_action(TestAction(name="test2", period=5))
-    scenatio.push_action(TestAction(name="test3", is_extra=True))
-    scenatio.push_action(TestAction(name="test4", is_extra=True))
-    scenatio.push_action(TestAction(name="test5", period=5))
-    scenatio.push_action(TestAction(name="test6", period=5))
-    scenatio.push_action(TestAction(name="test7", is_extra=True))
-    scenatio.push_action(TestAction(name="test8", is_extra=True))
-    scenatio.push_action(TestAction(name="test9", period=5))
-
-    scenarist.set_scenario(scenatio)
-    scenarist.start(async_executor=thread_pool.apply_async)
+    thread_pool = multiprocessing.pool.ThreadPool(processes=16)
 
     root_router = APIRouter(prefix='/api/v1')
 
@@ -133,8 +72,8 @@ if __name__ == "__main__":
             model=cell.magnet_system, name=f'magnet_generator-{name}'))
         model_generator.push_strategy(plasma_heater_generator.DefaultGenerationStrategy(
             model=cell.plasma_heater, name=f'plasma_heater_generator-{name}'))
-        model_generator.push_strategy(battery_generator.DefaultGenerationStrategy(
-            model=cell.battery, name=f'battery_generator-{name}'))
+        # model_generator.push_strategy(battery_generator.DefaultGenerationStrategy(
+        #     model=cell.battery, name=f'battery_generator-{name}'))
 
     model_generator.start(interval=1.0, executor=thread_pool.apply_async)
 
@@ -143,13 +82,65 @@ if __name__ == "__main__":
     energy_system_router = EnergySystemApiRouter(
         manager=energy_system_manager, prefix="/energy")
 
-    repair_team_manager = RepairTeamApiManager(teams=model.repair_teams)
+    repair_team_manager = RepairTeamApiManager(
+        teams=model.repair_teams, power_cells=model.power_cells, async_executor=thread_pool.apply_async)
     repair_team_router = RepairTeamApiRouter(
         manager=repair_team_manager, prefix="/repair")
 
+    event_executor_usecase = EventExecutor(
+        interval=0.1, async_executor=thread_pool.apply_async)
+
+    event_ws_router = EventWebSocketRouter(
+        manager=event_executor_usecase)
+
+    scenarist = Scenarist(event_executor=event_executor_usecase)
+
+    scenario = BattertScenario(model=model)
+
+    first_act = FirstActAction(
+        name="First Act Action", event_executor=event_executor_usecase, model=model)
+    scenario.push_action(first_act)
+
+    second_act = SecondActAction(
+        name="Second Act Action", event_executor=event_executor_usecase, model=model)
+    scenario.push_action(second_act)
+
+    third_act = ThirdActAction(
+        name="Third Act Action", event_executor=event_executor_usecase, model=model)
+    scenario.push_action(third_act)
+
+    scenarist.set_scenario(scenario)
+
+    def events_run():
+        event_executor_usecase.start(event_ws_router.notify_about_event_start)
+
+    def scenarist_run():
+        scenarist.start(async_executor=thread_pool.apply_async)
+
+    dev_tools_router = DevToolsApiRouter(
+        scenario_start_method=scenarist_run, 
+        events_start_method=events_run,
+        model=model,
+        prefix="/devtools")
+
     root_router.include_router(energy_system_router)
     root_router.include_router(repair_team_router)
+    root_router.include_router(dev_tools_router)
 
     app.include_router(root_router)
+    app.include_router(event_ws_router)
 
-    uvicorn.run(app, host="0.0.0.0", port=2023)
+    @app.get("/")
+    async def root():
+        from datetime import datetime
+
+        debugKeyExists = 'DEBUG' in os.environ
+
+        return {
+            'debug_mode': True if debugKeyExists and os.environ['DEBUG'] else False,
+            'time': datetime.now().strftime("%d.%m.%YT%H:%M:%S"),
+            'is_win': scenario.is_win(),
+            'is_end': scenario.is_end()
+        }
+
+    uvicorn.run(app, host="0.0.0.0", port=2023, ws='websockets')
