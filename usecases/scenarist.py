@@ -33,8 +33,9 @@ class Scenarist:
             logger.error("Can't run scenarist! No active scenario for run!")
             raise RuntimeError
 
-        if not self.__event_executor.is_running(): 
+        if not self.__event_executor.is_running():
             self.__event_executor.start()
+            return
         self.__action_executor = async_executor
 
         async_executor(self.__job)
@@ -58,6 +59,7 @@ class Scenarist:
 
                 try:
                     if action:
+                        logger.info(f'Start act with name "{action.name}", with period {action.period} s.')
                         self.__action_executor(self.__execute_action, args=(action,))
                     else:
                         self.stop()
@@ -72,11 +74,16 @@ class Scenarist:
     def __execute_action(self, action: AbstractAction) -> None:
         from time import sleep
         if action:
-            logger.info(f'Action {action.name()} start.')
-            action_result = action()
+            logger.info(f'Action with name "{action.name()}" start.')
+            
             while not action.is_end():
+                action_result = action()
+                logger.debug(f'Action {action.name()} was executed with status = {action_result}')
                 sleep(action.period())
+            
             logger.info(f'Action {action.name()} end.')
+        else:
+            logger.error('Action is null, cant start')
 
     __is_running: bool = False
 
