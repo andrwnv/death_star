@@ -22,14 +22,21 @@ class FirstActAction(AbstractAction):
 
     def __pre_start(self) -> None:
         import random
-        
+
         # randomly charge first N capacitors
         for power_cell in self.__model.power_cells.values():
             capicators_count = len(power_cell.battery.capacitors)
-            for ix in random.sample(range(capicators_count), 
-                                    self.__charged_capacitors_count):
-                power_cell.battery.capacitors[ix] = 100.0
-
+            charged_capicator_indexes = random.sample(range(capicators_count),
+                                                      self.__charged_capacitors_count)
+            
+            for ix, capicator in enumerate(power_cell.battery.capacitors):
+                if ix in charged_capicator_indexes:
+                    capicator.charge_level = 100.0
+                    capicator.durability = 100.0
+                else:
+                    capicator.charge_level = 0.0
+                    capicator.durability = 0.0
+    
     def __call__(self) -> bool:
         if not self.__start_time:
             self.__start_time = datetime.now()
