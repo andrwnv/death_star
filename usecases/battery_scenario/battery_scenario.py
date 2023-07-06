@@ -2,8 +2,6 @@ from datetime import datetime, timedelta
 from queue import Queue
 import logging
 
-from models.energy_system.battery.battery import Battery
-from models.energy_system.plasma_heater.plasma_heater import PlasmaHeater
 from models.model import Model
 
 from usecases.abstract_scenario import AbstractAction, AbstractScenario

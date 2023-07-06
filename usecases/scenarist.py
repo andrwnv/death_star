@@ -59,7 +59,7 @@ class Scenarist:
 
                 try:
                     if action:
-                        logger.info(f'Start act with name "{action.name}", with period {action.period} s.')
+                        logger.info(f'Start act with name "{action.name()}", with period {action.period()} s.')
                         self.__action_executor(self.__execute_action, args=(action,))
                     else:
                         self.stop()

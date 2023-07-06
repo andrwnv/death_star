@@ -10,8 +10,8 @@ from usecases.battery_scenario.battery_scenario import BattertScenario, FirstAct
 
 from usecases.generators import battery_generator, cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
 from usecases.generators.generator import ModelPropertiesGenerator
-from usecases.test_action import DebugBreakAction
 from usecases.test_event import TestEvent
+from usecases.test_scenario.test_scenario import TestScenario
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -95,22 +95,28 @@ if __name__ == "__main__":
 
     scenarist = Scenarist(event_executor=event_executor_usecase)
 
-    scenario = BattertScenario(model=model)
+    debug = True
+    scenario = None
 
-    first_act = FirstActAction(
-        name="First Act Action", event_executor=event_executor_usecase, model=model)
-    scenario.push_action(first_act)
+    if debug:
+        scenario = TestScenario(model=model)
+    else:
+        scenario = BattertScenario(model=model)
 
-    second_act = SecondActAction(
-        name="Second Act Action", event_executor=event_executor_usecase, model=model)
-    scenario.push_action(second_act)
+        first_act = FirstActAction(
+            name="First Act Action", event_executor=event_executor_usecase, model=model)
+        scenario.push_action(first_act)
 
-    third_act = ThirdActAction(
-        name="Third Act Action", event_executor=event_executor_usecase, model=model)
-    scenario.push_action(third_act)
+        second_act = SecondActAction(
+            name="Second Act Action", event_executor=event_executor_usecase, model=model)
+        scenario.push_action(second_act)
+
+        third_act = ThirdActAction(
+            name="Third Act Action", event_executor=event_executor_usecase, model=model)
+        scenario.push_action(third_act)
 
     scenarist.set_scenario(scenario)
-
+    
     def events_run():
         event_executor_usecase.start(event_ws_router.notify_about_event_start)
 
@@ -126,6 +132,10 @@ if __name__ == "__main__":
     root_router.include_router(energy_system_router)
     root_router.include_router(repair_team_router)
     root_router.include_router(dev_tools_router)
+
+    if debug:
+        event_executor_usecase.start(event_ws_router.notify_about_event_start)
+        scenarist.start(async_executor=thread_pool.apply_async)
 
     app.include_router(root_router)
     app.include_router(event_ws_router)
