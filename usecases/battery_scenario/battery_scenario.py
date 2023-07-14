@@ -20,6 +20,8 @@ class FirstActAction(AbstractAction):
         self.__start_time = None
         self.__model = model
 
+        self.__pre_start()
+
     def __pre_start(self) -> None:
         import random
 
@@ -59,7 +61,7 @@ class FirstActAction(AbstractAction):
     def is_end(self) -> bool:
         if not self.__start_time:
             self.__start_time = datetime.now()
-        return (self.__start_time + timedelta(minutes=3)) <= datetime.now()
+        return (self.__start_time + timedelta(minutes=2)) <= datetime.now()
 
     def is_extra_action(self) -> bool:
         return False
@@ -68,7 +70,7 @@ class FirstActAction(AbstractAction):
         return 1.0
 
     __start_time = None
-    __charged_capacitors_count = 20
+    __charged_capacitors_count = 30
 
 
 class SecondActAction(AbstractAction):
@@ -147,7 +149,7 @@ class SecondActAction(AbstractAction):
                 power_cell.plasma_heater.durability = 29.0
                 power_cell.plasma_heater.alarm = True
 
-        return (self.__start_time + timedelta(minutes=4)) <= datetime.now()
+        return (self.__start_time + timedelta(minutes=2.5)) <= datetime.now()
 
     def is_extra_action(self) -> bool:
         return False
@@ -234,7 +236,7 @@ class ThirdActAction(AbstractAction):
                 power_cell.plasma_heater.durability = 0
                 power_cell.plasma_heater.alarm = True
 
-        return (self.__start_time + timedelta(minutes=3)) <= datetime.now()
+        return (self.__start_time + timedelta(minutes=1.5)) <= datetime.now()
 
     def is_extra_action(self) -> bool:
         return False
@@ -253,8 +255,8 @@ class BattertScenario(AbstractScenario):
 
         self.__period_list = Queue()
 
-        self.__period_list.put_nowait(200)
-        self.__period_list.put_nowait(260)
+        self.__period_list.put_nowait(100)
+        self.__period_list.put_nowait(160)
         self.__period_list.put_nowait(30)
 
     def is_end(self) -> bool:
