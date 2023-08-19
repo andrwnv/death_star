@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="Death Star ACS",
     description="Death Star ACS API",
-    version="1.0.0-debug",
+    version="1.1.0",
     contact={
         "name": "Andrew G.",
         "url": "https://github.com/andrwnv/death_star_acs",
