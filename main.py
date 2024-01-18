@@ -1,17 +1,20 @@
-from endpoints.api_v1.dev_api_router import DevToolsApiRouter
-from usecases.abstract_scenario import AbstractScenario, AbstractAction
 import logging
 import os
 
 import uvicorn
+
+from routes.api.v1.dev_api_router import DevToolsApiRouter
+
 from fastapi import FastAPI, APIRouter, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
-from usecases.battery_scenario.battery_scenario import BattertScenario, FirstActAction, SecondActAction, ThirdActAction
 
-from usecases.generators import battery_generator, cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
-from usecases.generators.generator import ModelPropertiesGenerator
-from usecases.test_event import TestEvent
-from usecases.test_scenario.test_scenario import TestScenario
+from internal.scenarios.battery_scenario import BattertScenario, FirstActAction, SecondActAction, ThirdActAction
+from internal.scenarist.abstract_scenario import AbstractScenario, AbstractAction
+from internal.generators import cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
+from internal.generators.generator import ModelPropertiesGenerator
+
+from internal.scenarist.test_event import TestEvent
+from internal.scenarios.test_scenario import TestScenario
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -46,13 +49,16 @@ async def websocket_endpoint(websocket: WebSocket):
 if __name__ == "__main__":
     import multiprocessing.pool
 
-    from endpoints.api_v1 import EnergySystemApiRouter, RepairTeamApiRouter, EventWebSocketRouter
-    from models import Model
+    from routes.api.v1.energy_system import EnergySystemApiRouter
+    from routes.api.v1.repair_team import RepairTeamApiRouter
+    from routes.api.v1.websocket.events import EventWebSocketRouter
 
-    from usecases.api import EnergySystemApiManager
-    from usecases.api import RepairTeamApiManager
-    from usecases.scenarist import Scenarist
-    from usecases.event_executor import EventExecutor
+    from entities.models import Model
+
+    from internal.managers.api.energy_system_api_manager import EnergySystemApiManager
+    from internal.managers.api.repair_team_api_manager import RepairTeamApiManager
+    from internal.scenarist.scenarist import Scenarist
+    from internal.scenarist.event_executor import EventExecutor
 
     thread_pool = multiprocessing.pool.ThreadPool(processes=16)
 
@@ -61,7 +67,7 @@ if __name__ == "__main__":
     model = Model()
     model.start()
 
-    model_generator = ModelPropertiesGenerator()
+    model_generator =  ModelPropertiesGenerator()
 
     for name, cell in model.power_cells.items():
         model_generator.push_strategy(cooling_generator.DefaultGenerationStrategy(
@@ -116,7 +122,7 @@ if __name__ == "__main__":
         scenario.push_action(third_act)
 
     scenarist.set_scenario(scenario)
-    
+
     def events_run():
         event_executor_usecase.start(event_ws_router.notify_about_event_start)
 
@@ -124,7 +130,7 @@ if __name__ == "__main__":
         scenarist.start(async_executor=thread_pool.apply_async)
 
     dev_tools_router = DevToolsApiRouter(
-        scenario_start_method=scenarist_run, 
+        scenario_start_method=scenarist_run,
         events_start_method=events_run,
         model=model,
         prefix="/devtools")
