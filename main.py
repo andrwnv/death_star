@@ -3,18 +3,18 @@ import os
 
 import uvicorn
 
-from routes.api.v1.dev_api_router import DevToolsApiRouter
+from death_star.routes.api.v1.dev_api_router import DevToolsApiRouter
 
 from fastapi import FastAPI, APIRouter, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
-from scenarios.battery_scenario import BattertScenario, FirstActAction, SecondActAction, ThirdActAction
-from scenarist.abstract_scenario import AbstractScenario, AbstractAction
-from generators import cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
-from generators.generator import ModelPropertiesGenerator
+from death_star.scenarios.battery_scenario import BattertScenario, FirstActAction, SecondActAction, ThirdActAction
+from death_star.scenarist.abstract_scenario import AbstractScenario, AbstractAction
+from death_star.generators import cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
+from death_star.generators.generator import ModelPropertiesGenerator
 
-from scenarist.test_event import TestEvent
-from scenarios.test_scenario import TestScenario
+from death_star.scenarist.test_event import TestEvent
+from death_star.scenarios.test_scenario import TestScenario
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -49,16 +49,16 @@ async def websocket_endpoint(websocket: WebSocket):
 if __name__ == "__main__":
     import multiprocessing.pool
 
-    from routes.api.v1.energy_system import EnergySystemApiRouter
-    from routes.api.v1.repair_team import RepairTeamApiRouter
-    from routes.api.v1.websocket.events import EventWebSocketRouter
+    from death_star.routes.api.v1.energy_system import EnergySystemApiRouter
+    from death_star.routes.api.v1.repair_team import RepairTeamApiRouter
+    from death_star.routes.api.v1.websocket.events import EventWebSocketRouter
 
-    from entities.models import Model
+    from death_star.entities.models import Model
 
-    from managers.api.energy_system_api_manager import EnergySystemApiManager
-    from managers.api.repair_team_api_manager import RepairTeamApiManager
-    from scenarist.scenarist import Scenarist
-    from scenarist.event_executor import EventExecutor
+    from death_star.managers.api.energy_system_api_manager import EnergySystemApiManager
+    from death_star.managers.api.repair_team_api_manager import RepairTeamApiManager
+    from death_star.scenarist.scenarist import Scenarist
+    from death_star.scenarist.event_executor import EventExecutor
 
     thread_pool = multiprocessing.pool.ThreadPool(processes=16)
 
