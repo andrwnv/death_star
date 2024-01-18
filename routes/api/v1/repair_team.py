@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body, HTTPException, status
 
-from internal.managers.api.repair_team_api_manager import RepairTeamApiManager
+from managers.api.repair_team_api_manager import RepairTeamApiManager
 from entities.dto.repair_team_dto import SendTeamDto
 
 

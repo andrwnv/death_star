@@ -3,10 +3,10 @@ import datetime
 import logging
 from typing import Callable
 
-from internal.scenarist.abstract_scenario import AbstractAction, AbstractScenario
+from scenarist.abstract_scenario import AbstractAction, AbstractScenario
 
-from internal.scenarist import event_executor
-from internal.scenarist import abstract_scenario
+from scenarist import event_executor
+from scenarist import abstract_scenario
 
 logger = logging.getLogger(__name__)
 

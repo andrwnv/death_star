@@ -2,8 +2,8 @@ import random
 import uuid
 
 from entities.models.energy_system.plasma_heater.plasma_heater import PlasmaHeater
-from internal.generators.base_generation_strategy import IGenerationStrategy
-from internal.generators.plasma_heater_generator.constants import PlasmaHeaterDefaultParams
+from generators.base_generation_strategy import IGenerationStrategy
+from generators.plasma_heater_generator.constants import PlasmaHeaterDefaultParams
 
 
 class DefaultGenerationStrategy(IGenerationStrategy):

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 
-from internal.managers.api.energy_system_api_manager import EnergySystemApiManager
+from managers.api.energy_system_api_manager import EnergySystemApiManager
 
 
 class EnergySystemApiRouter(APIRouter):

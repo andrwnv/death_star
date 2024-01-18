@@ -1,4 +1,4 @@
-from internal.scenarist.abstract_scenario import AbstractAction, AbstractScenario
+from scenarist.abstract_scenario import AbstractAction, AbstractScenario
 from entities.models.energy_system.battery.battery import Battery
 from queue import Queue
 

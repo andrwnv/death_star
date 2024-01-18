@@ -4,7 +4,7 @@ import logging
 
 from entities.models.model import Model
 
-from internal.scenarist.scenarist import AbstractAction, AbstractScenario
+from scenarist.scenarist import AbstractAction, AbstractScenario
 
 logger = logging.getLogger(__name__)
 

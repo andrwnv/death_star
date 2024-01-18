@@ -4,8 +4,8 @@ import uuid
 
 from entities.models.energy_system.cooling.cooling_system import CoolingSystem
 from entities.models.energy_system.cooling.turbine import Turbine
-from internal.generators.base_generation_strategy import IGenerationStrategy
-from internal.generators.cooling_generator.constants import CoolingDefaultParams
+from generators.base_generation_strategy import IGenerationStrategy
+from generators.cooling_generator.constants import CoolingDefaultParams
 
 
 class DefaultGenerationStrategy(IGenerationStrategy):

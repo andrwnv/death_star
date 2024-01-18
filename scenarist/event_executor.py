@@ -5,8 +5,8 @@ import abc
 
 from typing import Callable, Dict, List
 
-from internal.scenarist.abstract_event import AbstractEvent
-from internal.scenarist.test_event import TestEvent
+from scenarist.abstract_event import AbstractEvent
+from scenarist.test_event import TestEvent
 from utils.timer import NonBlockableTimer
 
 logger = logging.getLogger(__name__)

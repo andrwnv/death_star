@@ -2,8 +2,8 @@ import logging
 import multiprocessing
 from typing import Dict
 
-from internal.generators.base_generator import IGenerator
-from internal.generators.base_generation_strategy import IGenerationStrategy
+from generators.base_generator import IGenerator
+from generators.base_generation_strategy import IGenerationStrategy
 
 from utils.timer import NonBlockableTimer
 

@@ -5,8 +5,8 @@ import uuid
 
 from entities.models.energy_system.magnet_system.inductor import Inductor
 from entities.models.energy_system.magnet_system.magnet_system import MagnetSystem
-from internal.generators.base_generation_strategy import IGenerationStrategy
-from internal.generators.magnet_generator.constants import MagnetDefaultParams
+from generators.base_generation_strategy import IGenerationStrategy
+from generators.magnet_generator.constants import MagnetDefaultParams
 
 
 class DefaultGenerationStrategy(IGenerationStrategy):

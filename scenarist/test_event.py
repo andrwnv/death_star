@@ -1,7 +1,7 @@
 from datetime import timedelta, datetime
 import logging
 
-from internal.scenarist.abstract_event import AbstractEvent
+from scenarist.abstract_event import AbstractEvent
 
 logger = logging.getLogger(__name__)
 

@@ -5,8 +5,8 @@ import uuid
 
 from models.energy_system.battery.battery import Battery
 from models.energy_system.battery.capacitor import Capacitor
-from internal.generators.base_generation_strategy import IGenerationStrategy
-from internal.generators.battery_generator.constants import BatteryDefaultParams
+from generators.base_generation_strategy import IGenerationStrategy
+from generators.battery_generator.constants import BatteryDefaultParams
 
 
 class DefaultGenerationStrategy(IGenerationStrategy):

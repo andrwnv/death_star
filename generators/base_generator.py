@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from internal.generators.base_generation_strategy import IGenerationStrategy
+from generators.base_generation_strategy import IGenerationStrategy
 
 
 class IGenerator(ABC):

@@ -2,8 +2,8 @@ import random
 import uuid
 
 from entities.models.energy_system.vacuum_vessel.vacuum_vessel import VacuumVessel
-from internal.generators.base_generation_strategy import IGenerationStrategy
-from internal.generators.vacuum_vessel_generator.constants import VacuumVesselDefaultParams
+from generators.base_generation_strategy import IGenerationStrategy
+from generators.vacuum_vessel_generator.constants import VacuumVesselDefaultParams
 
 
 class DefaultGenerationStrategy(IGenerationStrategy):

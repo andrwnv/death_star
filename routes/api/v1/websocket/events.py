@@ -2,9 +2,9 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 import logging
 import asyncio
 import uuid
-from internal.scenarist.abstract_event import AbstractEvent
+from scenarist.abstract_event import AbstractEvent
 
-from internal.scenarist.event_executor import IEventExecutorManager
+from scenarist.event_executor import IEventExecutorManager
 
 
 logger = logging.getLogger(__name__)

@@ -8,13 +8,13 @@ from routes.api.v1.dev_api_router import DevToolsApiRouter
 from fastapi import FastAPI, APIRouter, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 
-from internal.scenarios.battery_scenario import BattertScenario, FirstActAction, SecondActAction, ThirdActAction
-from internal.scenarist.abstract_scenario import AbstractScenario, AbstractAction
-from internal.generators import cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
-from internal.generators.generator import ModelPropertiesGenerator
+from scenarios.battery_scenario import BattertScenario, FirstActAction, SecondActAction, ThirdActAction
+from scenarist.abstract_scenario import AbstractScenario, AbstractAction
+from generators import cooling_generator, magnet_generator, plasma_heater_generator, vacuum_vessel_generator
+from generators.generator import ModelPropertiesGenerator
 
-from internal.scenarist.test_event import TestEvent
-from internal.scenarios.test_scenario import TestScenario
+from scenarist.test_event import TestEvent
+from scenarios.test_scenario import TestScenario
 
 logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -55,10 +55,10 @@ if __name__ == "__main__":
 
     from entities.models import Model
 
-    from internal.managers.api.energy_system_api_manager import EnergySystemApiManager
-    from internal.managers.api.repair_team_api_manager import RepairTeamApiManager
-    from internal.scenarist.scenarist import Scenarist
-    from internal.scenarist.event_executor import EventExecutor
+    from managers.api.energy_system_api_manager import EnergySystemApiManager
+    from managers.api.repair_team_api_manager import RepairTeamApiManager
+    from scenarist.scenarist import Scenarist
+    from scenarist.event_executor import EventExecutor
 
     thread_pool = multiprocessing.pool.ThreadPool(processes=16)
 
