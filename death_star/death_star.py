@@ -6,6 +6,7 @@ import uvicorn
 
 from fastapi import FastAPI, APIRouter, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from death_star.rmq.publisher import RmqPublisher
 
 from death_star.routes.api.v1.dev_api_router import DevToolsApiRouter
 from death_star.routes.api.v1.energy_system import EnergySystemApiRouter
@@ -121,7 +122,7 @@ def run():
     scenario = None
 
     if debug:
-        scenario = TestScenario(model=model)
+        scenario = TestScenario(model=model, event_publisher=RmqPublisher("rabbitmq_service"))
     else:
         scenario = BattertScenario(model=model)
 

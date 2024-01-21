@@ -1,13 +1,18 @@
 from queue import Queue
 
-from random import randrange
+from death_star.rmq.publisher import Publisher
 
 from death_star.scenarist.abstract_scenario import AbstractAction, AbstractScenario
 from death_star.entities.models.energy_system.battery.battery import Battery
 
 
 class DebugBreakAction(AbstractAction):
-    def __init__(self, name: str, battery: Battery, is_extra: bool = False, period: float = 2.0) -> None:
+    def __init__(self,
+                 name: str,
+                 battery: Battery,
+                 is_extra: bool = False,
+                 period: float = 2.0) -> None:
+
         super().__init__(name)
         self.__is_extra = is_extra
         self._period = period
@@ -42,9 +47,11 @@ class DebugBreakAction(AbstractAction):
 
 
 class TestScenario(AbstractScenario):
-    def __init__(self, model) -> None:
+    def __init__(self, model, event_publisher: Publisher) -> None:
         super().__init__()
+
         self._model = model
+        self._event_publisher = event_publisher
 
     def is_end(self) -> bool:
         return self._action_queue.qsize() == 0
@@ -53,6 +60,15 @@ class TestScenario(AbstractScenario):
         return False
 
     def next_action_period(self) -> float:
+        if self._event_publisher:
+            self._event_publisher.publish({
+                "type": "event",
+                "payload": {
+                    "action": "start",
+                    "name": "debug-action"
+                }
+            })
+
         self._action_queue.put_nowait(DebugBreakAction(
             f"Debug break action {self._prev_cell_name}",
             self._model.power_cells[self._curr_cell_name].battery)
