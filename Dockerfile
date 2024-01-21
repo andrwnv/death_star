@@ -1,15 +1,5 @@
-FROM alpine:3.16.0
+FROM python:slim-bookworm
 
-WORKDIR /app
+COPY requirements.txt requirements.txt
 
-RUN set -xe;
-
-COPY . .
-
-RUN apk add --no-cache python3 py3-pip
-RUN pip install --upgrade pip
-RUN pip install fastapi names websockets 'uvicorn[standard]'
-
-EXPOSE 2023/tcp
-
-CMD python3 main.py
+RUN pip3 install --progress-bar off -r requirements.txt
