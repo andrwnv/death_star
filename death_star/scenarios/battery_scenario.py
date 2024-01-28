@@ -127,10 +127,11 @@ class SecondActAction(AbstractAction):
                     break
             else:
                 power_cell.plasma_heater.alarm = False
-                if plasma_heater.temperature + 250000 <= 0:
-                    plasma_heater.temperature = 11000000
+                if plasma_heater.temperature + 250000 >= 12000000:
+                    plasma_heater.temperature = 12000000
                 else:
                     plasma_heater.temperature += 250000
+
                 for capicator in battery.capacitors:
                     if capicator.durability >= 60:
                         if capicator.charge_level + 25 >= 100:

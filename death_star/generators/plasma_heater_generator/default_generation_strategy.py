@@ -22,8 +22,7 @@ class DefaultGenerationStrategy(IGenerationStrategy):
         temperature = random.gauss(
             PlasmaHeaterDefaultParams.TEMPERATURE, PlasmaHeaterDefaultParams.TEMPERATURE_SIGMA)
 
-        self.__model.temperature = temperature if temperature < PlasmaHeaterDefaultParams.TEMPERATURE else PlasmaHeaterDefaultParams.TEMPERATURE + \
-            random.random() * 10 ** -4
+        self.__model.temperature = temperature if temperature < PlasmaHeaterDefaultParams.TEMPERATURE else PlasmaHeaterDefaultParams.TEMPERATURE
 
         self.__model.output_power_watt = random.gauss(
             PlasmaHeaterDefaultParams.OUTPUT_POWER, PlasmaHeaterDefaultParams.SIGMA)
