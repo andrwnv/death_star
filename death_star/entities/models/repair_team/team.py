@@ -17,6 +17,11 @@ class RepairTeam(IJsonSerializable):
 
         self.employees = employees
 
+        self.last_call_ts = 0
+        self.last_callback_ts = 0
+
+        self.call_down_ms = 1000
+
         if not len(employees):
             for ix in range(15):
                 employee = Employee(name=names.get_full_name(), grade=EmployeeGrade.BEGINNER)
@@ -34,3 +39,8 @@ class RepairTeam(IJsonSerializable):
     current_location: Location
 
     employees: List[Employee]
+
+    last_call_ts: int
+    last_callback_ts: int
+
+    call_down_ms: int

@@ -1,5 +1,6 @@
 from copy import copy
 import logging
+import time
 
 from typing import Any, Dict, Optional, List, Tuple
 
@@ -34,11 +35,19 @@ class RepairTeamApiManager:
         if not location_item:
             return False, f"Location not found in {cell_name}!"
 
+        last_callback_ts = self.__repair_teams[team_name].last_callback_ts
+        cd_ms = self.__repair_teams[team_name].call_down_ms
+
+        if last_callback_ts > 0 and int(time.time()) - last_callback_ts <= cd_ms:
+            return False, f"Can't send '{team_name}' now. They are resting after hard work!"
+
         self.__repair_teams[team_name].is_busy = True
         self.__repair_teams[team_name].current_location = location
 
         self.__async_executor(self.__repair, args=(
             self.__repair_teams[team_name], location_item))
+
+        self.__repair_teams[team_name].last_call_ts = int(time.time())
 
         return True, None
 
@@ -48,6 +57,8 @@ class RepairTeamApiManager:
 
         self.__repair_teams[team_name].is_busy = False
         self.__repair_teams[team_name].current_location = Location.HOME
+
+        self.__repair_teams[team_name].last_callback_ts = int(time.time())
 
         return True
 
