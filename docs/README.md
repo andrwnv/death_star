@@ -27,7 +27,7 @@
 
 Если же подсистема не отвечает, то она признается **аварийной**, что в свою очередь **влечет нестабильную работу все системы**.
 
-Описания протоколов общения находятся в [`/proto`](https://github.com/andrwnv/death-star-playground/blob/11-new-features-iteration/proto)
+Описания протоколов общения находятся в [`/proto`](https://github.com/andrwnv/death-star-playground/blob/main/proto)
 
 
 - `RabbitMQ v3.12`
