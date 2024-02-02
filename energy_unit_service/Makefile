@@ -16,15 +16,15 @@ install:
 	@pip3 install -r requirements.txt
 
 
-## gen: Generate protofiles.
+## gen: Generate proto files.
 gen:
 	@echo " Start "$(PROJECTNAME)" ..."
-	@python3 -m grpc_tools.protoc \
-	--proto_path=../ \
-	proto/energy-unit/energy_unit.proto \
-	--python_out=service/api \
-	--grpc_python_out=service/api
 
+	@python3 -m grpc_tools.protoc \
+		-Iproto/energy_unit=../protos/energy-unit \
+		--python_out=. \
+		--grpc_python_out=. \
+		../protos/energy-unit/energy_unit.proto
 
 ## run: Start in development mode.
 run:
