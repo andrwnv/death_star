@@ -9,10 +9,10 @@
 
 Ознакомься с элементами Его величества:
 
-- [**Система энергопитания**](https://github.com/andrwnv/death-star-playground/blob/11-new-features-iteration/docs/units/1_energy_unit.md)
-- [**Система генератора атмосферы корабля**](https://github.com/andrwnv/death-star-playground/blob/11-new-features-iteration/docs/units/2_atmosphere_unit.md)
-- [**Cистема гипердвигателя**](https://github.com/andrwnv/death-star-playground/blob/11-new-features-iteration/docs/units/3_hyper_drive_unit.md)
-- [**Cистема суперлазера**](https://github.com/andrwnv/death-star-playground/blob/11-new-features-iteration/docs/units/4_super_laser_unit.md)
+- [**Система энергопитания**](https://github.com/andrwnv/death-star-playground/blob/main/docs/units/1_energy_unit.md)
+- [**Система генератора атмосферы корабля**](https://github.com/andrwnv/death-star-playground/blob/main/docs/units/2_atmosphere_unit.md)
+- [**Cистема гипердвигателя**](https://github.com/andrwnv/death-star-playground/blob/main/docs/units/3_hyper_drive_unit.md)
+- [**Cистема суперлазера**](https://github.com/andrwnv/death-star-playground/blob/main/docs/units/4_super_laser_unit.md)
 
 
 ## Правила общения сервисов
@@ -27,7 +27,7 @@
 
 Если же подсистема не отвечает, то она признается **аварийной**, что в свою очередь **влечет нестабильную работу все системы**.
 
-Описания протоколов общения находятся в [`/proto`](https://github.com/andrwnv/death-star-playground/blob/11-new-features-iteration/proto)
+Описания протоколов общения находятся в [`/proto`](https://github.com/andrwnv/death-star-playground/blob/main/protos)
 
 
 - `RabbitMQ v3.12`
