@@ -1,13 +1,13 @@
 from typing import List
+
 import uuid
 
-from death_star.entities.models.energy_system.battery.capacitor import Capacitor
-
-from utils.json_serializable import IJsonSerializable
+from energy_unit_service.service.domain.battery.capacitor import Capacitor
 
 
-class Battery(IJsonSerializable):
-    def __init__(self, name: str = 'battery') -> None:
+class Battery:
+
+    def __init__(self, name: str = "battery") -> None:
         self.name = name
 
         self.is_on = False
@@ -15,8 +15,8 @@ class Battery(IJsonSerializable):
         self.charge_level = 100.0
 
         self.capacitors = []
-        for i in range(65):
-            self.capacitors.append(Capacitor(name=f'Capacitor-{uuid.uuid4()}'))
+        for _ in range(65):
+            self.capacitors.append(Capacitor(name=f"Capacitor-{uuid.uuid4()}"))
 
     def start(self) -> None:
         self.is_on = True

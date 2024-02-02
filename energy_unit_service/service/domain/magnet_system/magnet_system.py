@@ -1,13 +1,13 @@
 from typing import List
+
 import uuid
 
-from death_star.entities.models.energy_system.magnet_system.inductor import Inductor
-
-from utils.json_serializable import IJsonSerializable
+from energy_unit_service.service.domain.magnet_system.inductor import Inductor
 
 
-class MagnetSystem(IJsonSerializable):
-    def __init__(self, name: str = 'magnet_system') -> None:
+class MagnetSystem:
+
+    def __init__(self, name: str = "magnet_system") -> None:
         self.name = name
 
         self.is_on = False
@@ -20,11 +20,15 @@ class MagnetSystem(IJsonSerializable):
 
         self.toroidal_inductors = []
         for i in range(18):
-            self.toroidal_inductors.append(Inductor(name=f'ToroidalInductor-{uuid.uuid4()}'))
+            self.toroidal_inductors.append(
+                Inductor(name=f"ToroidalInductor-{uuid.uuid4()}")
+            )
 
         self.poloidal_inductors = []
         for i in range(6):
-            self.poloidal_inductors.append(Inductor(name=f'PoloidalInductor-{uuid.uuid4()}'))
+            self.poloidal_inductors.append(
+                Inductor(name=f"PoloidalInductor-{uuid.uuid4()}")
+            )
 
     def start(self) -> None:
         self.is_on = True

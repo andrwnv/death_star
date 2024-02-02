@@ -1,8 +1,6 @@
-from utils.json_serializable import IJsonSerializable
+class VacuumVessel:
 
-
-class VacuumVessel(IJsonSerializable):
-    def __init__(self, name: str = 'vacuum_vessel') -> None:
+    def __init__(self, name: str = "vacuum_vessel") -> None:
         self.name = name
 
         self.is_on = False

@@ -1,14 +1,14 @@
 from typing import List
+
 import uuid
 
-from death_star.entities.models.energy_system.cooling.liquid_cooler import LiquidCooler
-from death_star.entities.models.energy_system.cooling.turbine import Turbine
-
-from utils.json_serializable import IJsonSerializable
+from energy_unit_service.service.domain.cooling.liquid_cooler import LiquidCooler
+from energy_unit_service.service.domain.cooling.turbine import Turbine
 
 
-class CoolingSystem(IJsonSerializable):
-    def __init__(self, name: str = 'cooling_system') -> None:
+class CoolingSystem:
+
+    def __init__(self, name: str = "cooling_system") -> None:
         self.name = name
 
         self.is_on = False
@@ -16,10 +16,10 @@ class CoolingSystem(IJsonSerializable):
         self.durability = 100.0
 
         self.turbines = []
-        for i in range(6):
-            self.turbines.append(Turbine(name=f'Turbine-{uuid.uuid4()}'))
+        for _ in range(6):
+            self.turbines.append(Turbine(name=f"Turbine-{uuid.uuid4()}"))
 
-        self.liquid_cooler = LiquidCooler(name=f'LiquidCooler-{uuid.uuid4()}')
+        self.liquid_cooler = LiquidCooler(name=f"LiquidCooler-{uuid.uuid4()}")
 
     def start(self) -> None:
         self.is_on = True

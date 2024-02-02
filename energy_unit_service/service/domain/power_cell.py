@@ -1,29 +1,30 @@
 import uuid
 
-from death_star.entities.models.energy_system.battery.battery import Battery
-from death_star.entities.models.energy_system.cooling.cooling_system import CoolingSystem
-from death_star.entities.models.energy_system.magnet_system.magnet_system import MagnetSystem
-from death_star.entities.models.energy_system.plasma_heater.plasma_heater import PlasmaHeater
-from death_star.entities.models.energy_system.vacuum_vessel.vacuum_vessel import VacuumVessel
-from death_star.entities.models.liquid_storage import LiquidStorage
+from energy_unit_service.service.domain.battery.battery import Battery
+from energy_unit_service.service.domain.cooling.cooling_system import CoolingSystem
+from energy_unit_service.service.domain.magnet_system.magnet_system import MagnetSystem
+from energy_unit_service.service.domain.plasma_heater.plasma_heater import PlasmaHeater
+from energy_unit_service.service.domain.vacuum_vessel.vacuum_vessel import VacuumVessel
+from energy_unit_service.service.domain.liquid_storage.liquid_storage import (
+    LiquidStorage,
+)
 
-from utils.json_serializable import IJsonSerializable
 
+class PowerCell:
 
-class PowerCell(IJsonSerializable):
-    def __init__(self, name: str = 'power_cell') -> None:
+    def __init__(self, name: str = "power_cell") -> None:
         self.name = name
 
         self.is_on = False
         self.alarm = False
         self.durability = 100.0
 
-        self.cooling_system = CoolingSystem(name=f'CoolingSystem-{uuid.uuid4()}')
-        self.magnet_system = MagnetSystem(name=f'MagnetSystem-{uuid.uuid4()}')
-        self.plasma_heater = PlasmaHeater(name=f'PlasmaHeater-{uuid.uuid4()}')
-        self.vacuum_vessel = VacuumVessel(name=f'VacuumVessel-{uuid.uuid4()}')
-        self.fuel_storage = LiquidStorage(name=f'LiquidStorage-{uuid.uuid4()}')
-        self.battery = Battery(name=f'Battery-{uuid.uuid4()}')
+        self.cooling_system = CoolingSystem(name=f"CoolingSystem-{uuid.uuid4()}")
+        self.magnet_system = MagnetSystem(name=f"MagnetSystem-{uuid.uuid4()}")
+        self.plasma_heater = PlasmaHeater(name=f"PlasmaHeater-{uuid.uuid4()}")
+        self.vacuum_vessel = VacuumVessel(name=f"VacuumVessel-{uuid.uuid4()}")
+        self.fuel_storage = LiquidStorage(name=f"LiquidStorage-{uuid.uuid4()}")
+        self.battery = Battery(name=f"Battery-{uuid.uuid4()}")
 
         self.power = 0.0
 
@@ -51,4 +52,3 @@ class PowerCell(IJsonSerializable):
     battery: Battery
 
     power: float
-

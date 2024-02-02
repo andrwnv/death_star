@@ -1,5 +1,6 @@
 class Turbine:
-    def __init__(self, name: str = 'turbine') -> None:
+
+    def __init__(self, name: str = "turbine") -> None:
         self.name = name
 
         self.is_on = False

@@ -1,8 +1,6 @@
-from utils.json_serializable import IJsonSerializable
+class LiquidStorage:
 
-
-class LiquidStorage(IJsonSerializable):
-    def __init__(self, name: str = 'liquid_storage'):
+    def __init__(self, name: str = "liquid_storage"):
         self.name = name
 
         self.durability = 100.0

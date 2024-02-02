@@ -1,8 +1,6 @@
-from utils.json_serializable import IJsonSerializable
+class Capacitor:
 
-
-class Capacitor(IJsonSerializable):
-    def __init__(self, name: str = 'capacitor') -> None:
+    def __init__(self, name: str = "capacitor") -> None:
         self.name = name
 
         self.is_on = False
@@ -10,10 +8,10 @@ class Capacitor(IJsonSerializable):
 
         self.charge_level = 0.0
         self.rated_voltage = 0.0
-    
+
     def start(self) -> None:
         self.is_on = True
-    
+
     is_on: bool
 
     durability: float
