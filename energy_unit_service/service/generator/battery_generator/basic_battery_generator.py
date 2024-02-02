@@ -1,16 +1,29 @@
-import math
+from attr import dataclass
 from typing import List
 import random
+
 import uuid
 
-from models.energy_system.battery.battery import Battery
-from models.energy_system.battery.capacitor import Capacitor
-from generators.base_generation_strategy import IGenerationStrategy
-from generators.battery_generator.constants import BatteryDefaultParams
+from energy_unit_service.service.domain.battery.battery import Battery
+from energy_unit_service.service.domain.battery.capacitor import Capacitor
+from energy_unit_service.service.generator.generation_strategy import (
+    IGenerationStrategy,
+)
 
 
 class DefaultGenerationStrategy(IGenerationStrategy):
-    def __init__(self, model: Battery, name: str = f'BatterySystemDefaultGenerator-{uuid.uuid4()}') -> None:
+    @dataclass
+    class GenerationParams:
+        CHARGE_LEVEL = 100.0
+        RATED_VOLTAGE = 124.6
+
+        SIGMA = 14.0
+
+    def __init__(
+        self,
+        model: Battery,
+        name: str = f"BatterySystemDefaultGenerator-{uuid.uuid4()}",
+    ) -> None:
         super().__init__()
 
         self.__model = model
@@ -21,13 +34,15 @@ class DefaultGenerationStrategy(IGenerationStrategy):
             for capacitor in capacitors:
                 if capacitor.is_on:
                     charge_level = random.gauss(
-                        BatteryDefaultParams.CHARGE_LEVEL, BatteryDefaultParams.SIGMA)
+                        self.GenerationParams.CHARGE_LEVEL, self.GenerationParams.SIGMA
+                    )
 
                     if charge_level >= 100.0:
                         charge_level = 100.0
                     capacitor.charge_level = charge_level
                     capacitor.rated_voltage = random.gauss(
-                        BatteryDefaultParams.RATED_VOLTAGE, BatteryDefaultParams.SIGMA)
+                        self.GenerationParams.RATED_VOLTAGE, self.GenerationParams.SIGMA
+                    )
 
         if not self.__model.is_on:
             pass
@@ -37,7 +52,8 @@ class DefaultGenerationStrategy(IGenerationStrategy):
         __capacitor_params_generator(self.__model.capacitors)
 
         self.__model.charge_level = sum(
-            capicator.charge_level for capicator in self.__model.capacitors) / len(self.__model.capacitors)
+            capicator.charge_level for capicator in self.__model.capacitors
+        ) / len(self.__model.capacitors)
 
     def name(self) -> str:
         return self.__name

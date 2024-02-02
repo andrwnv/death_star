@@ -1,15 +1,32 @@
+from attr import dataclass
 from typing import List
 import random
+
 import uuid
 
-from death_star.entities.models.energy_system.cooling.cooling_system import CoolingSystem
-from death_star.entities.models.energy_system.cooling.turbine import Turbine
-from death_star.generators.base_generation_strategy import IGenerationStrategy
-from death_star.generators.cooling_generator.constants import CoolingDefaultParams
+from energy_unit_service.service.domain.cooling.cooling_system import CoolingSystem
+from energy_unit_service.service.domain.cooling.turbine import Turbine
+from energy_unit_service.service.generator.generation_strategy import (
+    IGenerationStrategy,
+)
 
 
 class DefaultGenerationStrategy(IGenerationStrategy):
-    def __init__(self, model: CoolingSystem, name: str = f'CoolingSystemDefaultGenerator-{uuid.uuid4()}') -> None:
+    @dataclass
+    class GenerationParams:
+        INPUT_CURRENT = 107.0
+        INPUT_POWER = 224.0
+        INPUT_VOLTAGE = 275.0
+        RPM = 5000.0
+        LIQUID_LEVEL = 2000.0
+
+        SIGMA = 14.0
+
+    def __init__(
+        self,
+        model: CoolingSystem,
+        name: str = f"CoolingSystemDefaultGenerator-{uuid.uuid4()}",
+    ) -> None:
         super().__init__()
 
         self.__model = model
@@ -22,13 +39,17 @@ class DefaultGenerationStrategy(IGenerationStrategy):
 
                 if turbine.is_on:
                     turbine.input_current = random.gauss(
-                        CoolingDefaultParams.INPUT_CURRENT, CoolingDefaultParams.SIGMA)
+                        self.GenerationParams.INPUT_CURRENT, self.GenerationParams.SIGMA
+                    )
                     turbine.input_power = random.gauss(
-                        CoolingDefaultParams.INPUT_POWER, CoolingDefaultParams.SIGMA)
+                        self.GenerationParams.INPUT_POWER, self.GenerationParams.SIGMA
+                    )
                     turbine.input_voltage = random.gauss(
-                        CoolingDefaultParams.INPUT_VOLTAGE, CoolingDefaultParams.SIGMA)
+                        self.GenerationParams.INPUT_VOLTAGE, self.GenerationParams.SIGMA
+                    )
                     turbine.rpm = random.gauss(
-                        CoolingDefaultParams.RPM, CoolingDefaultParams.SIGMA)
+                        self.GenerationParams.RPM, self.GenerationParams.SIGMA
+                    )
 
         if not self.__model.is_on:
             pass
@@ -40,7 +61,8 @@ class DefaultGenerationStrategy(IGenerationStrategy):
         if self.__model.liquid_cooler.is_on:
             __turbine_params_generator(self.__model.liquid_cooler.turbines)
             self.__model.liquid_cooler.liquid_storage.liquid_level = random.gauss(
-                CoolingDefaultParams.LIQUID_LEVEL, 1.0)
+                self.GenerationParams.LIQUID_LEVEL, 1.0
+            )
 
     def name(self) -> str:
         return self.__name

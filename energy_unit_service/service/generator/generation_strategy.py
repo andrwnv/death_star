@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class IGenerationStrategy(ABC):
+
     def __init__(self) -> None:
         pass
 
