@@ -30,51 +30,6 @@ if __name__ == "__main__":
             "-c", "--config", nargs="?", type=str, help="Filepath to config file."
         )
 
-        parser.add_argument(
-            "-gaddr",
-            "--grpc_addr",
-            nargs="?",
-            type=str,
-            help="Address of self grpc server.",
-        )
-        parser.add_argument(
-            "-gport",
-            "--grpc_port",
-            nargs="?",
-            type=int,
-            help="Port of self grpc server.",
-        )
-
-        parser.add_argument(
-            "-qaddr",
-            "--rmq_addr",
-            nargs="?",
-            type=str,
-            help="Address of self event queue.",
-        )
-        parser.add_argument(
-            "-qport",
-            "--rmq_port",
-            nargs="?",
-            type=int,
-            help="Port of self event queue.",
-        )
-
-        parser.add_argument(
-            "-sqaddr",
-            "--scenariste_rmq_addr",
-            type=str,
-            nargs="?",
-            help="Address of 'scenariste' event queue.",
-        )
-        parser.add_argument(
-            "-sqport",
-            "--scenariste_rmq_port",
-            type=int,
-            nargs="?",
-            help="Port of 'scenariste' event queue.",
-        )
-
         return parser.parse_args()
 
     args = __parse_args()
@@ -85,32 +40,12 @@ if __name__ == "__main__":
     if args.config is not None:
         cfg.init_with_file(args.config)
     else:
-        if (
-            args.grpc_addr is None
-            or args.grpc_port is None
-            or args.rmq_addr is None
-            or args.rmq_port is None
-            or args.scenariste_rmq_addr is None
-            or args.scenariste_rmq_port is None
-        ):
+        print("Failed to start service! Config file doesn't set!")
 
-            print(
-                "Failed to start service! Config file doesn't set and manual configuration miss matched!"
-            )
-
-            exit(-1)
-
-        cfg.self_props.grpc_addr = args.grpc_addr
-        cfg.self_props.grpc_port = args.grpc_port
-
-        cfg.self_props.event_queue_addr = args.rmq_addr
-        cfg.self_props.event_queue_port = args.rmq_port
-
-        cfg.scenariste_props.event_queue_addr = args.scenariste_rmq_addr
-        cfg.scenariste_props.event_queue_port = args.scenariste_rmq_port
+        exit(-1)
 
     logging.basicConfig(
-        level=logging.DEBUG,
-        format="[%(asctime)s][%(levelname)s]: %(message)s")
+        level=logging.DEBUG, format="[%(asctime)s][%(levelname)s]: %(message)s"
+    )
 
     asyncio.run(run(cfg))

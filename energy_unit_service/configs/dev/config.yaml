@@ -1,8 +1,15 @@
 scenariste:
-  event_queue_addr: 0.0.0.0
-  event_queue_port: 1234
+  event_queue_addr: rmq-host
+  event_queue_port: 5672
+  event_queue_username: admin
+  event_queue_password: pass
+  event_queue_name: "scenariste_action_queue"
 
 grpc_addr: 0.0.0.0
 grpc_port: 4040
-event_queue_addr: 0.0.0.0
-event_queue_port: 1234
+
+event_queue_addr: rmq-host
+event_queue_port: 5672
+event_queue_username: admin
+event_queue_password: pass
+event_queue_name: energy_unit_action_queue
