@@ -14,13 +14,13 @@ enum RegistrationStatus {
 
 message RegisterRequest {
   string name = 1;
-  string queue_address = 2;
-  string queue_port = 3;
+  string event_queue_address = 2;
+  string event_queue_port = 3;
 }
 
 message RegisterResponse {
   RegistrationStatus status = 1;
 
-  optional string event_queue_address = 2;
-  optional string event_queue_port = 3;
+  optional string queue_address = 2;
+  optional string queue_port = 3;
 }

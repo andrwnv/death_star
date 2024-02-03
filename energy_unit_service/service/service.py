@@ -1,11 +1,10 @@
 import asyncio
 
+from service.config import Config
 from service.domain.model import Model
 
-# from .service.domain.model import Model
-# from .domain.model import Model
 
-async def run():
+async def run(config: Config):
     async def timer():
         import datetime
 

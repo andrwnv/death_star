@@ -1,0 +1,8 @@
+scenariste:
+  event_queue_addr: 0.0.0.0
+  event_queue_port: 1234
+
+grpc_addr: 0.0.0.0
+grpc_port: 4040
+event_queue_addr: 0.0.0.0
+event_queue_port: 1234
