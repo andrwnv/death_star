@@ -2,7 +2,7 @@ from typing import List
 
 import uuid
 
-from energy_unit_service.service.domain.magnet_system.inductor import Inductor
+from service.domain.magnet_system.inductor import Inductor
 
 
 class MagnetSystem:

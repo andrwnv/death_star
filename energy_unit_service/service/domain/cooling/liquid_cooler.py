@@ -2,8 +2,8 @@ from typing import List
 
 import uuid
 
-from energy_unit_service.service.domain.cooling.turbine import Turbine
-from energy_unit_service.service.domain.liquid_storage.liquid_storage import (
+from service.domain.cooling.turbine import Turbine
+from service.domain.liquid_storage.liquid_storage import (
     LiquidStorage,
 )
 

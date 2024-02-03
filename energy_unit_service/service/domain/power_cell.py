@@ -1,11 +1,11 @@
 import uuid
 
-from energy_unit_service.service.domain.battery.battery import Battery
-from energy_unit_service.service.domain.cooling.cooling_system import CoolingSystem
-from energy_unit_service.service.domain.magnet_system.magnet_system import MagnetSystem
-from energy_unit_service.service.domain.plasma_heater.plasma_heater import PlasmaHeater
-from energy_unit_service.service.domain.vacuum_vessel.vacuum_vessel import VacuumVessel
-from energy_unit_service.service.domain.liquid_storage.liquid_storage import (
+from service.domain.battery.battery import Battery
+from service.domain.cooling.cooling_system import CoolingSystem
+from service.domain.magnet_system.magnet_system import MagnetSystem
+from service.domain.plasma_heater.plasma_heater import PlasmaHeater
+from service.domain.vacuum_vessel.vacuum_vessel import VacuumVessel
+from service.domain.liquid_storage.liquid_storage import (
     LiquidStorage,
 )
 

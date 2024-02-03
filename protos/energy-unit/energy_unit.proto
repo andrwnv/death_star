@@ -3,20 +3,20 @@ syntax = "proto3";
 package energy_unit;
 
 service EnergyUnitService {
-  rpc GetBattery(EmptyMessage) returns (Battery) {}
-  rpc GetCoolingSystem(EmptyMessage) returns (CoolingSystem) {}
-  rpc GetMagnetSystem(EmptyMessage) returns (MagnetSystem) {}
-  rpc GetPlasmaHeater(EmptyMessage) returns (PlasmaHeater) {}
-  rpc GetVacuumVessel(EmptyMessage) returns (VacuumVessel) {}
+  rpc GetBattery(StateRequest) returns (Battery) {}
+  rpc GetCoolingSystem(StateRequest) returns (CoolingSystem) {}
+  rpc GetMagnetSystem(StateRequest) returns (MagnetSystem) {}
+  rpc GetPlasmaHeater(StateRequest) returns (PlasmaHeater) {}
+  rpc GetVacuumVessel(StateRequest) returns (VacuumVessel) {}
 }
 
-message EmptyMessage {}
+enum EnergyCell {
+  ALPHA_CELL = 0;
+  THETA_CELL = 1;
+}
 
-message Message { string message = 1; }
-
-message MessageResponse {
-  string message = 1;
-  bool received = 2;
+message StateRequest {
+  EnergyCell energy_cell = 1;
 }
 
 /*

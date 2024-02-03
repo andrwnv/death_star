@@ -2,8 +2,8 @@ from typing import List
 
 import uuid
 
-from energy_unit_service.service.domain.cooling.liquid_cooler import LiquidCooler
-from energy_unit_service.service.domain.cooling.turbine import Turbine
+from service.domain.cooling.liquid_cooler import LiquidCooler
+from service.domain.cooling.turbine import Turbine
 
 
 class CoolingSystem:

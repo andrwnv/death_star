@@ -2,7 +2,7 @@ from typing import List
 
 import uuid
 
-from energy_unit_service.service.domain.battery.capacitor import Capacitor
+from service.domain.battery.capacitor import Capacitor
 
 
 class Battery:
