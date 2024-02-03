@@ -35,7 +35,7 @@ gen:
 ## run: Start in development mode.
 run:
 	@echo " Start "$(PROJECTNAME)" ..."
-	@python3 main.py
+	@python3 main.py -c ./configs/dev/config.yaml
 
 
 help: Makefile

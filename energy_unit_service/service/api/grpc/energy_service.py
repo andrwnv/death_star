@@ -1,3 +1,4 @@
+import logging
 import grpc
 
 import proto.energy_unit.energy_unit_pb2 as pb2
@@ -6,6 +7,8 @@ import proto.energy_unit.energy_unit_pb2_grpc as pb2_grpc
 from service.domain.magnet_system.inductor import Inductor
 from service.domain.cooling.turbine import Turbine
 from service.domain import Model
+
+logger = logging.getLogger(__name__)
 
 
 class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
@@ -23,6 +26,11 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
         if cell_name not in self.__model.power_cells:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details(f"Failed to find cell with name={cell_name}")
+
+            logger.error(
+                f"Failed to execute 'GetBattery' rpc due to cell with name={cell_name} doesn't exists!"
+            )
+
             return pb2.Battery()
 
         power_cell = self.__model.power_cells[cell_name]
@@ -44,6 +52,8 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
             ],
         }
 
+        logger.debug(f"'GetBattery' rpc executed success, response sent!")
+
         return pb2.Battery(**result)
 
     def GetCoolingSystem(self, request, context):
@@ -52,6 +62,11 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
         if cell_name not in self.__model.power_cells:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details(f"Failed to find cell with name={cell_name}")
+
+            logger.error(
+                f"Failed to execute 'GetCoolingSystem' rpc due to cell with name={cell_name} doesn't exists!"
+            )
+
             return pb2.CoolingSystem()
 
         power_cell = self.__model.power_cells[cell_name]
@@ -94,6 +109,8 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
             ],
         }
 
+        logger.debug(f"'GetCoolingSystem' rpc executed success, response sent!")
+
         return pb2.CoolingSystem(**result)
 
     def GetMagnetSystem(self, request, context):
@@ -102,6 +119,11 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
         if cell_name not in self.__model.power_cells:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details(f"Failed to find cell with name={cell_name}")
+
+            logger.error(
+                f"Failed to execute 'GetMagnetSystem' rpc due to cell with name={cell_name} doesn't exists!"
+            )
+
             return pb2.MagnetSystem()
 
         power_cell = self.__model.power_cells[cell_name]
@@ -139,6 +161,8 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
             ],
         }
 
+        logger.debug(f"'GetMagnetSystem' rpc executed success, response sent!")
+
         return pb2.MagnetSystem(**result)
 
     def GetPlasmaHeater(self, request, context):
@@ -147,6 +171,11 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
         if cell_name not in self.__model.power_cells:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details(f"Failed to find cell with name={cell_name}")
+
+            logger.error(
+                f"Failed to execute 'GetPlasmaHeater' rpc due to cell with name={cell_name} doesn't exists!"
+            )
+
             return pb2.PlasmaHeater()
 
         power_cell = self.__model.power_cells[cell_name]
@@ -164,6 +193,8 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
             "input_power": plasma_heater.input_power,
         }
 
+        logger.debug(f"'GetPlasmaHeater' rpc executed success, response sent!")
+
         return pb2.PlasmaHeater(**result)
 
     def GetVacuumVessel(self, request, context):
@@ -172,6 +203,11 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
         if cell_name not in self.__model.power_cells:
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details(f"Failed to find cell with name={cell_name}")
+
+            logger.error(
+                f"Failed to execute 'GetVacuumVessel' rpc due to cell with name={cell_name} doesn't exists!"
+            )
+
             return pb2.VacuumVessel()
 
         power_cell = self.__model.power_cells[cell_name]
@@ -187,5 +223,7 @@ class EnergyService(pb2_grpc.EnergyUnitServiceServicer):
             "input_voltage": vacuum_vessel.input_voltage,
             "input_power": vacuum_vessel.input_power,
         }
+
+        logger.debug(f"'GetVacuumVessel' rpc executed success, response sent!")
 
         return pb2.VacuumVessel(**result)

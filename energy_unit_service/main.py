@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from service.config import Config
 from service import run
@@ -107,5 +108,9 @@ if __name__ == "__main__":
 
         cfg.scenariste_props.event_queue_addr = args.scenariste_rmq_addr
         cfg.scenariste_props.event_queue_port = args.scenariste_rmq_port
+
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="[%(asctime)s][%(levelname)s]: %(message)s")
 
     asyncio.run(run(cfg))

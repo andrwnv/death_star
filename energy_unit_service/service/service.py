@@ -1,5 +1,6 @@
 import asyncio
 
+from service.api.grpc.server import GrpcServer
 from service.config import Config
 from service.domain.model import Model
 
@@ -25,12 +26,12 @@ async def run(config: Config):
 
     model = Model()
 
-    from service.api.grpc.server import GrpcServer
-
     grpc_server = GrpcServer(model=model)
 
     await asyncio.gather(
         timer(),
         timer2(),
-        grpc_server.run(addr="0.0.0.0:4040"),
+        grpc_server.run(
+            addr=f"{config.self_props.grpc_addr}:{config.self_props.grpc_port}"
+        ),
     )
