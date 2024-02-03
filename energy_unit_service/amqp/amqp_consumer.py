@@ -76,11 +76,12 @@ class RmqConsumer(AmqpConsumer):
 
             method_frame, properties, body = self.__channel.basic_get(self.__queue_name)
             if method_frame is not None and properties is not None and body is not None:
-                self.__consume(method_frame, properties, body)
+                if self.__consume(body):
+                    self.__channel.basic_ack(method_frame.delivery_tag)
 
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.1)
 
-    def __consume(self, method, properties, body):
+    def __consume(self, body) -> bool:
         try:
             import json
 
@@ -90,10 +91,13 @@ class RmqConsumer(AmqpConsumer):
 
             logger.debug(f"Got message from queue! Message={message}")
 
+            return True
         except Exception:
             logger.error(
                 f"Got unknown message type! Failed to parse it! Message={body}"
             )
+
+        return False
 
     def stop(self):
         self.__channel.stop_consuming()
