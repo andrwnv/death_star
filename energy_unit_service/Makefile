@@ -21,10 +21,15 @@ gen:
 	@echo " Start "$(PROJECTNAME)" ..."
 
 	@python3 -m grpc_tools.protoc \
+		-Iproto/energy_unit=../protos \
+		--python_out=. \
+		--grpc_python_out=. \
+		../protos/registration.proto
+
+	@python3 -m grpc_tools.protoc \
 		-Iproto/energy_unit=../protos/energy-unit \
 		--python_out=. \
 		--grpc_python_out=. \
-		../protos/registration.proto \
 		../protos/energy-unit/energy_unit.proto
 
 ## run: Start in development mode.
