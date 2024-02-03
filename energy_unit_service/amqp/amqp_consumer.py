@@ -57,17 +57,14 @@ class RmqConsumer(AmqpConsumer):
                 host=addr,
                 port=port,
                 credentials=credentials,
+                socket_timeout=None,
             )
         )
 
         self.__queue_name = queue_name
 
         self.__channel = connection.channel()
-        self.__channel.exchange_declare(
-            exchange=self.__queue_name,
-        )
-
-        self.__channel.queue_declare(queue=self.__queue_name, passive=True)
+        self.__channel.queue_declare(queue=self.__queue_name, durable=True)
 
         self.__is_started = True
 
