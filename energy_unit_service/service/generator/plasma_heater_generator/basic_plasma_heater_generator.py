@@ -3,8 +3,8 @@ import random
 
 import uuid
 
-from energy_unit_service.service.domain.plasma_heater.plasma_heater import PlasmaHeater
-from energy_unit_service.service.generator.generation_strategy import (
+from service.domain.plasma_heater.plasma_heater import PlasmaHeater
+from service.generator.generation_strategy import (
     IGenerationStrategy,
 )
 

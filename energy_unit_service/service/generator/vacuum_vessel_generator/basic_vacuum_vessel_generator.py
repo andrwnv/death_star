@@ -3,8 +3,8 @@ import random
 
 import uuid
 
-from energy_unit_service.service.domain.vacuum_vessel.vacuum_vessel import VacuumVessel
-from energy_unit_service.service.generator.generation_strategy import (
+from service.domain.vacuum_vessel.vacuum_vessel import VacuumVessel
+from service.generator.generation_strategy import (
     IGenerationStrategy,
 )
 

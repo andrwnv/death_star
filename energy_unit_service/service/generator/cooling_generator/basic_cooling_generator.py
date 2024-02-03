@@ -4,9 +4,9 @@ import random
 
 import uuid
 
-from energy_unit_service.service.domain.cooling.cooling_system import CoolingSystem
-from energy_unit_service.service.domain.cooling.turbine import Turbine
-from energy_unit_service.service.generator.generation_strategy import (
+from service.domain.cooling.cooling_system import CoolingSystem
+from service.domain.cooling.turbine import Turbine
+from service.generator.generation_strategy import (
     IGenerationStrategy,
 )
 

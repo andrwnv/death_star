@@ -4,9 +4,9 @@ import random
 
 import uuid
 
-from energy_unit_service.service.domain.battery.battery import Battery
-from energy_unit_service.service.domain.battery.capacitor import Capacitor
-from energy_unit_service.service.generator.generation_strategy import (
+from service.domain.battery.battery import Battery
+from service.domain.battery.capacitor import Capacitor
+from service.generator.generation_strategy import (
     IGenerationStrategy,
 )
 

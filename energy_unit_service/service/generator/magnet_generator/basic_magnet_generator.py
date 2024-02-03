@@ -4,9 +4,9 @@ import random
 
 import uuid
 
-from energy_unit_service.service.domain.magnet_system.inductor import Inductor
-from energy_unit_service.service.domain.magnet_system.magnet_system import MagnetSystem
-from energy_unit_service.service.generator.generation_strategy import (
+from service.domain.magnet_system.inductor import Inductor
+from service.domain.magnet_system.magnet_system import MagnetSystem
+from service.generator.generation_strategy import (
     IGenerationStrategy,
 )
 
