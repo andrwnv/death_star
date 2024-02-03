@@ -24,6 +24,7 @@ gen:
 		-Iproto/energy_unit=../protos/energy-unit \
 		--python_out=. \
 		--grpc_python_out=. \
+		../protos/registration.proto \
 		../protos/energy-unit/energy_unit.proto
 
 ## run: Start in development mode.
