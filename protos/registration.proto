@@ -14,8 +14,8 @@ enum RegistrationStatus {
 
 message RegisterRequest {
   string name = 1;
-  string event_queue_address = 2;
-  string event_queue_port = 3;
+  string queue_address = 2;
+  string queue_port = 3;
 }
 
 message RegisterResponse {
