@@ -1,6 +1,6 @@
 import logging
 
-from attr import dataclass
+from dataclasses import dataclass
 
 from service.domain import Model
 
