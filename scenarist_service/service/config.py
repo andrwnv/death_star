@@ -15,13 +15,10 @@ class SelfProps:
     grpc_addr: str
     grpc_port: str
 
+    http_addr: str
+    http_port: str
+
     event_queue_props: AmqpProps
-
-
-@dataclass
-class ScenaristProps:
-    event_queue_props: AmqpProps
-
 
 class Config:
 
@@ -29,21 +26,14 @@ class Config:
         self.self_props = SelfProps(
             grpc_addr="0.0.0.0",
             grpc_port=4040,
+            http_addr="0.0.0.0",
+            http_port=2024,
             event_queue_props=AmqpProps(
                 addr="0.0.0.0",
                 port=5560,
                 username="guest",
                 password="guest",
-                queue_name="scenarist_action_queue",
-            ),
-        )
-        self.scenarist_props = ScenaristProps(
-            event_queue_props=AmqpProps(
-                addr="0.0.0.0",
-                port=5560,
-                username="guest",
-                password="guest",
-                queue_name="energy_unit_action_queue",
+                queue_name="scenariste_action_queue",
             ),
         )
 
@@ -55,24 +45,12 @@ class Config:
 
             self.self_props.grpc_addr = cfg["grpc_addr"]
             self.self_props.grpc_port = cfg["grpc_port"]
+
+            self.self_props.http_addr = cfg["http_addr"]
+            self.self_props.http_port = cfg["http_port"]
+
             self.self_props.event_queue_props.addr = cfg["event_queue_addr"]
             self.self_props.event_queue_props.port = cfg["event_queue_port"]
             self.self_props.event_queue_props.username = cfg["event_queue_username"]
             self.self_props.event_queue_props.password = cfg["event_queue_password"]
             self.self_props.event_queue_props.queue_name = cfg["event_queue_name"]
-
-            self.scenarist_props.event_queue_props.addr = cfg["scenarist"][
-                "event_queue_addr"
-            ]
-            self.scenarist_props.event_queue_props.port = cfg["scenarist"][
-                "event_queue_port"
-            ]
-            self.scenarist_props.event_queue_props.username = cfg["scenarist"][
-                "event_queue_username"
-            ]
-            self.scenarist_props.event_queue_props.password = cfg["scenarist"][
-                "event_queue_password"
-            ]
-            self.self_props.event_queue_props.queue_name = cfg["scenarist"][
-                "event_queue_name"
-            ]

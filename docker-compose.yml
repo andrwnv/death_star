@@ -50,6 +50,32 @@ services:
     networks:
       - appnet
 
+  scenariste-service:
+    build:
+      context: ./scenarist_service
+      dockerfile: Dockerfile
+
+    restart: on-failure
+
+    volumes:
+      - ./scenarist_service:/app
+
+    working_dir: /app
+    command: make run
+    ports:
+      - "2024:2024"
+
+    depends_on:
+      rabbitmq_service:
+        condition: service_healthy
+      energy-unit-service:
+        condition: service_started
+
+    privileged: true
+
+    networks:
+      - appnet
+
 networks:
   appnet:
     driver: bridge

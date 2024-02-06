@@ -4,20 +4,17 @@ import logging
 from service.config import Config
 from service import run
 
-
-SUB_SERVICE_INFO = "Death-Star: Energy unit service (v1.0.0)"
+SUB_SERVICE_INFO = "Death-Star: Scenarist service (v1.0.0)"
 
 SERVICE_INFO = f"""
-    ______                                  __  __      _ __
-   / ____/___  ___  _________ ___  __      / / / /___  (_) /_
-  / __/ / __ \/ _ \/ ___/ __ `/ / / /_____/ / / / __ \/ / __/
- / /___/ / / /  __/ /  / /_/ / /_/ /_____/ /_/ / / / / / /_
-/_____/_/ /_/\___/_/   \__, /\__, /      \____/_/ /_/_/\__/
-                      /____//____/
+   _____                            _      __
+  / ___/________  ____  ____ ______(_)____/ /_
+  \__ \/ ___/ _ \/ __ \/ __ `/ ___/ / ___/ __/
+ ___/ / /__/  __/ / / / /_/ / /  / (__  ) /
+/____/\___/\___/_/ /_/\__,_/_/  /_/____/\__/
 
 {SUB_SERVICE_INFO}
 """
-
 
 logger = logging.getLogger(__name__)
 

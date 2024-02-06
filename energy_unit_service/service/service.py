@@ -42,10 +42,10 @@ async def run(config: Config):
             addr=f"{config.self_props.grpc_addr}:{config.self_props.grpc_port}"
         ),
         rmq_consumer.run(
-            addr=config.scenariste_props.event_queue_props.addr,
-            port=config.scenariste_props.event_queue_props.port,
-            username=config.scenariste_props.event_queue_props.username,
-            password=config.scenariste_props.event_queue_props.password,
+            addr=config.scenarist_props.event_queue_props.addr,
+            port=config.scenarist_props.event_queue_props.port,
+            username=config.scenarist_props.event_queue_props.username,
+            password=config.scenarist_props.event_queue_props.password,
             queue_name=config.self_props.event_queue_props.queue_name,
         ),
     )
