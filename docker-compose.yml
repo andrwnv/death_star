@@ -34,10 +34,11 @@ services:
     restart: on-failure
 
     volumes:
+      - ./protos:/protos
       - ./energy_unit_service:/app
 
     working_dir: /app
-    command: make run
+    command: make gen run
     ports:
       - "4040:4040"
 
