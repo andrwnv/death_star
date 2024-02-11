@@ -2,8 +2,8 @@
   "openapi": "3.0.2",
   "info": {
     "version": "1.0",
-    "title": "Методы работы с подсистемой энергопитания",
-    "description": "Методы работы с подсистемой энергопитания",
+    "title": "Доккментация API `death-star-playground`",
+    "description": "Методы работы с `death-star-playground`",
     "contact": {
       "name": "andrwnv",
       "email": "glazynovand@gmail.com",
