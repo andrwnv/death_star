@@ -1,0 +1,841 @@
+openapi: 3.0.2
+x-stoplight:
+  id: ex304r1b86tze
+tags:
+  - name: Control
+    description: Запросы управления
+  - name: State
+    description: Запросы состояния
+info:
+  version: '1.0'
+  title: Методы работы с подсистемой энергопитания
+  description: Методы работы с подсистемой энергопитания
+  contact:
+    name: andrwnv
+    email: glazynovand@gmail.com
+    url: 'https://github.com/andrwnv'
+servers:
+  - url: 'localhost:5000/api/v2/energy-unit'
+    description: energy-unit
+paths:
+  '/{cell-name}/cooling':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - alpha_cell
+            - theta_cell
+          example: alpha_cell
+        name: cell-name
+        in: path
+        required: true
+        description: Имя ячейки
+    get:
+      summary: Получение информации об охлаждающей ячейке блока энергопитания
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoolingSystem'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-energy-unit-cooling-system
+      x-stoplight:
+        id: dn79byjpj63si
+      description: Получение информации об охлаждающей ячейке блока энергопитания
+  '/{cell-name}/magnet':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - alpha_cell
+            - theta_cell
+          example: alpha_cell
+        name: cell-name
+        in: path
+        required: true
+        description: Имя ячейки
+    get:
+      summary: Получение информации о магнитной системе блока энергопитания
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MagnetSystem'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-energy-unit-cell-info
+      x-stoplight:
+        id: 51qao71g0amyu
+      description: Получение информации о магнитной системе блока энергопитания
+  '/{cell-name}/plasma-heater':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - alpha_cell
+            - theta_cell
+          example: alpha_cell
+        name: cell-name
+        in: path
+        required: true
+        description: Имя ячейки
+    get:
+      summary: Получение информации о нагревателе плазмы блока энергопитания
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlasmaHeater'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-energy-unit-plasma-heater
+      x-stoplight:
+        id: 14da2ib4qb1k4
+      description: Получение информации о нагревателе плазмы блока энергопитания
+  '/{cell-name}/vacuum-vessel':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - alpha_cell
+            - theta_cell
+          example: alpha_cell
+        name: cell-name
+        in: path
+        required: true
+        description: Имя ячейки
+    get:
+      summary: Получение информации о вакуумном нагнетателе блока энергопитания
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VacuumVessel'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-energy-unit-vacuum-vessel
+      x-stoplight:
+        id: tgfzwig00kfhs
+      description: Получение информации о вакуумном нагнетателе блока энергопитания
+  '/{cell-name}/liquid-storage':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - alpha_cell
+            - theta_cell
+          example: alpha_cell
+        name: cell-name
+        in: path
+        required: true
+        description: Имя ячейки
+    get:
+      summary: Получение информации о жидкостном хранилище блока энергопитания
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiquidStorage'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-energy-unit-liquid-storage
+      x-stoplight:
+        id: 7lnjo09f23se7
+      description: Получение информации о жидкостном хранилище блока энергопитания
+  '/{cell-name}/battery':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - alpha_cell
+            - theta_cell
+          example: alpha_cell
+        name: cell-name
+        in: path
+        required: true
+        description: Имя ячейки
+    get:
+      summary: Получение информации о батареях блока энергопитания
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Battery'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-energy-unit-battery
+      x-stoplight:
+        id: qiq6k6dc1d7vf
+      description: Получение информации о батареях блока энергопитания
+  '/{cell-name}':
+    parameters:
+      - schema:
+          type: string
+          enum:
+            - alpha_cell
+            - theta_cell
+          example: alpha_cell
+        name: cell-name
+        in: path
+        required: true
+        description: Имя ячейки
+    get:
+      summary: Получение общей мощности ячейки
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - power_level
+                properties:
+                  power_level:
+                    type: number
+                    x-stoplight:
+                      id: x96w947begdx5
+                    format: double
+                    readOnly: true
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-cell-power
+      x-stoplight:
+        id: vznyfrlo8hwh0
+      description: Получение общей мощности ячейки
+components:
+  schemas:
+    CoolingSystem:
+      title: CoolingSystem
+      x-stoplight:
+        id: tkofc2iyg951g
+      type: object
+      description: |-
+        Система охлаждения делится на:
+        * `Активную` — турбины;
+        * `Пассивную` — систему трубопроводов.
+
+        Через систему трубопроводов посредством охлаждающей жидкости тепло забирается от генератора плазмы. Турбины, в свою очередь, делятся на:
+        * `Нагнетающие`;
+        * `Охлаждающие`.
+
+        Для эффективного охлаждения хладогента при генераторе плазмы, работающем на 100% эффективности, достаточно `12 охлаждающих турбин` и `8 нагнетающих`.
+      required:
+        - name
+        - is_on
+        - alarm
+        - durability
+        - turbines
+        - liquid_cooler
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: 3dvo7u2tz1u4h
+          description: Имя элемента
+          example: cooling-system-c5b8fe24-4fcd-4727-a394-e5d10e7b266e
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: jl5ehqlx2nh9u
+          description: Включен ли элемент
+        alarm:
+          x-stoplight:
+            id: ohxprffjzhgh8
+          type: boolean
+          description: Имеется ли авария
+        durability:
+          type: number
+          x-stoplight:
+            id: hhmtam3qk9uhv
+          description: Текущая прочность
+          format: double
+          minimum: 0
+          maximum: 100
+        turbines:
+          type: array
+          minItems: 6
+          maxItems: 6
+          items:
+            $ref: '#/components/schemas/Turbine'
+        liquid_cooler:
+          $ref: '#/components/schemas/LiquidCooler'
+    Turbine:
+      title: Turbine
+      x-stoplight:
+        id: ovp96yj5bdb6r
+      type: object
+      required:
+        - name
+        - is_on
+        - alarm
+        - durability
+        - rpm
+        - input_current
+        - input_voltage
+        - input_power
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: drmg3sona1w5b
+          description: Имя элемента
+          default: turbine-c5b8fe24-4fcd-4727-a394-e5d10e7b266e
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: brbb4otl7mhli
+          description: Включен ли элемент
+        alarm:
+          type: boolean
+          x-stoplight:
+            id: yzyjixz81kdrp
+          description: Имеется ли авария
+        durability:
+          type: number
+          x-stoplight:
+            id: 9je3y1ot1fogv
+          format: double
+          description: Текущая прочность
+          minimum: 0
+          maximum: 100
+        rpm:
+          type: number
+          x-stoplight:
+            id: 206su14h22qr9
+          format: double
+          description: Скорость вращения вентилятора
+        input_current:
+          type: number
+          x-stoplight:
+            id: 1xmh1r6u4jkn3
+          format: double
+          description: Входной ток
+        input_voltage:
+          type: number
+          x-stoplight:
+            id: emysfi73iaq9r
+          format: double
+          description: Входное напряжение
+        input_power:
+          type: number
+          x-stoplight:
+            id: mshv9xsmiu9ed
+          format: double
+          description: Входная мощность
+    LiquidCooler:
+      title: LiquidCooler
+      x-stoplight:
+        id: hlvofwpkdlkh7
+      type: object
+      description: 'Хладогент проходит три ступени охлаждения, после чего возвращается к генератору плазмы на рабочей температуре `2 К`. Каждая из ступеней — отдельный модуль охлаждения жидкости, состоящий из `4 охлаждающих турбин` и `2 нагнетающих`'
+      required:
+        - name
+        - is_on
+        - alarm
+        - durability
+        - liquid_storage
+        - turbines
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: f6a9pnmave2jw
+          description: Имя элемента
+          example: liquid-cooler-1e2d675f-5995-48cb-b84e-2164f01a4a30
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: wpxj2i7npgn2v
+          description: Включен ли элемент
+        alarm:
+          type: boolean
+          x-stoplight:
+            id: n7tnn6adn1ty5
+          description: Имеется ли авария
+        durability:
+          type: number
+          x-stoplight:
+            id: 620qyxl6jyh7l
+          description: Текущая прочность
+          format: double
+          minimum: 0
+          maximum: 100
+        liquid_storage:
+          $ref: '#/components/schemas/LiquidStorage'
+        turbines:
+          type: array
+          minItems: 6
+          maxItems: 6
+          items:
+            $ref: '#/components/schemas/Turbine'
+    LiquidStorage:
+      title: LiquidStorage
+      x-stoplight:
+        id: vqej4t0z18icg
+      type: object
+      required:
+        - name
+        - durability
+        - liquid_level
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: l2kfbweetn1tk
+          description: Имя элемента
+          example: liquid-storage-12e3c3b5-e867-48e7-ab0c-58998e951e99
+        durability:
+          type: number
+          x-stoplight:
+            id: po8f5nvguvdnb
+          format: double
+          description: Текущая прочность
+          minimum: 0
+          maximum: 100
+        liquid_level:
+          type: number
+          x-stoplight:
+            id: fbo8rgh4tpvjs
+          format: double
+          description: Уровень жидкости
+          minimum: 0
+          maximum: 100
+    PlasmaHeater:
+      title: PlasmaHeater
+      x-stoplight:
+        id: n1nwfaga7kn4b
+      type: object
+      required:
+        - name
+        - is_on
+        - alarm
+        - durability
+        - temperature
+        - output_power_watt
+        - input_current
+        - input_voltage
+        - input_power
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: e6u4js8e8s596
+          description: Имя элемента
+          example: plasma-heater-cfc838bc-6c9b-4965-9def-061c8da47734
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: o8yclro4ijkmn
+          description: Включен ли элемент
+        alarm:
+          type: boolean
+          x-stoplight:
+            id: z7t7if9utfp4y
+          description: Имеется ли авария
+        durability:
+          type: number
+          x-stoplight:
+            id: f4x5n7or55bmp
+          format: double
+          exclusiveMinimum: false
+          minimum: 0
+          maximum: 100
+          description: Текущая прочность
+        temperature:
+          type: number
+          x-stoplight:
+            id: ehk4oq9g89b0n
+          format: double
+          description: Температура
+        output_power_watt:
+          type: number
+          x-stoplight:
+            id: 6xtda763d894y
+          format: double
+          description: Выходная мощность в ваттах
+        input_current:
+          type: number
+          x-stoplight:
+            id: xoyo70e11hshb
+          format: double
+          description: Входной ток
+        input_voltage:
+          type: number
+          x-stoplight:
+            id: z0dqx7tbf9swo
+          format: double
+          description: Входное напряжение
+        input_power:
+          type: number
+          x-stoplight:
+            id: 9tmii8biuca68
+          format: double
+          description: Входная мощность
+    VacuumVessel:
+      title: VacuumVessel
+      x-stoplight:
+        id: jxu1w5yszygzc
+      type: object
+      required:
+        - name
+        - is_on
+        - alarm
+        - durability
+        - pressure
+        - input_current
+        - input_voltage
+        - input_power
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: 10ey2hb24fvag
+          description: Имя элемента
+          example: vacuum-vessel-5f47d86f-14f2-45f4-9b4f-0d696a98f2b1
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: htiecdp5sncng
+          description: Включен ли элемент
+        alarm:
+          type: boolean
+          x-stoplight:
+            id: 6fsgj96rwarns
+          description: Имеется ли авария
+        durability:
+          type: number
+          x-stoplight:
+            id: wrez17l70d2e6
+          format: double
+          description: Текущая прочность
+          minimum: 0
+          maximum: 100
+        pressure:
+          type: number
+          x-stoplight:
+            id: m7thtsokmnf2b
+          format: double
+          description: Давление
+        input_current:
+          type: number
+          x-stoplight:
+            id: sjgsld3qgktv3
+          format: double
+          description: Входной ток
+        input_voltage:
+          type: number
+          x-stoplight:
+            id: f6eap2l6z8smw
+          format: double
+          description: Входное напряжение
+        input_power:
+          type: number
+          x-stoplight:
+            id: getd871fgvxes
+          format: double
+          description: Входная мощность
+    Battery:
+      title: Battery
+      x-stoplight:
+        id: nveyedhnl5hdn
+      type: object
+      required:
+        - name
+        - is_on
+        - alarm
+        - charge_level
+        - capacitors
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: 3ysbq72b4dobx
+          description: Имя элемента
+          example: battery-768f2c09-ce9d-4896-8d20-919ed6701084
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: mc7etdoycmiqz
+          description: Включен ли элемент
+        alarm:
+          type: boolean
+          x-stoplight:
+            id: 6preutqvgwv55
+          description: Имеется ли авария
+        charge_level:
+          type: number
+          x-stoplight:
+            id: 6usx43ks4mi8d
+          format: double
+          description: Общий уровень заряда
+          minimum: 0
+          maximum: 100
+        capacitors:
+          $ref: '#/components/schemas/Capacitor'
+    Capacitor:
+      title: Capacitor
+      x-stoplight:
+        id: uaksbp79015ye
+      type: object
+      required:
+        - name
+        - is_on
+        - durability
+        - charge_level
+        - rated_voltage
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: fy2qbz96edrbv
+          description: Имя элемента
+          example: capacitor-f20f81bf-a71b-4fb1-a232-cdae21666eb1
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: 1ywpx7e6975sy
+          description: Включен ли элемент
+        durability:
+          type: number
+          x-stoplight:
+            id: cynrqd783s7db
+          format: double
+          description: Прочность
+          minimum: 0
+          maximum: 100
+        charge_level:
+          type: number
+          x-stoplight:
+            id: 22qie55r1ovag
+          format: double
+          description: Уровень заряда
+          minimum: 0
+          maximum: 100
+        rated_voltage:
+          type: number
+          x-stoplight:
+            id: colkw3v1z763j
+          format: double
+          description: Текущая прочность
+    Inductor:
+      title: Inductor
+      x-stoplight:
+        id: bq9ncpnc9486y
+      type: object
+      required:
+        - name
+        - is_on
+        - durability
+        - storable_energy
+        - electromotive_force
+        - starter_current
+        - output_current
+        - current_loss
+        - q_factor
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: tn4bnrzp0y2ga
+          description: Имя элемента
+          example: inductor-431860af-511c-4ca2-b242-1d4a90812e99
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: 2u1mq7f5plc9p
+          description: Включен ли элемент
+        durability:
+          type: number
+          x-stoplight:
+            id: p11tfesw5hbn7
+          format: double
+          description: Текущая прочность
+          minimum: 0
+          maximum: 100
+        storable_energy:
+          type: number
+          x-stoplight:
+            id: uxu1ud0unq1v4
+          format: double
+          description: Кол-во хранимой энергии
+        electromotive_force:
+          type: number
+          x-stoplight:
+            id: donva4xvczhv8
+          format: double
+          description: "Электродвижущая сила\r\n"
+        starter_current:
+          type: number
+          x-stoplight:
+            id: nqp32eres82h6
+          format: double
+          description: "Пусковой ток\r\n"
+        output_current:
+          type: number
+          x-stoplight:
+            id: iei021l8z56uq
+          format: double
+          description: Выходной ток
+        current_loss:
+          type: number
+          x-stoplight:
+            id: x8d5pvis3gph0
+          format: double
+          description: Текуще электропотери
+        q_factor:
+          type: number
+          x-stoplight:
+            id: 3pq7r3jxupg7c
+          format: double
+          description: Q фактор
+    MagnetSystem:
+      title: MagnetSystem
+      x-stoplight:
+        id: sjrss5y1p961w
+      type: object
+      required:
+        - name
+        - is_on
+        - alarm
+        - durability
+        - induction
+        - temperature
+        - output_current
+        - voltage
+        - toroidal_inductors
+        - poloidal_inductors
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: eddyz44frp20h
+          description: Имя элемента
+          example: magnet-system-42960df4-c3e2-4cf0-8cd5-9a705cda7540
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: oo1l91gyo59vd
+          description: Включен ли элемент
+        alarm:
+          type: boolean
+          x-stoplight:
+            id: y7x927hmr533s
+          description: Имеется ли авария
+        durability:
+          type: number
+          x-stoplight:
+            id: 8ify2hvkp42sv
+          format: double
+          description: Текущая прочность
+          minimum: 0
+          maximum: 100
+        induction:
+          type: number
+          x-stoplight:
+            id: 83d5sp2tts63a
+          format: double
+          description: Индукция
+        temperature:
+          type: number
+          x-stoplight:
+            id: 36q7e1s0pozl7
+          format: double
+          description: Температура
+        output_current:
+          type: number
+          x-stoplight:
+            id: bu35d7z95wt1m
+          format: double
+          description: Выходной ток
+        voltage:
+          type: number
+          x-stoplight:
+            id: qy3c2m5bdtuif
+          format: double
+          description: Напряжение
+        toroidal_inductors:
+          type: array
+          x-stoplight:
+            id: bdvv7e612ngea
+          minItems: 18
+          maxItems: 18
+          items:
+            $ref: '#/components/schemas/Inductor'
+        poloidal_inductors:
+          x-stoplight:
+            id: t9ksy8g53svjt
+          type: array
+          minItems: 6
+          maxItems: 6
+          items:
+            $ref: '#/components/schemas/Inductor'
