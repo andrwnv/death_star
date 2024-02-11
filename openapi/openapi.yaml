@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  version: '1.0'
+  version: '2.0'
   title: Доккментация API `death-star-playground`
   description: Методы работы с `death-star-playground`
   contact:
