@@ -1,0 +1,327 @@
+openapi: 3.0.2
+x-stoplight:
+  id: 57h2atshq9dhh
+tags:
+  - name: Control
+    description: Запросы управления
+  - name: State
+    description: Запросы состояния
+info:
+  version: '1.0'
+  title: Методы работы с подсистемой атмосферы
+  description: Методы работы с подсистемой атмосферы
+  contact:
+    name: andrwnv
+    email: glazynovand@gmail.com
+    url: 'https://github.com/andrwnv'
+servers:
+  - url: 'localhost:5000/api/v2/atmosphere-unit'
+    description: atmosphere-unit
+paths:
+  /humidity-controller:
+    parameters: []
+    get:
+      summary: Получение состояния устройства управления влажностью
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumidityController'
+        '400':
+          description: Bad Request
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-humidity-controller
+      x-stoplight:
+        id: b7p2yjeiheu6m
+      description: Получение состояния устройства управления влажностью
+  /pressure-balancer:
+    parameters: []
+    get:
+      summary: Получение состояния аппарата балансировки атмосферного давления
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PressureBalancer'
+        '400':
+          description: Bad Request
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-pressure-balancer
+      x-stoplight:
+        id: d3zw8w19na0or
+      description: Получение состояния аппарата балансировки атмосферного давления
+  /pressure-stabilizer:
+    parameters: []
+    get:
+      summary: Получение состояния устройства стабилизации давления
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PressureStabilizer'
+        '400':
+          description: Bad Request
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-pressure-stabilizer
+      x-stoplight:
+        id: 8l33serjnowl1
+      description: Получение состояния устройства стабилизации давления
+  /temperature-stabilizer:
+    parameters: []
+    get:
+      summary: Получение состояния устройства стабилизации температуры
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureStabilizer'
+        '400':
+          description: Bad Request
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-temperature-stabilizer
+      x-stoplight:
+        id: 4xz50il0vry7f
+      description: Получение состояния устройства стабилизации температуры
+components:
+  schemas:
+    HumidityController:
+      title: HumidityController
+      x-stoplight:
+        id: khw8iqzy4td3f
+      type: object
+      required:
+        - name
+        - is_on
+        - durability
+        - time_before_stabilize_ms
+        - current_humidity
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: ogad0fabkap0i
+          description: Имя
+          example: CGH-C8C7
+          default: CGH-C8C7
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: eo2obty8jxn3m
+          description: Работает ли в данный момент
+        durability:
+          type: number
+          x-stoplight:
+            id: m99f95l93kenf
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Прочность (в процентах)
+        time_before_stabilize_ms:
+          type: integer
+          x-stoplight:
+            id: 3dz3xecjzhccm
+          description: Время до стабилизации влажности в мс
+          format: int32
+        current_humidity:
+          type: number
+          x-stoplight:
+            id: afg0cgftevj35
+          format: double
+          description: Текущая влажность в секторе
+    PressureStabilizer:
+      title: PressureStabilizer
+      x-stoplight:
+        id: gtefiu8weouju
+      type: object
+      required:
+        - name
+        - is_on
+        - durability
+        - pressure_is_fine
+        - time_before_stabilize_ms
+        - current_pressure_mmhg
+        - atmosphere_state
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: qnz3lvqh9t749
+          description: Имя
+          default: BB-E8E3
+          example: BB-E8E3
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: txbscybsy8url
+          description: Работает ли в данный момент
+        durability:
+          type: number
+          x-stoplight:
+            id: 3p7wib8d8mqvp
+          format: double
+          description: Прочность (в процентах)
+        pressure_is_fine:
+          type: boolean
+          x-stoplight:
+            id: mqqb014aeuov3
+          description: Можно ли дышать в секторе
+        time_before_stabilize_ms:
+          type: integer
+          x-stoplight:
+            id: 9ah1r6bf6a4zt
+          format: int32
+          description: Время до стабилизации атмосферы в мс
+        current_pressure_mmhg:
+          type: number
+          x-stoplight:
+            id: a518zzkavlm1e
+          format: double
+          description: Текущее атмосферное давление  (в мм рт. ст. Норма - 750)
+        atmosphere_state:
+          $ref: '#/components/schemas/AtmosphereState'
+    AtmosphereState:
+      title: AtmosphereState
+      x-stoplight:
+        id: xhl5otrj18v2c
+      type: object
+      required:
+        - co2_volume
+        - o2_volume
+        - n2_volume
+        - another_volume
+      properties:
+        co2_volume:
+          type: number
+          x-stoplight:
+            id: rofg0z4eryn7a
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Объём С02 (в процентах)
+        o2_volume:
+          type: number
+          x-stoplight:
+            id: 4k754evv1zppo
+          format: double
+          maximum: 100
+          minimum: 0
+          description: Объём 02 (в процентах)
+        n2_volume:
+          type: number
+          x-stoplight:
+            id: 9gveqowruyxks
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Объём N2 (в процентах)
+        another_volume:
+          type: number
+          x-stoplight:
+            id: b4mrxl0vu1uy3
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Объём остальных газов (в процентах)
+    TemperatureStabilizer:
+      title: TemperatureStabilizer
+      x-stoplight:
+        id: h4jn3pqbqa6z5
+      type: object
+      required:
+        - name
+        - is_on
+        - time_before_stabilize_ms
+        - current_temperature
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: 1kz5o80w22ygl
+          default: BT-0010
+          example: BT-0010
+          description: Имя
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: 2kmsym0kpzgy6
+          description: Работает ли в данный момент
+        time_before_stabilize_ms:
+          type: integer
+          x-stoplight:
+            id: tixsuaue42af5
+          format: int32
+          description: Время до стабилизации температуры в мс
+        current_temperature:
+          type: number
+          x-stoplight:
+            id: 2zkc2p7eu3ohx
+          format: double
+          description: Текущая температура в секторе
+    PressureBalancer:
+      title: PressureBalancer
+      x-stoplight:
+        id: oa5ywc30uyagh
+      type: object
+      required:
+        - name
+        - is_on
+        - overall_durability
+        - bb_e8e3_is_on
+        - bt_0010_is_on
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: ml5gx3dguflu5
+          default: PressureBalancer
+          example: PressureBalancer
+          description: Имя
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: bkaurbgf6bd2u
+          description: Работает ли в данный момент
+        overall_durability:
+          type: number
+          x-stoplight:
+            id: hutsrujxyf1nx
+          format: double
+          description: Общая Прочность
+        bb_e8e3_is_on:
+          type: boolean
+          x-stoplight:
+            id: m79854glempow
+          description: Состояние BB-E8E3 (работает или нет)
+        bt_0010_is_on:
+          type: boolean
+          x-stoplight:
+            id: f2lb72kgbgu0c
+          description: Состояние BT-0010 (работает или нет)
