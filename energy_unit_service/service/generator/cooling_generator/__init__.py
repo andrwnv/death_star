@@ -1,1 +1,0 @@
-from .basic_cooling_generator import DefaultGenerationStrategy
