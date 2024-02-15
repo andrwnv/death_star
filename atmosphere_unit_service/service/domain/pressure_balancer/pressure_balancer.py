@@ -4,9 +4,9 @@ import uuid
 
 from service.domain.device.device import Device
 
-class PressureBalancing:
+class PressureBalancer:
     
-    def __init__(self, name: str = "pressure_balancing") -> None:
+    def __init__(self, name: str = "pressure_balancer") -> None:
         self.name = name
 
         self.is_on = False
