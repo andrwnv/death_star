@@ -1,6 +1,6 @@
-class HumidityManagement:
+class HumidityManager:
 
-    def __init__(self, name: str = "humidity_management") -> None:
+    def __init__(self, name: str = "humidity_manager") -> None:
         self.name = name
 
         self.is_on = False
@@ -10,6 +10,10 @@ class HumidityManagement:
         self.sector = ""
         self.humidity = 60.0
         self.time = 0.0
+        self.speed = 5.0
+
+    def start(self) -> None:
+        self.is_on = True
 
     is_on: bool
     alarm: bool
@@ -18,4 +22,5 @@ class HumidityManagement:
     sector: str
     humidity: float
     time: float
+    speed: float
     
