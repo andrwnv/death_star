@@ -1,6 +1,6 @@
-class PressureStabilization:
+class PressureStabilizer:
 
-    def __init__(self, name: str = "pressure_stabilization") -> None:
+    def __init__(self, name: str = "pressure_stabilizer") -> None:
         self.name = name
 
         self.is_on = False
