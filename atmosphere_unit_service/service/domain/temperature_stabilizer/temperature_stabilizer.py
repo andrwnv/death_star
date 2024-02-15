@@ -1,6 +1,6 @@
-class TemperatureStabilization:
+class TemperatureStabilizer:
 
-    def __init__(self, name: str = "temperature_stabilization") -> None:
+    def __init__(self, name: str = "temperature_stabilizer") -> None:
         self.name = name
 
         self.is_on = False
