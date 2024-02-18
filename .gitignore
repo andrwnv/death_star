@@ -5,3 +5,4 @@ __pycache__
 .fleet
 proto/*
 */proto/*
+node_modules/
