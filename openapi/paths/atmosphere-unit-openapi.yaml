@@ -18,8 +18,14 @@ servers:
   - url: 'localhost:5000/api/v2/atmosphere-unit'
     description: atmosphere-unit
 paths:
-  /humidity-controller:
-    parameters: []
+  '/{unit-name}/humidity-controller':
+    parameters:
+      - schema:
+          type: string
+        name: unit-name
+        in: path
+        required: true
+        description: Название юнита
     get:
       summary: Получение состояния устройства управления влажностью
       tags:
@@ -41,8 +47,14 @@ paths:
       x-stoplight:
         id: b7p2yjeiheu6m
       description: Получение состояния устройства управления влажностью
-  /pressure-balancer:
-    parameters: []
+  '/{unit-name}/pressure-balancer':
+    parameters:
+      - schema:
+          type: string
+        name: unit-name
+        in: path
+        required: true
+        description: Название юнита
     get:
       summary: Получение состояния аппарата балансировки атмосферного давления
       tags:
@@ -64,8 +76,14 @@ paths:
       x-stoplight:
         id: d3zw8w19na0or
       description: Получение состояния аппарата балансировки атмосферного давления
-  /pressure-stabilizer:
-    parameters: []
+  '/{unit-name}/pressure-stabilizer':
+    parameters:
+      - schema:
+          type: string
+        name: unit-name
+        in: path
+        required: true
+        description: Название юнита
     get:
       summary: Получение состояния устройства стабилизации давления
       tags:
@@ -87,8 +105,14 @@ paths:
       x-stoplight:
         id: 8l33serjnowl1
       description: Получение состояния устройства стабилизации давления
-  /temperature-stabilizer:
-    parameters: []
+  '/{unit-name}/temperature-stabilizer':
+    parameters:
+      - schema:
+          type: string
+        name: unit-name
+        in: path
+        required: true
+        description: Название юнита
     get:
       summary: Получение состояния устройства стабилизации температуры
       tags:
@@ -110,6 +134,36 @@ paths:
       x-stoplight:
         id: 4xz50il0vry7f
       description: Получение состояния устройства стабилизации температуры
+  /all:
+    get:
+      summary: Получить список всех секторов
+      tags:
+        - State
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - units
+                properties:
+                  units:
+                    type: array
+                    x-stoplight:
+                      id: e6ygyzlrixc1r
+                    minItems: 15
+                    maxItems: 15
+                    items:
+                      $ref: '#/components/schemas/AtmosphereUnit'
+        '429':
+          description: Too Many Requests
+        5XX:
+          description: Server Error
+      operationId: get-sector-all
+      x-stoplight:
+        id: 0of4y5ur7s23f
 components:
   schemas:
     HumidityController:
@@ -325,3 +379,54 @@ components:
           x-stoplight:
             id: f2lb72kgbgu0c
           description: Состояние BT-0010 (работает или нет)
+    AtmosphereUnit:
+      title: AtmosphereUnit
+      x-stoplight:
+        id: tx7low5b7j39n
+      type: object
+      description: Генератор атмосферы
+      required:
+        - name
+        - atmospheric_pressure
+        - temperature
+        - humidity
+        - is_on
+        - durability
+      properties:
+        name:
+          type: string
+          x-stoplight:
+            id: qbe3c52zdwhan
+          description: Имя блока
+          example: atmosphere-unit-57801459-a899-4f98-96a0-4a0e4cb637ea
+        atmospheric_pressure:
+          type: number
+          x-stoplight:
+            id: 0is4gzaxz1hft
+          format: double
+          description: Текущее атмосферное давление в атмосферах
+        temperature:
+          type: number
+          x-stoplight:
+            id: bvxvzdusd6ypj
+          format: double
+          description: Текущая температура в цельсиях
+        humidity:
+          type: number
+          x-stoplight:
+            id: yje4dn7twnxud
+          format: double
+          description: Текущая влажность в процентах
+        is_on:
+          type: boolean
+          x-stoplight:
+            id: q4wuf5xxmt845
+          description: Работают ли в данный момент аппараты балансировки атмосферного давления
+        durability:
+          type: number
+          x-stoplight:
+            id: 0n3lma06e7qmf
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Прочность (в процентах). Целостность нарушается при прочности 30 процентов

@@ -16,7 +16,7 @@ servers:
   - url: 'localhost:5000/api/v2/team'
     description: team
 paths:
-  /all:
+  /teams:
     get:
       tags:
         - State
