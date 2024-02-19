@@ -239,7 +239,7 @@
     },
     "/all": {
       "get": {
-        "summary": "Получить список всех секторов",
+        "summary": "Информация о возможный секторах и общем состоянии системы",
         "tags": [
           "atmosphere-unit-openapi_State"
         ],
@@ -249,23 +249,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "units"
-                  ],
-                  "properties": {
-                    "units": {
-                      "type": "array",
-                      "x-stoplight": {
-                        "id": "e6ygyzlrixc1r"
-                      },
-                      "minItems": 15,
-                      "maxItems": 15,
-                      "items": {
-                        "$ref": "#/components/schemas/AtmosphereUnit"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/AtmosphereUnitTotalInfo"
                 }
               }
             }
@@ -1175,11 +1159,7 @@
         "description": "Генератор атмосферы",
         "required": [
           "name",
-          "atmospheric_pressure",
-          "temperature",
-          "humidity",
-          "is_on",
-          "durability"
+          "is_on"
         ],
         "properties": {
           "name": {
@@ -1190,46 +1170,63 @@
             "description": "Имя блока",
             "example": "atmosphere-unit-57801459-a899-4f98-96a0-4a0e4cb637ea"
           },
-          "atmospheric_pressure": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "0is4gzaxz1hft"
-            },
-            "format": "double",
-            "description": "Текущее атмосферное давление в атмосферах"
-          },
-          "temperature": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "bvxvzdusd6ypj"
-            },
-            "format": "double",
-            "description": "Текущая температура в цельсиях"
-          },
-          "humidity": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "yje4dn7twnxud"
-            },
-            "format": "double",
-            "description": "Текущая влажность в процентах"
-          },
           "is_on": {
             "type": "boolean",
             "x-stoplight": {
               "id": "q4wuf5xxmt845"
             },
             "description": "Работают ли в данный момент аппараты балансировки атмосферного давления"
+          }
+        }
+      },
+      "AtmosphereUnitTotalInfo": {
+        "title": "Atmosphere Unit Total Info",
+        "x-stoplight": {
+          "id": "0hclz6fnwcynb"
+        },
+        "type": "object",
+        "description": "Общая информация о генераторе атмосферы",
+        "required": [
+          "atmospheric_pressure",
+          "temperature",
+          "humidity",
+          "durability",
+          "units"
+        ],
+        "properties": {
+          "atmospheric_pressure": {
+            "type": "number",
+            "format": "double",
+            "description": "Текущее атмосферное давление в атмосферах"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double",
+            "description": "Текущая температура в цельсиях"
+          },
+          "humidity": {
+            "type": "number",
+            "format": "double",
+            "description": "Текущая влажность в процентах"
           },
           "durability": {
             "type": "number",
-            "x-stoplight": {
-              "id": "0n3lma06e7qmf"
-            },
             "format": "double",
             "minimum": 0,
             "maximum": 100,
             "description": "Прочность (в процентах). Целостность нарушается при прочности 30 процентов"
+          },
+          "units": {
+            "type": "array",
+            "description": "Работают ли в данный момент аппараты балансировки атмосферного давления",
+            "x-stoplight": {
+              "id": "xllpbqr5i9m79"
+            },
+            "minItems": 15,
+            "maxItems": 15,
+            "items": {
+              "$ref": "#/components/schemas/AtmosphereUnit"
+            }
           }
         }
       },
