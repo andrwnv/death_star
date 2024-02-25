@@ -7,10 +7,7 @@ class HumidityManager:
         self.alarm = False
         self.durability = 100.0
 
-        self.sector = ""
         self.humidity = 60.0
-        self.time = 0.0
-        self.speed = 5.0
 
     def start(self) -> None:
         self.is_on = True
@@ -21,6 +18,4 @@ class HumidityManager:
 
     sector: str
     humidity: float
-    time: float
-    speed: float
     

@@ -7,10 +7,7 @@ class TemperatureStabilizer:
         self.alarm = False
         self.durability = 100.0
 
-        self.sector = ""
         self.temperature = 24.0
-        self.time = 0.0
-        self.speed = 50.0
 
     def start(self) -> None:
         self.is_on = True
@@ -19,7 +16,4 @@ class TemperatureStabilizer:
     alarm: bool
     durability: float
 
-    sector: str
     temperature: float
-    time: float
-    speed: float
