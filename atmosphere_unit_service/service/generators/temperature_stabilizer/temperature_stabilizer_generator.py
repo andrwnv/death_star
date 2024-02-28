@@ -25,18 +25,20 @@ class DefaultGenerationStrategy(IGenerationStrategy):
     
     def generate_properties(self) -> None:
         if self.__model.is_on:
-            TemperatureStabilizer.temperature = random.gauss(
+            self.__model.temperature = random.gauss(
                 self.GenerationParams.TEMPERATURE,
                 self.GenerationParams.SIGMA
             )
-        else:
-            pass
 
-        self.__model.alarm = False
+        self.__model.alarm = self.__model.durability <= 50
 
-        if self.__model.durability <= 50:
-            self.__model.alarm = True
-
+        if self.__model.alarm:
+            self.__model.is_on = False
+            if self.__model.sun_side:
+                self.__model.temperature = 120.0
+            else:
+                self.__model.temperature = -160.0
+        
     def name(self) -> str:
         return self.__name
     
