@@ -8,6 +8,7 @@ class TemperatureStabilizer:
         self.durability = 100.0
 
         self.temperature = 24.0
+        self.sun_side = False
 
     def start(self) -> None:
         self.is_on = True
@@ -17,3 +18,4 @@ class TemperatureStabilizer:
     durability: float
 
     temperature: float
+    sun_side: bool
