@@ -13,6 +13,7 @@ class DefaultGenerationStrategy(IGenerationStrategy):
     @dataclass
     class GenerationParams:
         HUMIDITY = 60.0
+        CHANCE = 50.0
 
         SIGMA = 10.0
     
@@ -28,17 +29,22 @@ class DefaultGenerationStrategy(IGenerationStrategy):
 
     def generate_properties(self) -> None:
         if self.__model.is_on:
-                HumidityManager.humidity = random.gauss(
+                self.__model.humidity = random.gauss(
                     self.GenerationParams.HUMIDITY,
                     self.GenerationParams.SIGMA,
                 )
-        else:
-            pass
 
-        self.__model.alarm = False
+        self.__model.alarm = self.__model.durability <= 27
 
-        if self.__model.durability <= 27:
-             self.__model.alarm = True
+        if self.__model.humidity < 50:
+            self.GenerationParams.CHANCE = 50 - self.__model.humidity
+            if random(0,100,1) <= self.GenerationParams.CHANCE:
+                self.__model.durability -= 1
+        
+        if self.__model.humidity > 70:
+            self.GenerationParams.CHANCE = self.__model.humidity - 70
+            if random(0,100,1) <= self.GenerationParams.CHANCE:
+                self.__model.durability -= 5
 
     def name(self) -> str:
         return self.__name
