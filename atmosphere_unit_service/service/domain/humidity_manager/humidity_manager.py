@@ -16,6 +16,5 @@ class HumidityManager:
     alarm: bool
     durability: float
 
-    sector: str
     humidity: float
     
