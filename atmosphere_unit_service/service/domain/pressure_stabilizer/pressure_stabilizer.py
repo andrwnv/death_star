@@ -6,6 +6,8 @@ class PressureStabilizer:
         self.is_on = False
         self.alarm = False
         self.durability = 100.0
+        self.time = 0.0
+        self.stabilizing_time = 0.0
 
         self.is_suitable = False
 
@@ -27,6 +29,8 @@ class PressureStabilizer:
     is_on: bool
     alarm: bool
     durability: float
+    repair_time: float
+    stabilizing_time: float
 
     is_suitable: bool
 
