@@ -18,13 +18,9 @@ class Device:
         self.humidity_manager = HumidityManager(name-f"HumidityManager-{uuid.uuid4}")
     
     def start(self) -> None:
-        self.is_on = False
-        if (
-        self.pressure_stabilizer.is_on 
-        or self.temperature_stabilizer.is_on
-        or self.humidity_manager.is_on
-        ):
-            self.is_on = True
+        self.is_on = self.pressure_stabilizer.is_on or \
+        self.temperature_stabilizer.is_on or \
+        self.humidity_manager.is_on
 
     is_on: bool
     alarm: bool
