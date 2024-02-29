@@ -98,7 +98,7 @@ async def run(config: Config):
     log_config["formatters"]["access"]["fmt"] = "[%(asctime)s][%(levelname)s]: %(message)s"
     log_config["formatters"]["default"]["fmt"] = "[%(asctime)s][%(levelname)s]: %(message)s"
 
-    config = uvicorn.Config(app, port=8021, host="0.0.0.0", log_config=log_config)
+    config = uvicorn.Config(app, port=2024, host="0.0.0.0", log_config=log_config)
     server = uvicorn.Server(config)
 
     await asyncio.gather(
