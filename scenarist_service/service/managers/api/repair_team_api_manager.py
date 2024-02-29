@@ -96,7 +96,7 @@ class RepairTeamApiManager:
 
         logger.info(f"Team {team.name} repaired {location.name}")
 
-    def __get_location(self, cell_name: str, location: str) -> Any | None:
+    def __get_location(self, cell_name: str, location: str):
         # todo(andrwnv): make it recirsive..... like IJsonSerializable
 
         cell = self.__power_cells[cell_name]
