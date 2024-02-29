@@ -70,7 +70,7 @@ async def run(config: Config):
 
     energy_system_manager = EnergySystemApiManager(power_cells=model.power_cells)
     energy_system_router = EnergySystemApiRouter(
-        manager=energy_system_manager, prefix="/energy"
+        manager=energy_system_manager, prefix="/energy-unit"
     )
 
     repair_team_manager = RepairTeamApiManager(
@@ -79,10 +79,10 @@ async def run(config: Config):
         async_executor=lambda: print("call task"),
     )
     repair_team_router = RepairTeamApiRouter(
-        manager=repair_team_manager, prefix="/repair"
+        manager=repair_team_manager, prefix="/teams"
     )
 
-    root_router = APIRouter(prefix="/api/v1")
+    root_router = APIRouter(prefix="/api/v2")
 
     debug = True
     scenario = None
