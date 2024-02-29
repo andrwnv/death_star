@@ -30,6 +30,30 @@ services:
     networks:
       - appnet
 
+  atmosphere-unit-service:
+    build:
+      context: ./atmosphere_unit_service
+      dockerfile: Dockerfile
+
+    restart: on-failure
+
+    volumes:
+      - ./atmosphere_unit_service:/app
+
+    working_dir: /app
+    command: make run
+    ports:
+      - "4040:4040"
+
+    depends_on:
+      rabbitmq_service:
+        condition: service_healthy
+
+    privileged: true
+
+    networks:
+      - appnet
+
   energy-unit-service:
     build:
       context: ./energy_unit_service
