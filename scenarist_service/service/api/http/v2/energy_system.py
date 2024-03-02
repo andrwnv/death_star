@@ -17,49 +17,49 @@ class EnergySystemApiRouter(APIRouter):
             name="Получение списка энергетических модулей",
         )
         self.add_api_route(
-            path="/state/{power_cell_name}",
+            path="/{power_cell_name}",
             methods=["GET"],
             endpoint=self.get_cell_state,
             tags=["Энергетический модуль"],
             name="Получение общей информации об энергетический модуле",
         )
         self.add_api_route(
-            path="/state/{power_cell_name}/cooling_system",
+            path="/{power_cell_name}/cooling",
             methods=["GET"],
             endpoint=self.get_cooling_system_state,
             tags=["Энергетический модуль"],
             name="Получение информации о системы охлаждения",
         )
         self.add_api_route(
-            path="/state/{power_cell_name}/magnet_system",
+            path="/{power_cell_name}/magnet",
             methods=["GET"],
             endpoint=self.get_magnet_system_state,
             tags=["Энергетический модуль"],
             name="Получение информации о магнитной системы",
         )
         self.add_api_route(
-            path="/state/{power_cell_name}/plasma_heater",
+            path="/{power_cell_name}/plasma-heater",
             methods=["GET"],
             endpoint=self.get_plasma_heater_state,
             tags=["Энергетический модуль"],
             name="Получение информации о нагревателе плазмы",
         )
         self.add_api_route(
-            path="/state/{power_cell_name}/vacuum_vessel",
+            path="/{power_cell_name}/vacuum-vessel",
             methods=["GET"],
             endpoint=self.get_vacuum_vessel_state,
             tags=["Энергетический модуль"],
             name="Получение информации о вакуумной системе",
         )
         self.add_api_route(
-            path="/state/{power_cell_name}/fuel_storage",
+            path="/{power_cell_name}/liquid-storage",
             methods=["GET"],
             endpoint=self.get_fuel_storage_state,
             tags=["Энергетический модуль"],
             name="Получение информации о топливном хранилище",
         )
         self.add_api_route(
-            path="/state/{power_cell_name}/battery",
+            path="/{power_cell_name}/battery",
             methods=["GET"],
             endpoint=self.get_battery_state,
             tags=["Энергетический модуль"],
