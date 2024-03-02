@@ -16,11 +16,11 @@ class PressureStabilizer:
         self.O2_volume = 20.0
         self.N2_volume = 78.0
         self.other_volume = 100-(
-            sum(
-            self.CO2_volume, 
-            self.N2_volume, 
-            self.N2_volume
-            )
+            sum([
+                self.CO2_volume, 
+                self.N2_volume, 
+                self.N2_volume
+            ])
         )
 
     def start(self) -> None:

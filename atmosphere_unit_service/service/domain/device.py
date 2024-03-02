@@ -15,7 +15,7 @@ class Device:
 
         self.pressure_stabilizer = PressureStabilizer(name=f"PressureStabilizer-{uuid.uuid4()}")
         self.temperature_stabilizer = TemperatureStabilizer(name=f"TemperatureStabilizer-{uuid.uuid4()}")
-        self.humidity_manager = HumidityManager(name-f"HumidityManager-{uuid.uuid4}")
+        self.humidity_manager = HumidityManager(name=f"HumidityManager-{uuid.uuid4}")
     
     def start(self) -> None:
         self.is_on = self.pressure_stabilizer.is_on or \

@@ -22,7 +22,7 @@ class ScenaristProps:
 class Config:
 
     def __init__(self) -> None:
-        self.self._props = SelfProps(
+        self.self_props = SelfProps(
             grpc_addr="0.0.0.0",
             grpc_port=4040,
             event_queue_props=AmpqProps(

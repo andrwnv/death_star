@@ -3,7 +3,7 @@ import asyncio
 from amqp.amqp_consumer import RmqConsumer
 from amqp.amqp_publisher import RmqPublisher
 
-from service.generator.generator import DomainGenerator
+from service.generators.generator import DomainGenerator
 from service.api.grpc.server import GrpcServer
 from service.config import Config
 from service.domain.model import Model

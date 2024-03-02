@@ -4,9 +4,9 @@ from dataclasses import dataclass
 
 from service.domain.model import Model
 
-import service.generators.humidity_manager as humidity_manager_generator
-import service.generators.pressure_stabilizer as pressure_stabilizer_generator
-import service.generators.temperature_stabilizer as temperature_stabilizer_generator
+import service.generators.humidity_manager.humidity_manager_generator as humidity_generator
+import service.generators.pressure_stabilizer.pressure_stabilizer_generator as pressure_generator
+import service.generators.temperature_stabilizer.temperature_stabilizer_generator as temperature_generator
 
 from service.generators.generation_strategy import IGenerationStrategy
 
@@ -24,13 +24,13 @@ class DomainGenerator:
 
         for device_sector, device in model.device.items():
             self.__generator[device_sector] = DomainGenerator.GeneratorPack(
-                humidity_manager_generator=humidity_manager_generator.DefaultGenerationStrategy(
+                humidity_manager_generator=humidity_generator.DefaultGenerationStrategy(
                     device.humidity_manager
                 ),
-                pressure_stabilizer_generator=pressure_stabilizer_generator.DefaultGenerationStrategy(
+                pressure_stabilizer_generator=pressure_generator.DefaultGenerationStrategy(
                     device.pressure_stabilizer
                 ),
-                temperature_stabilizer_generator=temperature_stabilizer_generator.DefaultGenerationStrategy(
+                temperature_stabilizer_generator=temperature_generator.DefaultGenerationStrategy(
                     device.temperature_stabilizer
                 ),
             )

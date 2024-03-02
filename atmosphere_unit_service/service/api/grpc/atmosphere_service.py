@@ -1,11 +1,11 @@
 import logging
 import grpc
 
-import proto.atmosphere_unit.energy_unit_pb2 as pb2
-import proto.atmosphere_unit.energy_unit_pb2_grpc as pb2_grpc
+import proto.atmosphere_unit.atmosphere_unit_pb2 as pb2
+import proto.atmosphere_unit.atmosphere_unit_pb2_grpc as pb2_grpc
 
 from service.domain.device import Device
-from service.domain import Model
+from service.domain.model import Model
 
 logger = logging.getLogger(__name__)
 

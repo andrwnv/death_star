@@ -1,6 +1,6 @@
 import proto.atmosphere_unit.atmosphere_unit_pb2_grpc as pb2_grpc
 
-from service.domain import Model
+from service.domain.model import Model
 
 from service.api.grpc.atmosphere_service import AtmosphereService
 
